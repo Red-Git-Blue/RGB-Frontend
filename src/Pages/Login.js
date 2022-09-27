@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const Login_box = styled.div`
     display:flex;
@@ -17,7 +18,11 @@ const Title = styled.span`
     font-weight: 700;
     font-size: 40px;
     line-height: 94px;
-    margin-bottom: 30px;
+    margin: 40px 0 30px 0;
+`
+const Out_box = styled.div`
+    display: flex;
+    flex-direction: column;
 `
 
 const Sub_title = styled.span`
@@ -54,14 +59,38 @@ const Button_box = styled.button`
     background-origin: border-box;
     background-clip: content-box, border-box;
     -webkit-background-clip: content-box, border-box;
-    margin-top: 100px;
+    margin-top: 150px;
     font-weight: 700;
     font-size: 24px;
     line-height: 28px;
     color: #fff;
+    &:hover {
+        outline: 2px solid blue;
+    }
 `
 
 const LoginView = () => {
+    const [login_data, set_login_data] = useState({
+        id:'',
+        password:''
+    });
+
+    const login = async function () {
+        try {
+            let res = await axios({
+                method: 'post',
+                url: '',
+                headers: {
+                    Authorization: '',
+                }
+            });
+            console.log('login sccess!');
+        } catch (err) {
+            console.log('login error...');
+            console.log(err)
+        }
+    };
+
     return (
         <>
         <div style={{display:"flex"}}>
@@ -100,15 +129,34 @@ const LoginView = () => {
             <div style={{
                 width:'600px',
                 background: 'linear-gradient(180deg, #414852 0%, #24272D 100%)',
-            }}>
+            }}> 
+                <img src="./pattern.png" style={{
+                        zIndex: '0',
+                        position: 'absolute',
+                        transform: 'rotate(180deg)',
+                        width:'15%',
+                        height: 'auto',
+                    }}/>
                 <Login_box>
                     <Title>LOGIN</Title>
+                    <Out_box>
                     <Sub_title>아이디</Sub_title>
-                    <Input_box />
+                    <Input_box type={'text'} placeholder={'아이디를 입력해주세요'}/>
+                    </Out_box>
+                    <Out_box>
                     <Sub_title>비밀번호</Sub_title>
-                    <Input_box />
+                    <Input_box type={'password'} placeholder={'비밀번호를 입력해주세요'}/>
+                    </Out_box>
                     <Button_box>로그인</Button_box>
                 </Login_box>
+                <img src="./pattern.png" style={{
+                        zIndex: '0',
+                        position: 'fixed',
+                        width:'15%',
+                        height: 'auto',
+                        right: '0',
+                        bottom: '0'
+                    }}/>
             </div>
         </div>
         </>
