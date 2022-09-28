@@ -3,13 +3,13 @@ import axios from "axios";
 import { Background_view, Input_view, Login_box, Title,  Button_box, Auth_page } from "../styleds.js"; 
 
 
-const LoginView = () => {
-    const [login_data, set_login_data] = useState({
+const SignUpView = () => {
+    const [signup_data, set_signup_data] = useState({
         id:'',
         password:''
     });
 
-    const Login = async function () {
+    const Signup = async function () {
         try {
             let res = await axios({
                 method: 'post',
@@ -42,15 +42,17 @@ const LoginView = () => {
                         height: 'auto',
                     }}/>
                 <Login_box>
-                    <Title>LOGIN</Title>
+                    <Title>SIGN UP</Title>
                     <Input_view name={'아이디'} />
                     <Input_view name={'비밀번호'} />
-                    <Auth_page string={"아직 회원이 아니신가요?"} name={"회원가입"}/>
+                    <Input_view name={'이메일'} />
+                    <Auth_page string={"아직 이미 계정을 가지고 계십니까?"} name={"로그인"} top={'50px'}/>
                     <Button_box onClick={() => {
-                        let login = document.querySelectorAll('input');
-                        console.log(login[0].value);
-                        console.log(login[1].value);
-                    }}>로그인</Button_box>
+                        let signup = document.querySelectorAll('input');
+                        console.log(signup[0].value);
+                        console.log(signup[1].value);
+                        console.log(signup[2].value);
+                    }}>회원가입</Button_box>
                 </Login_box>
                 <img src="./pattern.png" style={{
                         zIndex: '0',
@@ -66,4 +68,4 @@ const LoginView = () => {
     )
 }
 
-export default LoginView;
+export default SignUpView;
