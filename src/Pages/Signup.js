@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Background_view, Input_view, Login_box, Title,  Button_box, Auth_page } from "../styleds.js"; 
 
@@ -8,6 +9,8 @@ const SignUpView = () => {
         id:'',
         password:''
     });
+    
+    let navigate = useNavigate();
 
     const Signup = async function () {
         try {
@@ -40,13 +43,14 @@ const SignUpView = () => {
                         transform: 'rotate(180deg)',
                         width:'15%',
                         height: 'auto',
+                        pointerEvents: 'none',
                     }}/>
                 <Login_box>
                     <Title>SIGN UP</Title>
                     <Input_view name={'아이디'} />
                     <Input_view name={'비밀번호'} />
                     <Input_view name={'이메일'} />
-                    <Auth_page string={"아직 이미 계정을 가지고 계십니까?"} name={"로그인"} top={'50px'}/>
+                    <Auth_page string={"아직 이미 계정을 가지고 계십니까?"} name={"로그인"} top={'50px'} move={'/login'}/>
                     <Button_box onClick={() => {
                         let signup = document.querySelectorAll('input');
                         console.log(signup[0].value);
@@ -60,7 +64,8 @@ const SignUpView = () => {
                         width:'15%',
                         height: 'auto',
                         right: '0',
-                        bottom: '0'
+                        bottom: '0',
+                        pointerEvents: 'none',
                     }}/>
             </div>
         </div>

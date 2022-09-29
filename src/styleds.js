@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
 
 const Login_box = styled.div`
     display:flex;
@@ -56,7 +57,7 @@ const Button_box = styled.button`
     border-radius: 64px;
     border:none;
     background: linear-gradient(90deg, #00CEFF 0%, #0075FF 100%);
-    margin-top: 28px;
+    margin-top: 17px;
     font-weight: 700;
     font-size: 24px;
     line-height: 28px;
@@ -77,9 +78,11 @@ const Input_view = ({name}) => {
     )
 } 
 
-const Auth_page = ({string, name, top = '170px'}) => {
+const Auth_page = ({string, name, top = '173px', move}) => {
+    let navigate = useNavigate();
     return (
         <div style={{
+            display: 'flex',
             marginTop: top
         }}>
             <span style={{
@@ -102,8 +105,10 @@ const Auth_page = ({string, name, top = '170px'}) => {
                 webkitBackgroundClip: 'text',
                 textFillColor: 'transparent',
                 webkitTextFillColor: 'transparent',
-                cursor: 'pointer'
-                }}>{name} &gt;</span>
+                cursor: 'pointer',
+                display: 'block',
+                zIndex: '3',
+                }} onClick={() => navigate(move)}>{name} &gt;</span>
         </div>
     )
 }
@@ -119,6 +124,7 @@ const Background_view = () => {
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column',
+            pointerEvents: 'none',
         }}>
             <img src="./Logo.png" width={'150px'} height={'150px'} />
             <span style={{
