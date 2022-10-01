@@ -114,6 +114,7 @@ const Auth_page = ({string, name, top = '173px', move}) => {
 }
 
 const Background_view = () => {
+    let navigate = useNavigate();
     return (
         <div style={{
             height:'100vh',
@@ -124,8 +125,14 @@ const Background_view = () => {
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column',
-            pointerEvents: 'none',
         }}>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                cursor: 'pointer'
+            }} onClick={() => navigate('/')}>
             <img src="./Logo.png" width={'150px'} height={'150px'} />
             <span style={{
                 fontFamily: 'Roboto',
@@ -148,6 +155,7 @@ const Background_view = () => {
                 textFillColor: 'transparent',
                 webkitTextFillColor: 'transparent',
             }}>STUDY OF STOCKS</span>
+            </div>
         </div>
     );
 }
