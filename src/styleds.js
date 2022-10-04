@@ -8,6 +8,7 @@ const Login_box = styled.div`
     align-items: center;
     font-family: Roboto;
     font-style: normal;
+    width: 30vw;
 `
 const Title = styled.span`
     background: linear-gradient(90deg, #00CEFF 0%, #0075FF 100%);
@@ -18,7 +19,7 @@ const Title = styled.span`
     font-weight: 700;
     font-size: 40px;
     line-height: 47px;
-    margin: 80px 0 30px 0;
+    margin: 10vh 0 7vh 0;
 `
 const Out_box = styled.div`
     display: flex;
@@ -29,7 +30,7 @@ const Sub_title = styled.span`
     font-weight: 700;
     font-size: 20px;
     line-height: 23px;
-    margin: 30px 0 10px 0;
+    margin: 35px 0 10px 0;
     color: #fff;
     text-align: left;
 `
@@ -64,8 +65,9 @@ const Button_box = styled.button`
     z-index: 1;
     color: #fff;
     cursor: pointer;
+    transition: 0.3s;
     &:hover {
-        transform: scale(1.01);
+        transform: scale(1.05);
     }
 `
 
@@ -78,12 +80,11 @@ const Input_view = ({name}) => {
     )
 } 
 
-const Auth_page = ({string, name, top = '173px', move}) => {
+const Auth_page = ({string, name, move}) => {
     let navigate = useNavigate();
     return (
         <div style={{
-            display: 'flex',
-            marginTop: top
+            display: 'flex'
         }}>
             <span style={{
                 fontFamily: 'NanumGothic',
@@ -118,7 +119,7 @@ const Background_view = () => {
     return (
         <div style={{
             height:'100vh',
-            width:'936px',
+            width:'70vmax',
             backgroundImage: "linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('background-1.png')",
             backgroundSize: "cover",
             display:'flex',
@@ -133,12 +134,12 @@ const Background_view = () => {
                 flexDirection: 'column',
                 cursor: 'pointer'
             }} onClick={() => navigate('/')}>
-            <img src="./Logo.png" width={'150px'} height={'150px'} />
+            <img src="./Logo.png" width={'200px'} height={'200px'} />
             <span style={{
                 fontFamily: 'Roboto',
                 fontStyle: 'normal',
                 fontWeight: '900',
-                fontSize: '40px',
+                fontSize: '3rem',
                 lineHeight: '47px',
                 color: '#fff',
             }}>WELCOME TO</span>
@@ -146,7 +147,7 @@ const Background_view = () => {
                 fontFamily: 'Roboto',
                 fontStyle: 'normal',
                 fontWeight: '400',
-                fontSize: '32px',
+                fontSize: '2.5rem',
                 lineHeight: '38px',
                 letterSpacing: '-0.04em',
                 background: 'linear-gradient(90deg, #00CEFF 0%, #0075FF 100%)',
@@ -160,4 +161,19 @@ const Background_view = () => {
     );
 }
 
-export { Background_view, Input_view, Login_box, Title, Out_box, Sub_title, Input_box, Button_box , Auth_page};
+const Ls_btn = ({click, string, name, sub_name, move}) => {
+    return (
+        <div style={{
+            position: 'absolute',
+            bottom: '10vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        }}>
+            <Auth_page string={string} name={name} move={move}/>
+            <Button_box onClick={() => click()}>{sub_name}</Button_box>
+        </div>
+    )
+}
+
+export { Background_view, Input_view, Login_box, Title, Out_box, Sub_title, Input_box, Button_box , Auth_page, Ls_btn};

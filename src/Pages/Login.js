@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Input_view, Login_box, Title,  Button_box, Auth_page } from "../styleds.js"; 
+import { Background_view, Input_view, Login_box, Title,  Ls_btn } from "../styleds.js"; 
 
 
 const LoginView = () => {
@@ -28,12 +28,18 @@ const LoginView = () => {
         }
     };
 
+    const log = () => {
+        let login = document.querySelectorAll('input');
+        console.log(login[0].value);
+        console.log(login[1].value);
+    }
+
     return (
         <>
         <div style={{display:"flex"}}>
             <Background_view />
             <div style={{
-                width:'600px',
+                width:'30vmax',
                 height: '100vh',
                 background: 'linear-gradient(180deg, #414852 0%, #24272D 100%)',
             }}> 
@@ -49,12 +55,13 @@ const LoginView = () => {
                     <Title>LOGIN</Title>
                     <Input_view name={'아이디'} />
                     <Input_view name={'비밀번호'} />
-                    <Auth_page string={"아직 회원이 아니신가요?"} name={"회원가입"} move={'/signup'}/>
-                    <Button_box onClick={() => {
-                        let login = document.querySelectorAll('input');
-                        console.log(login[0].value);
-                        console.log(login[1].value);
-                    }}>로그인</Button_box>
+                    <Ls_btn 
+                        click={log} 
+                        string={"아직 회원이 아니신가요?"} 
+                        name={"회원가입"}
+                        sub_name={"로그인"} 
+                        move={'/signup'} 
+                    />
                 </Login_box>
                 <img src="./pattern.png" style={{
                         zIndex: '0',

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Input_view, Login_box, Title,  Button_box, Auth_page } from "../styleds.js"; 
+import { Background_view, Input_view, Login_box, Title,  Ls_btn } from "../styleds.js"; 
 
 
 const SignUpView = () => {
@@ -28,12 +28,19 @@ const SignUpView = () => {
         }
     };
 
+    const log = () => {
+        let signup = document.querySelectorAll('input');
+        console.log(signup[0].value);
+        console.log(signup[1].value);
+        console.log(signup[2].value);
+    }
+
     return (
         <>
         <div style={{display:"flex"}}>
             <Background_view />
             <div style={{
-                width:'600px',
+                width:'30vmax',
                 height: '100vh',
                 background: 'linear-gradient(180deg, #414852 0%, #24272D 100%)',
             }}> 
@@ -50,13 +57,13 @@ const SignUpView = () => {
                     <Input_view name={'아이디'} />
                     <Input_view name={'비밀번호'} />
                     <Input_view name={'이메일'} />
-                    <Auth_page string={"아직 이미 계정을 가지고 계십니까?"} name={"로그인"} top={'50px'} move={'/login'}/>
-                    <Button_box onClick={() => {
-                        let signup = document.querySelectorAll('input');
-                        console.log(signup[0].value);
-                        console.log(signup[1].value);
-                        console.log(signup[2].value);
-                    }}>회원가입</Button_box>
+                    <Ls_btn 
+                        click={log} 
+                        string={"아직 이미 계정을 가지고 계십니까?"} 
+                        name={"로그인"} 
+                        sub_name={"회원가입"} 
+                        move={'/login'} 
+                    />
                 </Login_box>
                 <img src="./pattern.png" style={{
                         zIndex: '0',
