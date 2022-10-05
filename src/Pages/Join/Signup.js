@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Input_view, Login_box, Title,  Ls_btn } from "../styleds.js"; 
+import { Background_view, Input_view, Login_box, Title,  Ls_btn } from "../../styleds.js"; 
+import Alert from "../Alert.js";
 
 
 const SignUpView = () => {
     const [signup_data, set_signup_data] = useState({
-        id:'',
+        email:'',
+        name:'',
         password:''
     });
     
@@ -16,31 +18,40 @@ const SignUpView = () => {
         try {
             let res = await axios({
                 method: 'post',
-                url: '',
-                headers: {
-                    Authorization: '',
+                url: 'http://local.lite24.net:8080/api/sos/auth/sign-up',
+                data: {
+                    name: signup_data.name,
+                    password: signup_data.password,
+                    email: signup_data.email
                 }
             });
-            console.log('login sccess!');
+            console.log('signup sccess!');
+            navigate('/');
         } catch (err) {
-            console.log('login error...');
+            console.log('signup error...');
             console.log(err)
         }
     };
 
     const log = () => {
         let signup = document.querySelectorAll('input');
-        console.log(signup[0].value);
-        console.log(signup[1].value);
-        console.log(signup[2].value);
+        set_signup_data({
+            name: signup[0].value,
+            password: signup[1].value,
+            email: signup[2].value
+        });
+        Signup();
     }
 
     return (
         <>
+        {/* Alert 테스트 코드 */}
+        {/* <Alert string={'확인했습니까?'}/> */}
         <div style={{display:"flex"}}>
             <Background_view />
             <div style={{
-                width:'30vmax',
+                width:'30vw',
+                minWidth: '600px',
                 height: '100vh',
                 background: 'linear-gradient(180deg, #414852 0%, #24272D 100%)',
             }}> 
@@ -54,9 +65,14 @@ const SignUpView = () => {
                     }}/>
                 <Login_box>
                     <Title>SIGN UP</Title>
-                    <Input_view name={'아이디'} />
-                    <Input_view name={'비밀번호'} />
-                    <Input_view name={'이메일'} />
+                    <div style={{
+                        width: '400px',
+                        height: '400px'
+                    }}>
+                        <Input_view name={'이름'} />
+                        <Input_view name={'비밀번호'} />
+                        <Input_view name={'이메일'} />
+                    </div>
                     <Ls_btn 
                         click={log} 
                         string={"아직 이미 계정을 가지고 계십니까?"} 

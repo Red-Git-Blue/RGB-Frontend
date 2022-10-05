@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Input_view, Login_box, Title,  Ls_btn } from "../styleds.js"; 
+import { Background_view, Input_view, Login_box, Title,  Ls_btn } from "../../styleds.js"; 
 
 
 const LoginView = () => {
@@ -40,6 +40,7 @@ const LoginView = () => {
             <Background_view />
             <div style={{
                 width:'30vmax',
+                minWidth: '600px',
                 height: '100vh',
                 background: 'linear-gradient(180deg, #414852 0%, #24272D 100%)',
             }}> 
@@ -53,8 +54,13 @@ const LoginView = () => {
                     }}/>
                 <Login_box>
                     <Title>LOGIN</Title>
-                    <Input_view name={'아이디'} />
-                    <Input_view name={'비밀번호'} />
+                    <div style={{
+                        width: '400px',
+                        height: '400px'
+                    }}>
+                        <Input_view name={'아이디'} />
+                        <Input_view name={'비밀번호'} />
+                    </div>
                     <Ls_btn 
                         click={log} 
                         string={"아직 회원이 아니신가요?"} 

@@ -5,10 +5,14 @@ import { useNavigate } from 'react-router-dom';
 const Login_box = styled.div`
     display:flex;
     flex-direction: column;
+    justify-content: space-around;
     align-items: center;
     font-family: Roboto;
     font-style: normal;
     width: 30vw;
+    min-width: 600px;
+    height: 90vh;
+    padding: 5vh 0;
 `
 const Title = styled.span`
     background: linear-gradient(90deg, #00CEFF 0%, #0075FF 100%);
@@ -19,7 +23,6 @@ const Title = styled.span`
     font-weight: 700;
     font-size: 40px;
     line-height: 47px;
-    margin: 10vh 0 7vh 0;
 `
 const Out_box = styled.div`
     display: flex;
@@ -30,7 +33,7 @@ const Sub_title = styled.span`
     font-weight: 700;
     font-size: 20px;
     line-height: 23px;
-    margin: 35px 0 10px 0;
+    margin: 25px 0 15px 0;
     color: #fff;
     text-align: left;
 `
@@ -49,6 +52,7 @@ const Input_box = styled.input`
     line-height: 21px;
     color: #fff;
     text-align: left;
+    margin-bottom: 10px;
 `
 
 const Button_box = styled.button`
@@ -84,7 +88,8 @@ const Auth_page = ({string, name, move}) => {
     let navigate = useNavigate();
     return (
         <div style={{
-            display: 'flex'
+            display: 'flex',
+            marginTop: '20px'
         }}>
             <span style={{
                 fontFamily: 'NanumGothic',
@@ -119,7 +124,8 @@ const Background_view = () => {
     return (
         <div style={{
             height:'100vh',
-            width:'70vmax',
+            width:'70vw',
+            minWidth: '325px',
             backgroundImage: "linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('background-1.png')",
             backgroundSize: "cover",
             display:'flex',
@@ -164,8 +170,6 @@ const Background_view = () => {
 const Ls_btn = ({click, string, name, sub_name, move}) => {
     return (
         <div style={{
-            position: 'absolute',
-            bottom: '10vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
