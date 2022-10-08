@@ -7,7 +7,7 @@ const Page_button = styled.span`
     font-weight: 600;
     font-size: 18px;
     line-height: 32px;
-    color: #ffffff;
+    color: #fff;
     cursor: pointer;
     border-radius: 100px;
     transition: 0.3s;
@@ -27,14 +27,14 @@ const Header = () => {
         <>
             <div style={{
                 display: 'flex',
-                background: '#000',
                 width: '80vw',
                 height: '100px',
                 fontStyle: 'normal',
                 alignItems: 'center',
                 padding: '0 10% 0 10%',
                 justifyContent: 'space-between',
-                boxShadow: '0px 1000px 5px 100px #ccc'
+                boxShadow: '0 0 5px 2px #00CEFF',
+                background: '#000'
             }}>
                 <div style={{
                     display: 'flex',

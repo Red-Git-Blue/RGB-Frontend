@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginView from "./Join/Login";
-import SignUpView from "./Join/Signup";
-import ErrorPage from "./ErrorPage";
-import Main from "./Main";
+import LoginView from "./Pages/Join/Login";
+import SignUpView from "./Pages/Join/Signup";
+import ErrorPage from "./Pages/ErrorPage";
+import Main from "./Pages/Main";
 
 function App() {
   return (

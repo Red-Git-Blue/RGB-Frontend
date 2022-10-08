@@ -5,7 +5,7 @@ const Box = styled.div`
     width: 400px;
     height: 120px;
     border: 0;
-    border-radius: 20px;
+    border-radius: 10px;
     background: #fff;
     box-shadow: 0 0 7px 2px #00CEFF;
     position: fixed;
@@ -53,13 +53,18 @@ const Button = styled.button`
 
 const Time_bar = styled.div`
     width: 400px;
-    height: 7px;
+    height: 8px;
     background: #1a69cf;
     box-shadow: 0 0 5px 1px #0075FF;
     border-radius: 0 0 10px 10px;
     position: absolute;
-    bottom: 8px;
+    bottom: 0px;
     left: 0px;
+    transition: 5s;
+    transform-origin: right;
+    &:hover {
+        transform: scaleX(0);
+    }
 `
 
 const Alert = ({string, type = 'info'}) => {
