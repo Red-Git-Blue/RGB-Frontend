@@ -1,1 +1,1 @@
-# SOS-Frontend
+# RGB-Frontend
