@@ -11,7 +11,7 @@ body {
   -khtml-user-select: text;
   -webkit-user-select: text;
   user-select: text;
-  color: #1a69cf;
+  background-color: #000;
 }
 
 img {
