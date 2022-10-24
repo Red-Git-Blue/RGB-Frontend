@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Input_view, Login_box, Title,  Ls_btn } from "../../styleds.js"; 
+import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds.js"; 
 import Alert from "../Alert.js";
+import styled from "styled-components";
 
 
 const SignUpView = () => {
@@ -18,7 +19,7 @@ const SignUpView = () => {
         try {
             let res = await axios({
                 method: 'post',
-                url: 'http://local.lite24.net:8080/api/sos/auth/sign-up',
+                url: 'http://local.lite24.net:8080/api/rgb/auth/sign-up',
                 data: {
                     name: signup_data.name,
                     password: signup_data.password,
@@ -47,53 +48,43 @@ const SignUpView = () => {
         <>
         {/* Alert 테스트 코드 */}
         {/* <Alert string={'확인했습니까?'}/> */}
-        <div style={{display:"flex"}}>
-            <Background_view />
-            <div style={{
-                width:'30vw',
-                minWidth: '600px',
-                height: '100vh',
-                background: 'linear-gradient(180deg, #414852 0%, #24272D 100%)',
-            }}> 
-                <img src="./pattern.png" style={{
-                        zIndex: '0',
-                        position: 'absolute',
-                        transform: 'rotate(180deg)',
-                        width:'15%',
-                        height: 'auto',
-                        pointerEvents: 'none',
-                    }}/>
-                <Login_box>
-                    <Title>SIGN UP</Title>
-                    <div style={{
-                        width: '400px',
-                        height: '400px'
-                    }}>
-                        <Input_view name={'이름'} />
-                        <Input_view name={'비밀번호'} />
-                        <Input_view name={'이메일'} />
-                    </div>
-                    <Ls_btn 
-                        click={log} 
-                        string={"아직 이미 계정을 가지고 계십니까?"} 
-                        name={"로그인"} 
-                        sub_name={"회원가입"} 
-                        move={'/login'} 
+        <Background_view />
+        <Center>
+            <Blur_box>
+                <Flex_box>
+                    <Left_box
+                        title='sign up'
+                        text1='아직 회원이 아니신가요?'
+                        text2='이메일 인증으로 간편하게 가입해보세요.'
+                        text3='이미 계정을 가지고 계십니까?'
+                        text4='로그인'
+                        link='/login'
                     />
-                </Login_box>
-                <img src="./pattern.png" style={{
-                        zIndex: '0',
-                        position: 'fixed',
-                        width:'15%',
-                        height: 'auto',
-                        right: '0',
-                        bottom: '0',
-                        pointerEvents: 'none',
-                    }}/>
-            </div>
-        </div>
+                    <Right_box>
+                        <Input_view name={'닉네임'} text='3~20자로 닉네임을 입력해주세요.' />
+                        <Input_view name={'이메일'} text='이메일을 입력해주세요.' />
+                        <Input_view name={'비밀번호'} text='숫자,대소문자,특수문자 포함 4~30자' />
+                        <Button_box top='31px'>회원가입</Button_box>
+                    </Right_box>
+                </Flex_box>
+            </Blur_box>
+        </Center>
         </>
     )
 }
 
 export default SignUpView;
+
+const Center = styled.div`
+    width: 100%;
+    height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const Flex_box = styled.div`
+    display: flex;
+    position: absolute;
+    padding: 112px 100px;
+`

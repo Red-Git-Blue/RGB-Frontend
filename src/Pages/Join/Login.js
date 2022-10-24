@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Input_view, Login_box, Title,  Ls_btn } from "../../styleds.js"; 
-
+import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds.js"; 
+import styled from "styled-components";
 
 const LoginView = () => {
     const [login_data, set_login_data] = useState({
@@ -36,52 +36,50 @@ const LoginView = () => {
 
     return (
         <>
-        <div style={{display:"flex"}}>
-            <Background_view />
-            <div style={{
-                width:'30vmax',
-                minWidth: '600px',
-                height: '100vh',
-                background: 'linear-gradient(180deg, #414852 0%, #24272D 100%)',
-            }}> 
-                <img src="./pattern.png" style={{
-                        zIndex: '0',
-                        position: 'absolute',
-                        transform: 'rotate(180deg)',
-                        width:'15%',
-                        height: 'auto',
-                        pointerEvents: 'none',
-                    }}/>
-                <Login_box>
-                    <Title>LOGIN</Title>
-                    <div style={{
-                        width: '400px',
-                        height: '400px'
-                    }}>
-                        <Input_view name={'아이디'} />
-                        <Input_view name={'비밀번호'} />
-                    </div>
-                    <Ls_btn 
-                        click={log} 
-                        string={"아직 회원이 아니신가요?"} 
-                        name={"회원가입"}
-                        sub_name={"로그인"} 
-                        move={'/signup'} 
+        <Background_view />
+        <Center>
+            <Blur_box>
+                <Flex_box>
+                    <Left_box
+                        title='log in'
+                        text1='회원이신가요?'
+                        text2='로그인 후 서비스를 이용해보세요.'
+                        text3='아직 회원이 아니신가요?'
+                        text4='회원가입'
+                        link='/signup'
                     />
-                </Login_box>
-                <img src="./pattern.png" style={{
-                        zIndex: '0',
-                        position: 'fixed',
-                        width:'15%',
-                        height: 'auto',
-                        right: '0',
-                        bottom: '0',
-                        pointerEvents: 'none',
-                    }}/>
-            </div>
-        </div>
+                    <Right_box>
+                        <Input_view name={'닉네임 또는 이메일'} text='닉네임 또는 이메일을 입력해주세요.' />
+                        <Input_view name={'비밀번호'} text='비밀번호를 입력해주세요.' />
+                        <Button_box background='transparent' color="#ffffff" top='72px'>
+                            <Button_style>비밀번호를 잃어버리셨나요?</Button_style></Button_box>
+                        <Button_box>로그인</Button_box>
+                    </Right_box>
+                </Flex_box>
+            </Blur_box>
+        </Center>
         </>
     )
 }
 
 export default LoginView;
+
+const Button_style = styled.span`
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+`
+
+const Center = styled.div`
+    width: 100%;
+    height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const Flex_box = styled.div`
+    display: flex;
+    position: absolute;
+    padding: 112px 100px;
+`
