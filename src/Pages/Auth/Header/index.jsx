@@ -1,6 +1,6 @@
-import React from "react";
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
+import { Image } from "../../../styleds";
 
 const Page_button = styled.span`
     font-family: 'Roboto';
@@ -53,49 +53,55 @@ const Header = () => {
     let navigate = useNavigate();
     return (
         <>
-            <div style={{
-                display: 'flex',
-                width: '70%',
-                height: '100px',
-                fontStyle: 'normal',
-                alignItems: 'center',
-                padding: '0 15% 0 15%',
-                justifyContent: 'space-between',
-                background: 'rgba(0, 0, 0, 0.01)',
-                backdropFilter: 'blur(120px)'
-            }}>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                }} onClick={() => navigate('/')}>
-                    <img src="Logo.png" width={'34px'} height={'30px'} />
-                    <span style={{
-                        fontFamily: 'Roboto',
-                        fontWeight: '900',
-                        fontSize: '20px',
-                        lineHeight: '23px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        color: '#fff',
-                        marginLeft: '12px',
-                    }}>RED GIT BLUE
-                    </span>
-                </div>
-                <div style={{
-                    width: '422px',
-                    display: 'flex',
-                    justifyContent: 'space-evenly',
-                }}>
+            <Out_box>
+                <Logo_box onClick={() => navigate('/')}>
+                    <Image src="Logo.png" width='34px' height='30px' alt='로고 이미지'/>
+                    <Title>RED GIT BLUE</Title>
+                </Logo_box>
+                <Page_box>
                     <Page_button onClick={() => navigate('/coin')}>Coin</Page_button>
                     <Page_button onClick={() => navigate('/search')}>Search</Page_button>
                     <Page_button onClick={() => navigate('/shop')}>Shop</Page_button>
                     <Page_button onClick={() => navigate('/login')}>Login</Page_button>
                     <Page_button onClick={() => navigate('/signup')}>Sign Up</Page_button>
-                </div>
-            </div>
+                </Page_box>
+            </Out_box>
         </>
     );
 }
 
 export default Header;
+
+const Out_box = styled.div`
+    display: flex;
+    width: 70%;
+    height: 100px;
+    font-style: normal;
+    align-items: center;
+    padding: 0 15% 0 15%;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.01);
+    backdrop-filter: blur(120px);
+`
+
+const Logo_box = styled.div`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+`
+const Title = styled.span`
+    font-family: 'Roboto';
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 23px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    margin-left: 12px;
+`
+
+const Page_box = styled.div`
+    width: 422px;
+    display: flex;
+    justify-content: space-evenly;
+`

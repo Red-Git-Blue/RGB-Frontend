@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds.js"; 
+import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds"; 
 import styled from "styled-components";
 
-const LoginView = () => {
+const MemberLoginView = () => {
     const [login_data, set_login_data] = useState({
         id:'',
         password:''
@@ -52,7 +52,8 @@ const LoginView = () => {
                         <Input_view name={'닉네임 또는 이메일'} text='닉네임 또는 이메일을 입력해주세요.' />
                         <Input_view name={'비밀번호'} text='비밀번호를 입력해주세요.' />
                         <Button_box background='transparent' color="#ffffff" top='72px'>
-                            <Button_style>비밀번호를 잃어버리셨나요?</Button_style></Button_box>
+                            <Button_style>비밀번호를 잃어버리셨나요?</Button_style>
+                        </Button_box>
                         <Button_box>로그인</Button_box>
                     </Right_box>
                 </Flex_box>
@@ -62,7 +63,7 @@ const LoginView = () => {
     )
 }
 
-export default LoginView;
+export default MemberLoginView;
 
 const Button_style = styled.span`
     font-weight: 400;

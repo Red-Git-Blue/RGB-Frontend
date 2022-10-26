@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
 
@@ -45,8 +44,8 @@ export const Sub_title = styled.span`
 `
 
 export const Input_box = styled.input`
-    width: 382px;
-    height: 40px;
+    width: 380px;
+    height: 38px;
 
     background: transparent;
     border: 1px solid #FFFFFF;
@@ -61,7 +60,6 @@ export const Input_box = styled.input`
     color: #fff;
 
     text-align: left;
-    margin-bottom: 10px;
 `
 
 export const Button_box = styled.button`
@@ -81,6 +79,11 @@ export const Button_box = styled.button`
     line-height: 21px;
     
     cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     transition: 0.3s;
     &:hover {
         transform: scale(1.05);
@@ -109,32 +112,39 @@ export const Input_view = ({ name, text }) => {
 
 export const Auth_page = ({ string, name, move }) => {
     let navigate = useNavigate();
+
+    const Box = styled.div`
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+    `
+
+    const Title = styled.span`
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        color: #fff;
+        margin-right: 20px;
+    `
+
+    const Text = styled.span`
+        font-family: 'NanumGothic';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 21px;
+        color: #FFF500;
+        cursor: pointer;
+        display: block;
+    `
+
     return (
-        <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginTop: '20px'
-        }}>
-            <span style={{
-                fontFamily: 'NanumGothic',
-                fontStyle: 'normal',
-                fontWeight: '400',
-                fontSize: '14px',
-                lineHeight: '16px',
-                color: '#fff',
-                marginRight: '20px'
-            }}>{string}</span>
-            <span style={{
-                fontFamily: 'NanumGothic',
-                fontStyle: 'normal',
-                fontWeight: '600',
-                fontSize: '18px',
-                lineHeight: '21px',
-                color: '#FFF500',
-                cursor: 'pointer',
-                display: 'block',
-            }} onClick={() => navigate(move)}>{name} &gt;</span>
-        </div>
+        <Box>
+            <Title>{string}</Title>
+            <Text onClick={() => navigate(move)}>{name} &gt;</Text>
+        </Box>
     )
 }
 
@@ -148,19 +158,6 @@ export const Background_view = styled.div`
     left: 0;
     z-index: -1;
 `
-
-export const Ls_btn = ({ click, string, name, sub_name, move }) => {
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-        }}>
-            <Auth_page string={string} name={name} move={move} />
-            <Button_box onClick={() => click()}>{sub_name}</Button_box>
-        </div>
-    )
-}
 
 export const Left_box = ({title, text1, text2, text3, text4, link}) => {
     return (
@@ -187,7 +184,9 @@ const Set_box = styled.div`
     width: 444px;
 `
 
-const Text = styled.span`
+export const Text = styled.span`
+    font-family: 'NanumGothic';
+    font-style: normal;
     font-weight: ${(props) => props.weight || '700'};;
     font-size: ${(props) => props.size || '24px'};
     line-height: ${(props) => props.height || '28px'};
@@ -196,4 +195,12 @@ const Text = styled.span`
     text-transform: uppercase;
 
     color: #FFFFFF;
+`
+
+export const Image = styled.img.attrs(({
+    onError: (e) => console.log(e),
+}))`
+    width: ${(props) => props.width || '0px' };
+    height: ${(props) => props.height || '0px' };
+    background-size: cover;
 `

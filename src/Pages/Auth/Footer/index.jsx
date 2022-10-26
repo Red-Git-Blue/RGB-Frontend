@@ -1,6 +1,4 @@
-import React from "react";
-
-const FooterView = () => {
+const Footer = () => {
     return (
         <>
             <div style={{
@@ -40,4 +38,4 @@ const FooterView = () => {
     );
 }
 
-export default FooterView;
+export default Footer;
