@@ -50,24 +50,24 @@ const Page_button = styled.span`
 `
 
 const Header = () => {
-    let navigate = useNavigate();
-    return (
-        <>
-            <Out_box>
-                <Logo_box onClick={() => navigate('/')}>
-                    <Image src="Logo.png" width='34px' height='30px' alt='로고 이미지'/>
-                    <Title>RED GIT BLUE</Title>
-                </Logo_box>
-                <Page_box>
-                    <Page_button onClick={() => navigate('/coin')}>Coin</Page_button>
-                    <Page_button onClick={() => navigate('/search')}>Search</Page_button>
-                    <Page_button onClick={() => navigate('/shop')}>Shop</Page_button>
-                    <Page_button onClick={() => navigate('/login')}>Login</Page_button>
-                    <Page_button onClick={() => navigate('/signup')}>Sign Up</Page_button>
-                </Page_box>
-            </Out_box>
-        </>
-    );
+  let navigate = useNavigate();
+  return (
+    <>
+      <Out_box>
+        <Logo_box onClick={() => navigate('/')}>
+          <Image src="Logo.png" width='34px' height='30px' alt='로고 이미지' />
+          <Title>RED GIT BLUE</Title>
+        </Logo_box>
+        <Page_box>
+          <Page_button onClick={() => navigate('/coin')}>Coin</Page_button>
+          <Page_button onClick={() => navigate('/search')}>Search</Page_button>
+          <Page_button onClick={() => navigate('/shop')}>Shop</Page_button>
+          <Page_button onClick={() => navigate('/login')}>Login</Page_button>
+          <Page_button onClick={() => navigate('/signup')}>Sign Up</Page_button>
+        </Page_box>
+      </Out_box>
+    </>
+  );
 }
 
 export default Header;
