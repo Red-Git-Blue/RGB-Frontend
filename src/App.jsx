@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MemberLoginView from "./Pages/Login/ML";
 import LoginView from "./Pages/Login/index";
 import SignUpView from "./Pages/Signup";
 import ErrorPage from "./Pages/Auth/ErrorPage/index";
@@ -20,9 +19,7 @@ function App() {
               <Route path='/' element={<Main />}></Route>
             </Route>
             <Route element={<LS_Layout />}>
-              <Route path='/login' element={<LoginView />}>
-                <Route path=':member' element={<MemberLoginView />}></Route>
-              </Route>
+              <Route path='/login' element={<LoginView />}></Route>
               <Route path='/signup' element={<SignUpView />}></Route>
               <Route path='*' element={<ErrorPage />}></Route>
             </Route>

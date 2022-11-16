@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Blur_box, Text, Button_box, Image } from "../../styleds";
+import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds"; 
 import styled from "styled-components";
 
 const LoginView = () => {
     const [login_data, set_login_data] = useState({
-        id: '',
-        password: ''
+        id:'',
+        password:''
     });
-
+    
     let navigate = useNavigate();
 
     const Login = async function () {
@@ -36,32 +36,29 @@ const LoginView = () => {
 
     return (
         <>
-            <Center>
-                <Blur_box width='630px' height='638px'>
-                    <Flex_box>
-                        <Text weight='700' size='24px' height='28px' bottom='30px'>
-                            Log in
-                        </Text>
-                        <Text weight='400' size='18px' height='21px' bottom='50px'>
-                            로그인 할 방식을 선택해주세요.
-                        </Text>
-                        <Button_box>
-                            <Image src={'apple-logo.png'} width='20px' height='20px' />
-                            <Margin_box>Apple로 로그인</Margin_box>
+        <Background_view />
+        <Center>
+            <Blur_box>
+                <Flex_box>
+                    <Left_box
+                        title='log in'
+                        text1='회원이신가요?'
+                        text2='로그인 후 서비스를 이용해보세요.'
+                        text3='아직 회원이 아니신가요?'
+                        text4='회원가입'
+                        link='/signup'
+                    />
+                    <Right_box>
+                        <Input_view name={'닉네임 또는 이메일'} text='닉네임 또는 이메일을 입력해주세요.' />
+                        <Input_view name={'비밀번호'} text='비밀번호를 입력해주세요.' />
+                        <Button_box background='transparent' color="#ffffff" top='72px'>
+                            <Button_style>비밀번호를 잃어버리셨나요?</Button_style>
                         </Button_box>
-                        <Button_box>
-                            <Image src={'github-logo.png'} width='16px' height='16px' />
-                            <Margin_box>Github로 로그인</Margin_box>
-                        </Button_box>
-                        <Button_box background='transparent' color="#ffffff">
-                            게스트로 로그인
-                        </Button_box>
-                        <Button_box onClick={() => navigate('/login/member')}>
-                            회원 로그인
-                        </Button_box>
-                    </Flex_box>
-                </Blur_box>
-            </Center>
+                        <Button_box>로그인</Button_box>
+                    </Right_box>
+                </Flex_box>
+            </Blur_box>
+        </Center>
         </>
     )
 }
@@ -84,11 +81,6 @@ const Center = styled.div`
 
 const Flex_box = styled.div`
     display: flex;
-    flex-direction: column;
     position: absolute;
-    padding: 114px 100px;
-`
-
-const Margin_box = styled.div`
-    margin-left: 4px;
+    padding: 112px 100px;
 `
