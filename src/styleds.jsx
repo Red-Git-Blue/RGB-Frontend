@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
 
@@ -62,6 +63,40 @@ export const Input_box = styled.input`
     text-align: left;
 `
 
+const Input_password_out_box = styled.div`
+    width: 404px;
+    height: 38px;
+
+    background: transparent;
+    border: 1px solid #FFFFFF;
+    border-radius: 64px;
+    padding: 0 0 0 24px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+`
+
+const Input_password_box = styled.input`
+    width: 332px;
+    height: 38px;
+
+    background: transparent;
+    border: transparent;
+    outline: none;
+    
+    font-family: 'NanumGothic';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 17px;
+    color: #fff;
+
+    color: #fff;
+    text-align: left;
+`
+
 export const Button_box = styled.button`
     width: 430px;
     height: 50px;
@@ -101,50 +136,84 @@ export const Blur_box = styled.div`
     border-radius: 20px;
 `
 
-export const Input_view = ({ name, text }) => {
+const PsswordBox = styled.div`
+    width: 40px;
+    height: 40px;
+    background: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+export const Input_view = ({ type = 'text', name, text }) => {
+    const [bool, setbool] = useState(true);
+
     return (
         <Out_box>
             <Sub_title>{name}</Sub_title>
-            <Input_box type={'text'} placeholder={text} />
+            {
+                type == 'text' ?
+                    <Input_box type={'text'} placeholder={text} />
+                    :
+                    <Input_password_out_box>
+                        {
+                            bool ?
+                                <>
+                                    <Input_password_box type={type} placeholder={text} />
+                                    <PsswordBox onClick={(() => setbool(false))}>
+                                        <PasswordImage src='password_hidden.png' width='24px' height='24px' />
+                                    </PsswordBox>
+                                </>
+                                :
+                                <>
+                                    <Input_password_box type='text' placeholder={text} />
+                                    <PsswordBox onClick={(() => setbool(true))}>
+                                        <PasswordImage src='password_view.png' width='24px' height='24px' />
+                                    </PsswordBox>
+                                </>
+                        }
+                    </Input_password_out_box>
+            }
         </Out_box>
     )
 }
 
+const Auth_page_Box = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+`
+
+const Auth_page_Title = styled.span`
+    font-family: 'NanumGothic';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #fff;
+    margin-right: 20px;
+`
+
+const Auth_page_Text = styled.span`
+    font-family: 'NanumGothic';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    color: #FFF500;
+    cursor: pointer;
+    display: block;
+`
+
 export const Auth_page = ({ string, name, move }) => {
     let navigate = useNavigate();
 
-    const Box = styled.div`
-        display: flex;
-        align-items: center;
-        margin-top: 20px;
-    `
-
-    const Title = styled.span`
-        font-family: 'NanumGothic';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 16px;
-        color: #fff;
-        margin-right: 20px;
-    `
-
-    const Text = styled.span`
-        font-family: 'NanumGothic';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 21px;
-        color: #FFF500;
-        cursor: pointer;
-        display: block;
-    `
-
     return (
-        <Box>
-            <Title>{string}</Title>
-            <Text onClick={() => navigate(move)}>{name} &gt;</Text>
-        </Box>
+        <Auth_page_Box>
+            <Auth_page_Title>{string}</Auth_page_Title>
+            <Auth_page_Text onClick={() => navigate(move)}>{name} &gt;</Auth_page_Text>
+        </Auth_page_Box>
     )
 }
 
@@ -159,7 +228,7 @@ export const Background_view = styled.div`
     z-index: -1;
 `
 
-export const Left_box = ({title, text1, text2, text3, text4, link}) => {
+export const Left_box = ({ title, text1, text2, text3, text4, link }) => {
     return (
         <Set_box>
             <Text bottom='30px'>{title}</Text>
@@ -200,7 +269,17 @@ export const Text = styled.span`
 export const Image = styled.img.attrs(({
     onError: (e) => console.log(e),
 }))`
-    width: ${(props) => props.width || '0px' };
-    height: ${(props) => props.height || '0px' };
+    width: ${(props) => props.width || '0px'};
+    height: ${(props) => props.height || '0px'};
     background-size: cover;
+`
+
+const PasswordImage = styled.img.attrs(({
+    onError: (e) => console.log(e),
+}))`
+    width: ${(props) => props.width || '0px'};
+    height: ${(props) => props.height || '0px'};
+    background-size: cover;
+    border-radius: 60px;
+    background: #FFF;
 `

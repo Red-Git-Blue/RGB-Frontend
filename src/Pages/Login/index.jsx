@@ -1,37 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds"; 
 import styled from "styled-components";
+import { useCookies } from "react-cookie";
 
 const LoginView = () => {
     const [login_data, set_login_data] = useState({
-        id:'',
+        email:'',
         password:''
     });
     
+    const [cookies, setCookie, ] = useCookies(['refreshToken']);
+
     let navigate = useNavigate();
 
     const Login = async function () {
+        if(login_data.email == '' || login_data.password == '') return;
         try {
             let res = await axios({
                 method: 'post',
-                url: '',
-                headers: {
-                    Authorization: '',
+                url: 'http://local.lite24.net:8080/api/auth/sign-in',
+                data: {
+                    email : login_data.email,
+                    password : login_data.password
                 }
             });
             console.log('login sccess!');
+            navigate('/');
+
+            const expires = new Date();
+            expires.setHours(expires.getHours() + 1);
+
+            setCookie('refreshToken', res.data.refreshToken, {
+                path: '/',
+                expires,
+                httpOnly: true
+            });
         } catch (err) {
             console.log('login error...');
             console.log(err)
         }
     };
 
+    useEffect(() => {
+        if(cookies.refreshToken) {
+            console.log(cookies.refreshToken);
+            navigate('/');
+        }
+    }, [cookies])
+
     const log = () => {
         let login = document.querySelectorAll('input');
-        console.log(login[0].value);
-        console.log(login[1].value);
+        set_login_data({
+            email:login[0].value,
+            password:login[1].value
+        });
+        Login();
     }
 
     return (
@@ -49,12 +74,12 @@ const LoginView = () => {
                         link='/signup'
                     />
                     <Right_box>
-                        <Input_view name={'닉네임 또는 이메일'} text='닉네임 또는 이메일을 입력해주세요.' />
-                        <Input_view name={'비밀번호'} text='비밀번호를 입력해주세요.' />
+                        <Input_view name='닉네임 또는 이메일' text='닉네임 또는 이메일을 입력해주세요.' />
+                        <Input_view type='password' name='비밀번호' text='비밀번호를 입력해주세요.' />
                         <Button_box background='transparent' color="#ffffff" top='72px'>
                             <Button_style>비밀번호를 잃어버리셨나요?</Button_style>
                         </Button_box>
-                        <Button_box>로그인</Button_box>
+                        <Button_box onClick={() => log()}>로그인</Button_box>
                     </Right_box>
                 </Flex_box>
             </Blur_box>

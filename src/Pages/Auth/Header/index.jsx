@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import { Image } from "../../../styleds";
+import { useCookies } from "react-cookie";
 
 const Page_button = styled.span`
     font-family: 'Roboto';
@@ -11,12 +12,12 @@ const Page_button = styled.span`
     color: #fff;
     cursor: pointer;
     border-radius: 100px;
-    text-transform: uppercase;
     text-align: center;
     position: relative;
     text-decoration: none;
     display: inline-block;
     transition: 0.3s;
+    margin-left: 50px;
     &::before {
         content: '';
         position: absolute;
@@ -65,6 +66,14 @@ const Header = () => {
           <Page_button onClick={() => navigate('/shop')}>Shop</Page_button>
           <Page_button onClick={() => navigate('/login')}>Login</Page_button>
           <Page_button onClick={() => navigate('/signup')}>Sign Up</Page_button>
+          {cookies.refreshToken ?
+              <Page_button onClick={() => navigate('/mypage')}>My Page</Page_button>
+              :
+              <>
+                <Page_button onClick={() => navigate('/login')}>Log in</Page_button>
+                <Page_button onClick={() => navigate('/signup')}>Sign Up</Page_button>
+              </>
+          }
         </Page_box>
       </Out_box>
     </>
@@ -104,7 +113,7 @@ const Title = styled.span`
 `
 
 const Page_box = styled.div`
-    width: 502px;
+    width: auto;
     display: flex;
     justify-content: space-between;
 `

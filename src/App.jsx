@@ -55,25 +55,28 @@ const GlobalStyle = createGlobalStyle`
     font-family: "RobotoBold";
   }
 `;
+import { CookiesProvider } from 'react-cookie';
 
 function App() {
   return (
     <Fragment>
       <AnimatePresence>
-        <GlobalStyle />
+        <CookiesProvider>
+          <GlobalStyle />
         <BrowserRouter>
-          <Routes>
-            <Route element={<Main_Layout />}>
-              <Route path='/' element={<Landing />}></Route>
+            <Routes>
+              <Route element={<Main_Layout />}>
+                <Route path='/' element={<Landing />}></Route>
               <Route path='/main' element={<Main />}></Route>
-            </Route>
-            <Route element={<LS_Layout />}>
-              <Route path='/login' element={<LoginView />}></Route>
-              <Route path='/signup' element={<SignUpView />}></Route>
-              <Route path='*' element={<ErrorPage />}></Route>
-            </Route>
-          </Routes>
-        </BrowserRouter>
+              </Route>
+              <Route element={<LS_Layout />}>
+                <Route path='/login' element={<LoginView />}></Route>
+                <Route path='/signup' element={<SignUpView />}></Route>
+                <Route path='*' element={<ErrorPage />}></Route>
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CookiesProvider>
       </AnimatePresence>
     </Fragment>
   );
