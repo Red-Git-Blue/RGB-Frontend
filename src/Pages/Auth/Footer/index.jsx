@@ -46,7 +46,7 @@ const RGB = styled.p`
   height:47px;
 `;
 const Info = styled.p`
-  font-family: 'NanumGothic';
+  font-family: 'NanumRegular';
   font-weight: 400;
   font-size: 16px;
   height:26px;

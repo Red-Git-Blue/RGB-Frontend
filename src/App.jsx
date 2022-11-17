@@ -15,9 +15,46 @@ const GlobalStyle = createGlobalStyle`
   *{
     margin:0;
     padding:0;
+    user-select: none;
+    font-family: "RobotoBlack",sans-serif;
+  }
+  @font-face{
+    src: url('../public/nanum-gothic/NanumGothic.otf') format("opentype");
+    font-family: "NanumRegular";
+  }
+  @font-face{
+    src: url("../public/nanum-gothic/NanumGothicBold.otf");
+    font-family: "NanumBold";
+  }
+  @font-face{
+    src: url("../public/nanum-gothic/NanumGothicExtraBold.otf");
+    font-family: "NanumExtra";
+  }
+  @font-face {
+    src: url("../public/roboto/Roboto-Black.ttf");
+    font-family: "RobotoBlack";
+  }
+  @font-face {
+    src: url("../public/roboto/Roboto-Thin.ttf");
+    font-family: "RobotoThin";
+  }
+  @font-face {
+    src: url("../public/roboto/Roboto-Light.ttf");
+    font-family: "RobotoLight";
+  }
+  @font-face {
+    src: url("../public/roboto/Roboto-Regular.ttf");
+    font-family: "RobotoRegular";
+  }
+  @font-face {
+    src: url("../public/roboto/Roboto-Medium.ttf");
+    font-family: "RobotoMedium";
+  }
+  @font-face {
+    src: url("../public/roboto/Roboto-Bold.ttf");
+    font-family: "RobotoBold";
   }
 `;
-
 
 function App() {
   return (

@@ -54,7 +54,7 @@ const Header = () => {
   return (
     <>
       <Out_box>
-        <Logo_box onClick={() => navigate('/')}>
+        <Logo_box onClick={() => navigate('/main')}>
           <Image src="Logo.png" width='34px' height='30px' alt='로고 이미지' />
           <Title>RED GIT BLUE</Title>
         </Logo_box>
@@ -83,6 +83,8 @@ const Out_box = styled.div`
     justify-content: space-between;
     background: rgba(0, 0, 0, 0.01);
     backdrop-filter: blur(120px);
+    position:sticky;
+    top:0;
 `
 
 const Logo_box = styled.div`
