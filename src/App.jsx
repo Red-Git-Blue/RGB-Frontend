@@ -7,12 +7,21 @@ import Main from "./Pages/Main/index";
 import LS_Layout from './Pages/Auth/Layout/LS_Layout';
 import Main_Layout from './Pages/Auth/Layout/Main_Layout';
 import { AnimatePresence } from "framer-motion";
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  *{
+    margin:0;
+    padding:0;
+  }
+`;
 
 
 function App() {
   return (
     <div>
       <AnimatePresence>
+        <GlobalStyle />
         <BrowserRouter>
           <Routes>
             <Route element={<Main_Layout />}>
