@@ -60,9 +60,9 @@ const SignUpView = () => {
                             link='/login'
                         />
                         <Right_box>
-                            <Input_view name={'닉네임'} text='3~20자로 닉네임을 입력해주세요.' />
-                            <Input_view name={'이메일'} text='이메일을 입력해주세요.' />
-                            <Input_view name={'비밀번호'} text='숫자,대소문자,특수문자 포함 4~30자' />
+                            <Input_view name='닉네임' text='3~20자로 닉네임을 입력해주세요.' />
+                            <Input_view name='이메일' text='이메일을 입력해주세요.' />
+                            <Input_view type='password' name='비밀번호' text='숫자,대소문자,특수문자 포함 4~30자' />
                             <Button_box top='31px'>회원가입</Button_box>
                         </Right_box>
                     </Flex_box>

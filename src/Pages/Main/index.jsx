@@ -13,7 +13,7 @@ const Main = () => {
         try {
             let res = await axios({
                 method: 'GET',
-                url: 'http://cors-anywhere.herokuapp.com/http://local.lite24.net:8090/api/rgb/contribution/eternrust/2022',
+                url: 'http://local.lite24.net:8090/api/rgb/contribution/eternrust/2022',
                 credentials: 'include',
                 hearders: {
                 }
