@@ -59,6 +59,7 @@ const Header = () => {
           <Title>RED GIT BLUE</Title>
         </Logo_box>
         <Page_box>
+          <Page_button onClick={() => navigate('/main')}>Main</Page_button>
           <Page_button onClick={() => navigate('/coin')}>Coin</Page_button>
           <Page_button onClick={() => navigate('/search')}>Search</Page_button>
           <Page_button onClick={() => navigate('/shop')}>Shop</Page_button>
@@ -101,7 +102,7 @@ const Title = styled.span`
 `
 
 const Page_box = styled.div`
-    width: 422px;
+    width: 502px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
 `
