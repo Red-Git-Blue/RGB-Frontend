@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import { Image } from "../../../styleds";
-import { useCookies } from "react-cookie";
+import { Cookies } from "react-cookie";
+
+const cookies = new Cookies();
 
 const Page_button = styled.span`
     font-family: 'Roboto';
@@ -64,8 +66,6 @@ const Header = () => {
           <Page_button onClick={() => navigate('/coin')}>Coin</Page_button>
           <Page_button onClick={() => navigate('/search')}>Search</Page_button>
           <Page_button onClick={() => navigate('/shop')}>Shop</Page_button>
-          <Page_button onClick={() => navigate('/login')}>Login</Page_button>
-          <Page_button onClick={() => navigate('/signup')}>Sign Up</Page_button>
           {cookies.refreshToken ?
               <Page_button onClick={() => navigate('/mypage')}>My Page</Page_button>
               :

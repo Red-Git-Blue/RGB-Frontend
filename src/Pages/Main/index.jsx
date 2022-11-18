@@ -31,6 +31,10 @@ const Main = () => {
         // gitCommitSort();
         gitCommit();
     });
+
+    const haveCoin = [
+        {coinImg:null, name:"HYUNSUK", money:"+12,000 (+4.2%)"},
+    ];
     return (
         <Body>
             <TitleDiv>
@@ -47,7 +51,16 @@ const Main = () => {
                 <Line></Line>
             </SectionDiv>
             <SectionDiv BColor="#111111">
-
+                {haveCoin.map((coin)=>(
+                    <div>
+                        <div>
+                            <img src={coin.coinImg} alt="asdf"/>
+                            <p>{coin.name}</p>
+                            <p>{coin.money}</p>
+                        </div>
+                        <div></div>
+                    </div>
+                ))}
             </SectionDiv>
         </Body>
     )
