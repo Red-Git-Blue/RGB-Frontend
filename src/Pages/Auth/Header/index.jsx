@@ -1,9 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import { Image } from "../../../styleds";
-import { Cookies } from "react-cookie";
-
-const cookies = new Cookies();
+import { useCookies } from "react-cookie";
 
 const Page_button = styled.span`
     font-family: 'Roboto';
@@ -54,6 +52,7 @@ const Page_button = styled.span`
 
 const Header = () => {
   let navigate = useNavigate();
+  const [cookies,,] = useCookies(['refreshToken']);
   return (
     <>
       <Out_box>

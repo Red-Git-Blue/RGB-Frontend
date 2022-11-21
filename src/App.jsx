@@ -3,13 +3,14 @@ import LoginView from "./Pages/Login/index";
 import SignUpView from "./Pages/Signup";
 import ErrorPage from "./Pages/Auth/ErrorPage/index";
 import Header from "./Pages/Auth/Header/index";
-import Landing from "./Pages/Landing/index";
+import Landing from "./Pages/Auth/Landing/index";
 import Main from "./Pages/Main/index";
 import LS_Layout from './Pages/Auth/Layout/LS_Layout';
 import Main_Layout from './Pages/Auth/Layout/Main_Layout';
 import { AnimatePresence } from "framer-motion";
 import { createGlobalStyle } from "styled-components";
 import { Fragment } from 'react';
+import { CookiesProvider } from 'react-cookie';
 
 const GlobalStyle = createGlobalStyle`
   *{
@@ -55,7 +56,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: "RobotoBold";
   }
 `;
-import { CookiesProvider } from 'react-cookie';
 
 function App() {
   return (
@@ -63,11 +63,11 @@ function App() {
       <AnimatePresence>
         <CookiesProvider>
           <GlobalStyle />
-        <BrowserRouter>
+          <BrowserRouter>
             <Routes>
               <Route element={<Main_Layout />}>
                 <Route path='/' element={<Landing />}></Route>
-              <Route path='/main' element={<Main />}></Route>
+                <Route path='/main' element={<Main />}></Route>
               </Route>
               <Route element={<LS_Layout />}>
                 <Route path='/login' element={<LoginView />}></Route>

@@ -27,7 +27,7 @@ const SignUpView = () => {
                 }
             });
             console.log('signup sccess!');
-            navigate('/');
+            navigate('/main');
         } catch (err) {
             console.log('signup error...');
             console.log(err)
