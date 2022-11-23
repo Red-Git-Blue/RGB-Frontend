@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { Image } from "../../styleds";
 
 const gitCommitSort = () => {
 
@@ -38,7 +39,7 @@ const Main = () => {
     return (
         <Body>
             <TitleDiv>
-                <Title Colors="#FE0D7A, #FFF500">COIN</Title>
+                <Title Colors="#FFF500, #FE0D7A">COIN</Title>
                 <SubTitle>내 코인을 관리해보세요</SubTitle>
             </TitleDiv>
             <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)">
@@ -62,11 +63,30 @@ const Main = () => {
                     </div>
                 ))}
             </SectionDiv>
+            <TitleDiv>
+                <Title Colors="#FFF500, #35B2BA">SHOP</Title>
+                <SubTitle>획득할 수 있는 배지를 살펴보세요</SubTitle>
+            </TitleDiv>
+            <Shop_view_box>
+              <Pageing />
+              <Shop_view_detail />
+              <Shop_view_detail />
+              <Shop_view_detail />
+              <Shop_view_detail />
+              <Shop_view_detail />
+              <Shop_view_detail />
+              <Pageing type='right'/>
+            </Shop_view_box>
+            <TitleDiv>
+                <Title Colors="#35B2BA, #4E55D2">GITHUB</Title>
+                <SubTitle>커밋 현황을 살펴보세요</SubTitle>
+            </TitleDiv>
         </Body>
     )
 }
 
 export default Main;
+
 const Body = styled.div`
   display: flex;
   flex-direction: column;
@@ -83,7 +103,7 @@ const TitleDiv = styled.div`
   align-items: start;
 `;
 const Title = styled.h3`
-  background: linear-gradient(to right top, ${props => props.Colors || "0,0"});
+  background: linear-gradient(to right top, ${(props) => props.Colors || "0,0"});
   color: transparent;
   -webkit-background-clip: text;
   font-family: "Roboto", sans-serif;
@@ -136,3 +156,126 @@ const Line = styled.div`
   height: 4px;
   width: 840px;
 `;
+
+const Shop_view_box = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Shop_view_detail_box = styled.div`
+  width: 260px;
+  height: 413px;
+  display: flex;
+  flex-direction: column;
+
+  span {
+    font-family: 'NanumGothic';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 18px;
+    color: #ffffff;
+
+    &:nth-child(2) {
+      margin-top: 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &:nth-child(3) {
+      margin-top: 10px;
+      font-weight: 400;
+      line-height: 160%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    &:nth-child(4) {
+      margin-top: 20px;
+      font-size: 20px;
+      line-height: 23px;
+    }
+  }
+`
+
+const Pageing_box = styled.div`
+  width: 300px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(270deg, ${(props) => props.color || '0,0'});
+  position: absolute;
+  right: ${(props) => props.right };
+`
+
+const Page_left_btn = styled.span`
+    height: 15px;
+    width: 80px;
+    display: block;
+    background-color: #ffffff;
+    transform: translateY(5px) rotate(-45deg);
+    border-radius: 10px;
+    cursor: pointer;
+    &::after {
+        content: '';
+        height: 15px;
+        width: 80px;
+        display: block;
+        background-color: #ffffff;
+        border-radius: 10px;
+        transform: translate(-33px, 33px) rotate(90deg);
+    }
+`
+
+const Page_right_btn = styled.span`
+    height: 15px;
+    width: 80px;
+    display: block;
+    background-color: #ffffff;
+    transform: translateY(50px) rotate(135deg);
+    border-radius: 10px;
+    cursor: pointer;
+    &::after {
+        content: '';
+        height: 15px;
+        width: 80px;
+        display: block;
+        background-color: #ffffff;
+        border-radius: 10px;
+        transform: translate(-33px, 33px) rotate(-90deg);
+    }
+`
+
+const Shop_view_detail = ({data}) => {
+  return (
+    <Shop_view_detail_box>
+      <Image width='260px' height='260px' alt='뱃지 이미지' />
+      <span>고급스러운 무의 배지</span>
+      <span>고급스러운 색감과 무의 예술적인 감각을 살린 배지</span>
+      <span>12,000원</span>
+    </Shop_view_detail_box>
+  )
+}
+
+
+const Pageing = ({type = 'left'}) => {
+  return (
+    <Pageing_box
+      color={type == 'right' ? '#111111, rgba(17, 17, 17, 0)' : 'rgba(17, 17, 17, 0), #111111'}
+      right={type == 'right' ? 0 : 'auto'}
+    >
+      {
+        type == 'right' ? 
+        <Page_right_btn />
+        :
+        <Page_left_btn />
+      }
+    </Pageing_box>
+  )
+}

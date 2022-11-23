@@ -272,6 +272,7 @@ export const Image = styled.img.attrs(({
     width: ${(props) => props.width || '0px'};
     height: ${(props) => props.height || '0px'};
     background-size: cover;
+    border-radius: ${(props) => props.radius || '0px'};
 `
 
 const PasswordImage = styled.img.attrs(({
