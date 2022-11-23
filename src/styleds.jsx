@@ -86,14 +86,12 @@ const Input_password_box = styled.input`
     border: transparent;
     outline: none;
     
-    font-family: 'NanumGothic';
+    font-family: 'NanumGothic', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 15px;
     line-height: 17px;
-    color: #fff;
-
-    color: #fff;
+    color: #ffffff;
     text-align: left;
 `
 
@@ -107,7 +105,7 @@ export const Button_box = styled.button`
     color: ${(props) => props.color || '#000000'};
     margin-top: ${(props) => props.top || '20px'};;
 
-    font-family: 'NanumGothic';
+    font-family: 'NanumGothic', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 18px;
@@ -186,7 +184,7 @@ const Auth_page_Box = styled.div`
 `
 
 const Auth_page_Title = styled.span`
-    font-family: 'NanumGothic';
+    font-family: 'NanumGothic', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -196,7 +194,7 @@ const Auth_page_Title = styled.span`
 `
 
 const Auth_page_Text = styled.span`
-    font-family: 'NanumGothic';
+    font-family: 'NanumGothic', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
@@ -246,7 +244,7 @@ export const Right_box = styled.div`
 `
 
 const Set_box = styled.div`
-    font-family: 'NanumGothic';
+    font-family: 'NanumGothic', sans-serif;
     font-style: normal;
     display: flex;
     flex-direction: column;
@@ -254,7 +252,7 @@ const Set_box = styled.div`
 `
 
 export const Text = styled.span`
-    font-family: 'NanumGothic';
+    font-family: 'NanumGothic', sans-serif;
     font-style: normal;
     font-weight: ${(props) => props.weight || '700'};;
     font-size: ${(props) => props.size || '24px'};

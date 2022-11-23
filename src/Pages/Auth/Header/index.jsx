@@ -4,7 +4,7 @@ import { Image } from "../../../styleds";
 import { useCookies } from "react-cookie";
 
 const Page_button = styled.span`
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -101,7 +101,7 @@ const Logo_box = styled.div`
     cursor: pointer;
 `
 const Title = styled.span`
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     font-weight: 900;
     font-size: 20px;
     line-height: 23px;

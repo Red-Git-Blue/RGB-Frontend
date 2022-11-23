@@ -1,13 +1,16 @@
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Image } from "../../styleds";
+import {Image} from "../../styleds";
+import {Link} from "react-router-dom";
+import {useMediaQuery} from "react-responsive";
 
 const gitCommitSort = () => {
 
 }
 
 const Main = () => {
+    const isMobile = useMediaQuery({query: '(max-width:768px)'});
     const [commit, setCommit] = useState('');
     const gitCommit = async function () {
         try {
@@ -34,82 +37,127 @@ const Main = () => {
     });
 
     const haveCoin = [
-        {coinImg: null, name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10"},
+        {coinImg: 'Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10"},
     ];
+    let display = !isMobile ? 'flex' : 'block';
+    let width = isMobile ? "100%" : null;
     return (
-        <Body>
-            <TitleDiv>
-                <Title Colors="#FFF500, #FE0D7A">COIN</Title>
-                <SubTitle>내 코인을 관리해보세요</SubTitle>
-            </TitleDiv>
-            <FlexDiv Justify="space-between">
-                <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)">
-                    <FlexDiv>
-                        <Profile src="Profile.jpg"></Profile>
-                        <SubThings Weight="900">HYUNSUK</SubThings>
-                    </FlexDiv>
-                    <Money>152,894원</Money>
-                    <FlexDiv Justify="space-between">
-                        <SubThings Colors="red">+12,000원 (+4.2%)</SubThings>
-                        <SubThings Colors="#999999">10코인 보유중</SubThings>
-                    </FlexDiv>
-                    <Graph>
-                        <TestChart></TestChart>
-                    </Graph>
-                    <Line></Line>
-                </SectionDiv>
-                <SectionDiv BColor="#111111" Width="24%">
-                    {haveCoin.map((coin) => (
-                        <div>
-                            <div>
-                                <img src={coin.coinImg} alt="asdf"/>
-                                <p>{coin.name}</p>
-                                <p>{coin.money}</p>
-                            </div>
-                            <div></div>
-                        </div>
-                    ))}
-                </SectionDiv>
-            </FlexDiv>
-            <TitleDiv>
-                <Title Colors="#FFF500, #35B2BA">SHOP</Title>
-                <SubTitle>획득할 수 있는 배지를 살펴보세요</SubTitle>
-            </TitleDiv>
+        <>
+            <Body>
+                <TitleDiv>
+                    <Title Colors="#FFF500, #FE0D7A">COIN</Title>
+                    <SubTitle>내 코인을 관리해보세요</SubTitle>
+                </TitleDiv>
+                <FlexDiv Justify="space-between" Display={display}>
+                    <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)" Width={width} Margin="0 10px 120px 0">
+                        <FlexDiv Margin="20px">
+                            <Profile src="Profile.jpg"></Profile>
+                            <SubThings Weight="900">HYUNSUK</SubThings>
+                        </FlexDiv>
+                        <Money>152,894원</Money>
+                        <FlexDiv Justify="space-between" Margin="40px">
+                            <SubThings Colors="red">+12,000원 (+4.2%)</SubThings>
+                            <SubThings Colors="#999999">10코인 보유중</SubThings>
+                        </FlexDiv>
+                        <Graph>
+                            <TestChart src="TestChart.png"></TestChart>
+                        </Graph>
+                        <Line></Line>
+                    </SectionDiv>
+                    <SectionDiv BColor="#111111" Width={width || "26%"} Padding="20px 10px 20px 10px" Align="center"
+                                Height="460px">
+                        <SubThings Colors="#999999" Weight="900" Size="18px" Margin="20px">보유 코인</SubThings>
+                        <ScrollDiv>
+                            {haveCoin.map((coin) =>
+                                <Fragment>
+                                    <PrintCoin Info={coin}/>
+                                    <PrintCoin Info={coin}/>
+                                    <PrintCoin Info={coin}/>
+                                    <PrintCoin Info={coin}/>
+                                    <PrintCoin Info={coin}/>
+                                </Fragment>
+                            )}
+                        </ScrollDiv>
+                    </SectionDiv>
+                </FlexDiv>
+                <TitleDiv>
+                    <Title Colors="#FFF500, #35B2BA">SHOP</Title>
+                    <SubTitle>획득할 수 있는 배지를 살펴보세요</SubTitle>
+                </TitleDiv>
+            </Body>
             <Shop_view_box>
-                <Pageing />
-                <Shop_view_detail />
-                <Shop_view_detail />
-                <Shop_view_detail />
-                <Shop_view_detail />
-                <Shop_view_detail />
-                <Shop_view_detail />
+                <Pageing/>
+                <Shop_view_detail/>
+                <Shop_view_detail/>
+                <Shop_view_detail/>
+                <Shop_view_detail/>
+                <Shop_view_detail/>
+                <Shop_view_detail/>
                 <Pageing type='right'/>
             </Shop_view_box>
-            <TitleDiv>
-                <Title Colors="#35B2BA, #4E55D2">GITHUB</Title>
-                <SubTitle>커밋 현황을 살펴보세요</SubTitle>
-            </TitleDiv>
-        </Body>
+            <Body>
+                <TitleDiv>
+                    <Title Colors="#35B2BA, #4E55D2">GITHUB</Title>
+                    <SubTitle>커밋 현황을 살펴보세요</SubTitle>
+                </TitleDiv>
+            </Body>
+        </>
     )
 }
 
 export default Main;
-const TestChart = styled.div`
+
+const PrintCoin = ({Info}) => {
+    return (
+        <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0">
+            <FlexDiv Justify="space-between">
+                <FlexDiv Width="auto">
+                    <Profile src={Info.coinImg}/>
+                    <SubThings Size="12px" Weight="900">{Info.name}</SubThings>
+                </FlexDiv>
+                <SubThings Size="12px" Colors="red">{Info.money}</SubThings>
+            </FlexDiv>
+            <Line></Line>
+        </SectionDiv>
+    );
+}
+
+const ScrollDiv = styled.div`
+  height: 100%;
   width: 100%;
-  background-image: linear-gradient(90deg, rgba(0,0,0,1), rgba(0,0,0,0)), url("/TestChart.png");
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: 30px;
+    border-radius: 100px;
+    background: #222222;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: black;
+    border-radius: 100px;
+  }
+`;
+const TestChart = styled.img`
+  width: 100%;
 `;
 const FlexDiv = styled.div`
-  display: flex;
+  display: ${props => props.Display || "flex"};
   align-items: center;
-  justify-content: ${props => props.Justify||"start"};
-  width: 100%;
+  justify-content: ${props => props.Justify || "start"};
+  width: ${props => props.Width || "100%"};
+  margin-bottom: ${props => props.Margin || "0"};
 `;
 const Body = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  padding: 0 15.625% 0 15.625%;
+  padding: 0 15% 0 15%;
 `;
 const TitleDiv = styled.div`
   width: 100%;
@@ -136,16 +184,17 @@ const SubTitle = styled.h4`
 `;
 const SectionDiv = styled.section`
   color: white;
-  width: ${props => props.Width||"64%"};
-  height: 470px;
-  padding: 30px 30px 0 30px;
+  width: ${props => props.Width || "64%"};
+  height: ${props => props.Height || "470px"};
+  padding: ${props => props.Padding || "30px 30px 0 30px"};
   background: ${props => props.BColor || "#000000"};
   box-shadow: ${props => props.Shadow || "none"};
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: start;
+  align-items: ${props => props.Align || "start"};
+  margin: ${props => props.Margin || "0 0 120px 0"};
 `;
 const Profile = styled.img`
   margin-right: 10px;
@@ -162,8 +211,9 @@ const Money = styled.p`
 const SubThings = styled.p`
   font-family: "Roboto", sans-serif;
   font-weight: ${props => props.Weight || "400"};
-  font-size: 16px;
+  font-size: ${props => props.Size || "16px"};
   color: ${props => props.Colors || "white"};
+  margin-bottom: ${props => props.Margin || "0"};
 `;
 const Graph = styled.div`
   background: none;
@@ -171,6 +221,7 @@ const Graph = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  margin-bottom: 47px;
 `;
 const Line = styled.div`
   background: linear-gradient(90deg, #FEDA0D 0%, #FE3365 100%);
@@ -194,7 +245,7 @@ const Shop_view_detail_box = styled.div`
   flex-direction: column;
 
   span {
-    font-family: 'NanumGothic';
+    font-family: 'NanumGothic', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -207,6 +258,7 @@ const Shop_view_detail_box = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     &:nth-child(3) {
       margin-top: 10px;
       font-weight: 400;
@@ -217,6 +269,7 @@ const Shop_view_detail_box = styled.div`
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
+
     &:nth-child(4) {
       margin-top: 20px;
       font-size: 20px;
@@ -233,71 +286,72 @@ const Pageing_box = styled.div`
   align-items: center;
   background: linear-gradient(270deg, ${(props) => props.color || '0,0'});
   position: absolute;
-  right: ${(props) => props.right };
+  right: ${(props) => props.right};
 `
 
 const Page_left_btn = styled.span`
+  height: 15px;
+  width: 80px;
+  display: block;
+  background-color: #ffffff;
+  transform: translateY(5px) rotate(-45deg);
+  border-radius: 10px;
+  cursor: pointer;
+
+  &::after {
+    content: '';
     height: 15px;
     width: 80px;
     display: block;
     background-color: #ffffff;
-    transform: translateY(5px) rotate(-45deg);
     border-radius: 10px;
-    cursor: pointer;
-    &::after {
-        content: '';
-        height: 15px;
-        width: 80px;
-        display: block;
-        background-color: #ffffff;
-        border-radius: 10px;
-        transform: translate(-33px, 33px) rotate(90deg);
-    }
+    transform: translate(-33px, 33px) rotate(90deg);
+  }
 `
 
 const Page_right_btn = styled.span`
+  height: 15px;
+  width: 80px;
+  display: block;
+  background-color: #ffffff;
+  transform: translateY(50px) rotate(135deg);
+  border-radius: 10px;
+  cursor: pointer;
+
+  &::after {
+    content: '';
     height: 15px;
     width: 80px;
     display: block;
     background-color: #ffffff;
-    transform: translateY(50px) rotate(135deg);
     border-radius: 10px;
-    cursor: pointer;
-    &::after {
-        content: '';
-        height: 15px;
-        width: 80px;
-        display: block;
-        background-color: #ffffff;
-        border-radius: 10px;
-        transform: translate(-33px, 33px) rotate(-90deg);
-    }
+    transform: translate(-33px, 33px) rotate(-90deg);
+  }
 `
 
 const Shop_view_detail = ({data}) => {
-  return (
-    <Shop_view_detail_box>
-      <Image width='260px' height='260px' alt='뱃지 이미지' />
-      <span>고급스러운 무의 배지</span>
-      <span>고급스러운 색감과 무의 예술적인 감각을 살린 배지</span>
-      <span>12,000원</span>
-    </Shop_view_detail_box>
-  )
+    return (
+        <Shop_view_detail_box>
+            <Image width='260px' height='260px' alt='뱃지 이미지'/>
+            <span>고급스러운 무의 배지</span>
+            <span>고급스러운 색감과 무의 예술적인 감각을 살린 배지</span>
+            <span>12,000원</span>
+        </Shop_view_detail_box>
+    )
 }
 
-
 const Pageing = ({type = 'left'}) => {
-  return (
-    <Pageing_box
-      color={type == 'right' ? '#111111, rgba(17, 17, 17, 0)' : 'rgba(17, 17, 17, 0), #111111'}
-      right={type == 'right' ? 0 : 'auto'}
-    >
-      {
-        type == 'right' ?
-        <Page_right_btn />
-        :
-        <Page_left_btn />
-      }
-    </Pageing_box>
-  )
+    return (
+        <Pageing_box
+            color={type == 'right' ? '#111111, rgba(17, 17, 17, 0)' : 'rgba(17, 17, 17, 0), #111111'}
+            right={type == 'right' ? 0 : 'auto'}
+        >
+            {
+                type == 'right' ?
+                    <Page_right_btn/>
+                    :
+                    <Page_left_btn/>
+            }
+        </Pageing_box>
+    )
 }
