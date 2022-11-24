@@ -4,6 +4,7 @@ import axios from "axios";
 import {Image} from "../../styleds";
 import {useMediaQuery} from "react-responsive";
 import AnimationPage from "../AnimatedPage";
+import Github_view from "../Auth/Contribution";
 
 const gitCommitSort = () => {
 
@@ -11,19 +12,23 @@ const gitCommitSort = () => {
 
 const Main = () => {
     const isMobile = useMediaQuery({query: '(max-width:768px)'});
-    const [commit, setCommit] = useState('');
+    const [commit, setCommit] = useState(undefined);
     const gitCommit = async function () {
         try {
             let res = await axios({
                 method: 'GET',
-                url: 'http://local.lite24.net:8090/api/rgb/contribution/eternrust/2022',
+                url: 'http://local.lite24.net:8080/api/user/contribution',
                 credentials: 'include',
                 hearders: {
                     "Content-Type": "application/json",
+                },
+                params: {
+                  name: 'eternrust',
+                  year: 2022
                 }
             });
             console.log('commit sccess!');
-            // setCommit(res.data.contributions[0]);
+            setCommit(res.data.contributions);
             // console.log(res.data);
         } catch (err) {
             console.log('commit error...');
@@ -100,7 +105,8 @@ const Main = () => {
                     <Title Colors="#35B2BA, #4E55D2">GITHUB</Title>
                     <SubTitle>커밋 현황을 살펴보세요</SubTitle>
                 </TitleDiv>
-            </Body>
+                <Github_view margin='0 0 200px 0' data={commit}/>
+        </Body>
         </AnimationPage>
     )
 }
@@ -243,6 +249,7 @@ const Shop_view_detail_box = styled.div`
   height: 413px;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 
   span {
     font-family: 'NanumGothic', sans-serif;
@@ -290,43 +297,40 @@ const Pageing_box = styled.div`
 `
 
 const Page_left_btn = styled.span`
-  height: 15px;
-  width: 80px;
-  display: block;
-  background-color: #ffffff;
-  transform: translateY(5px) rotate(-45deg);
-  border-radius: 10px;
-  cursor: pointer;
-
-  &::after {
-    content: '';
-    height: 15px;
-    width: 80px;
+    height: 10px;
+    width: 50px;
     display: block;
     background-color: #ffffff;
     border-radius: 10px;
-    transform: translate(-33px, 33px) rotate(90deg);
-  }
+    cursor: pointer;
+    &::after {
+        content: '';
+        height: 10px;
+        width: 50px;
+        display: block;
+        background-color: #ffffff;
+        border-radius: 10px;
+        transform: translate(-21px, 21px) rotate(90deg);
+    }
 `
 
 const Page_right_btn = styled.span`
-  height: 15px;
-  width: 80px;
-  display: block;
-  background-color: #ffffff;
-  transform: translateY(50px) rotate(135deg);
-  border-radius: 10px;
-  cursor: pointer;
-
-  &::after {
-    content: '';
-    height: 15px;
-    width: 80px;
+    height: 10px;
+    width: 50px;
     display: block;
     background-color: #ffffff;
+    transform: translateY(35px) rotate(135deg);
     border-radius: 10px;
-    transform: translate(-33px, 33px) rotate(-90deg);
-  }
+    cursor: pointer;
+    &::after {
+        content: '';
+        height: 10px;
+        width: 50px;
+        display: block;
+        background-color: #ffffff;
+        border-radius: 10px;
+        transform: translate(-21px, 21px) rotate(-90deg);
+    }
 `
 
 const Shop_view_detail = ({data}) => {
