@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import { Image } from "../../../styleds";
 import { useCookies } from "react-cookie";

@@ -4,7 +4,7 @@ import axios from "axios";
 import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds";
 import Alert from "../Alert.js";
 import styled from "styled-components";
-
+import AnimatedPage from "../AnimatedPage";
 
 const SignUpView = () => {
     const [signup_data, set_signup_data] = useState({
@@ -45,7 +45,7 @@ const SignUpView = () => {
     }
 
     return (
-        <>
+        <AnimatedPage>
             {/* Alert 테스트 코드 */}
             {/* <Alert string={'확인했습니까?'}/> */}
             <Center>
@@ -68,7 +68,7 @@ const SignUpView = () => {
                     </Flex_box>
                 </Blur_box>
             </Center>
-        </>
+        </AnimatedPage>
     )
 }
 

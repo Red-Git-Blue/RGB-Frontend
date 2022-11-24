@@ -4,6 +4,7 @@ import axios from "axios";
 import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
+import AnimatedPage from "../AnimatedPage";
 
 const LoginView = () => {
     const [login_data, set_login_data] = useState({
@@ -48,8 +49,7 @@ const LoginView = () => {
     }
 
     return (
-        <>
-            <Background_view />
+        <AnimatedPage>
             <Center>
                 <Blur_box>
                     <Flex_box>
@@ -72,7 +72,7 @@ const LoginView = () => {
                     </Flex_box>
                 </Blur_box>
             </Center>
-        </>
+        </AnimatedPage>
     )
 }
 

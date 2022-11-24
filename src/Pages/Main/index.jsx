@@ -2,8 +2,8 @@ import {Fragment, useEffect, useState} from "react";
 import styled from "styled-components";
 import axios from "axios";
 import {Image} from "../../styleds";
-import {Link} from "react-router-dom";
 import {useMediaQuery} from "react-responsive";
+import AnimationPage from "../AnimatedPage";
 
 const gitCommitSort = () => {
 
@@ -42,7 +42,7 @@ const Main = () => {
     let display = !isMobile ? 'flex' : 'block';
     let width = isMobile ? "100%" : null;
     return (
-        <>
+        <AnimationPage>
             <Body>
                 <TitleDiv>
                     <Title Colors="#FFF500, #FE0D7A">COIN</Title>
@@ -101,7 +101,7 @@ const Main = () => {
                     <SubTitle>커밋 현황을 살펴보세요</SubTitle>
                 </TitleDiv>
             </Body>
-        </>
+        </AnimationPage>
     )
 }
 
