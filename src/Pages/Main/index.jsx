@@ -23,8 +23,8 @@ const Main = () => {
                     "Content-Type": "application/json",
                 },
                 params: {
-                  name: 'eternrust',
-                  year: 2022
+                    name: 'eternrust',
+                    year: 2022
                 }
             });
             console.log('commit sccess!');
@@ -42,13 +42,53 @@ const Main = () => {
     });
 
     const haveCoin = [
-        {coinImg: 'Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price:"152,894"},
-        {coinImg: 'Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "10", price:"212,651"},
-        {coinImg: 'Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "10", price:"1,978"},
-        {coinImg: 'Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price:"657,918"},
+        {coinImg: 'Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price: "152,894"},
+        {coinImg: 'Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "10", price: "212,651"},
+        {coinImg: 'Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "10", price: "1,978"},
+        {coinImg: 'Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918"},
     ];
+
+    const [coin, setCoin] = useState(haveCoin[0]);
+
     let display = !isMobile ? 'flex' : 'block';
     let width = isMobile ? "100%" : null;
+
+    const PrintCoinGraph = ({Info, width}) => {
+        return (
+            <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)" Width={width} Margin="0 10px 120px 0">
+                <FlexDiv Margin="20px">
+                    <Profile src="Profile.jpg"></Profile>
+                    <SubThings Weight="900">{Info.name}</SubThings>
+                </FlexDiv>
+                <Money>{Info.price}원</Money>
+                <FlexDiv Justify="space-between" Margin="40px">
+                    <SubThings Colors={Info.money.includes('-') === true ? "#0038FF" : "red"}>{Info.money}</SubThings>
+                    <SubThings Colors="#999999">{Info.Coin}코인 보유중</SubThings>
+                </FlexDiv>
+                <Graph>
+                    <TestChart src="TestChart.png"></TestChart>
+                </Graph>
+                <Line></Line>
+            </SectionDiv>
+        );
+    }
+
+    const PrintCoin = ({Info}) => {
+        return (
+            <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0" Hover="1" onClick={()=>{setCoin(Info)}}>
+                <FlexDiv Justify="space-between">
+                    <FlexDiv Width="auto">
+                        <Profile src={Info.coinImg}/>
+                        <SubThings Size="12px" Weight="900">{Info.name}</SubThings>
+                    </FlexDiv>
+                    <SubThings Size="12px"
+                               Colors={Info.money.includes('-') === true ? "#0038FF" : "red"}>{Info.money}</SubThings>
+                </FlexDiv>
+                <Line></Line>
+            </SectionDiv>
+        );
+    }
+
     return (
         <AnimationPage>
             <Body>
@@ -57,29 +97,13 @@ const Main = () => {
                     <SubTitle>내 코인을 관리해보세요</SubTitle>
                 </TitleDiv>
                 <FlexDiv Justify="space-between" Display={display}>
-                    <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)" Width={width} Margin="0 10px 120px 0">
-                        <FlexDiv Margin="20px">
-                            <Profile src="Profile.jpg"></Profile>
-                            <SubThings Weight="900">{haveCoin[0].name}</SubThings>
-                        </FlexDiv>
-                        <Money>{haveCoin[0].price}원</Money>
-                        <FlexDiv Justify="space-between" Margin="40px">
-                            <SubThings Colors="red">+12,000원 (+4.2%)</SubThings>
-                            <SubThings Colors="#999999">10코인 보유중</SubThings>
-                        </FlexDiv>
-                        <Graph>
-                            <TestChart src="TestChart.png"></TestChart>
-                        </Graph>
-                        <Line></Line>
-                    </SectionDiv>
+                    <PrintCoinGraph width={width} Info={coin}/>
                     <SectionDiv BColor="#111111" Width={width || "26%"} Padding="20px 10px 20px 10px" Align="center"
                                 Height="460px">
                         <SubThings Colors="#999999" Weight="900" Size="18px" Margin="20px">보유 코인</SubThings>
                         <ScrollDiv>
                             {haveCoin.map((coin) =>
-                                <Fragment>
-                                    <PrintCoin Info={coin}/>
-                                </Fragment>
+                                <PrintCoin Info={coin}/>
                             )}
                         </ScrollDiv>
                     </SectionDiv>
@@ -105,27 +129,12 @@ const Main = () => {
                     <SubTitle>커밋 현황을 살펴보세요</SubTitle>
                 </TitleDiv>
                 <Github_view margin='0 0 200px 0' data={commit}/>
-        </Body>
+            </Body>
         </AnimationPage>
     )
 }
 
 export default Main;
-
-const PrintCoin = ({Info}) => {
-    return (
-        <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0" Hover="1">
-            <FlexDiv Justify="space-between">
-                <FlexDiv Width="auto">
-                    <Profile src={Info.coinImg}/>
-                    <SubThings Size="12px" Weight="900">{Info.name}</SubThings>
-                </FlexDiv>
-                <SubThings Size="12px" Colors={Info.money.includes('-')===true?"#0038FF":"red"}>{Info.money}</SubThings>
-            </FlexDiv>
-            <Line></Line>
-        </SectionDiv>
-    );
-}
 
 const ScrollDiv = styled.div`
   height: 100%;
@@ -201,8 +210,10 @@ const SectionDiv = styled.section`
   align-items: ${props => props.Align || "start"};
   margin: ${props => props.Margin || "0 0 120px 0"};
   transition: 0.3s;
-  &:hover{
-    transform: ${props=>props.Hover&&"scale(0.9)"};
+  cursor: ${props => props.Hover && "pointer"};
+
+  &:hover {
+    transform: ${props => props.Hover && "scale(0.9)"};
   }
 `;
 const Profile = styled.img`
@@ -301,40 +312,42 @@ const Pageing_box = styled.div`
 `
 
 const Page_left_btn = styled.span`
+  height: 10px;
+  width: 50px;
+  display: block;
+  background-color: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+
+  &::after {
+    content: '';
     height: 10px;
     width: 50px;
     display: block;
     background-color: #ffffff;
     border-radius: 10px;
-    cursor: pointer;
-    &::after {
-        content: '';
-        height: 10px;
-        width: 50px;
-        display: block;
-        background-color: #ffffff;
-        border-radius: 10px;
-        transform: translate(-21px, 21px) rotate(90deg);
-    }
+    transform: translate(-21px, 21px) rotate(90deg);
+  }
 `
 
 const Page_right_btn = styled.span`
+  height: 10px;
+  width: 50px;
+  display: block;
+  background-color: #ffffff;
+  transform: translateY(35px) rotate(135deg);
+  border-radius: 10px;
+  cursor: pointer;
+
+  &::after {
+    content: '';
     height: 10px;
     width: 50px;
     display: block;
     background-color: #ffffff;
-    transform: translateY(35px) rotate(135deg);
     border-radius: 10px;
-    cursor: pointer;
-    &::after {
-        content: '';
-        height: 10px;
-        width: 50px;
-        display: block;
-        background-color: #ffffff;
-        border-radius: 10px;
-        transform: translate(-21px, 21px) rotate(-90deg);
-    }
+    transform: translate(-21px, 21px) rotate(-90deg);
+  }
 `
 
 const Shop_view_detail = ({data}) => {
