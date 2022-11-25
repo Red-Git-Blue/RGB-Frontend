@@ -42,7 +42,10 @@ const Main = () => {
     });
 
     const haveCoin = [
-        {coinImg: 'Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10"},
+        {coinImg: 'Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price:"152,894"},
+        {coinImg: 'Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "10", price:"212,651"},
+        {coinImg: 'Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "10", price:"1,978"},
+        {coinImg: 'Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price:"657,918"},
     ];
     let display = !isMobile ? 'flex' : 'block';
     let width = isMobile ? "100%" : null;
@@ -57,9 +60,9 @@ const Main = () => {
                     <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)" Width={width} Margin="0 10px 120px 0">
                         <FlexDiv Margin="20px">
                             <Profile src="Profile.jpg"></Profile>
-                            <SubThings Weight="900">HYUNSUK</SubThings>
+                            <SubThings Weight="900">{haveCoin[0].name}</SubThings>
                         </FlexDiv>
-                        <Money>152,894원</Money>
+                        <Money>{haveCoin[0].price}원</Money>
                         <FlexDiv Justify="space-between" Margin="40px">
                             <SubThings Colors="red">+12,000원 (+4.2%)</SubThings>
                             <SubThings Colors="#999999">10코인 보유중</SubThings>
@@ -75,10 +78,6 @@ const Main = () => {
                         <ScrollDiv>
                             {haveCoin.map((coin) =>
                                 <Fragment>
-                                    <PrintCoin Info={coin}/>
-                                    <PrintCoin Info={coin}/>
-                                    <PrintCoin Info={coin}/>
-                                    <PrintCoin Info={coin}/>
                                     <PrintCoin Info={coin}/>
                                 </Fragment>
                             )}
@@ -115,13 +114,13 @@ export default Main;
 
 const PrintCoin = ({Info}) => {
     return (
-        <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0">
+        <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0" Hover="1">
             <FlexDiv Justify="space-between">
                 <FlexDiv Width="auto">
                     <Profile src={Info.coinImg}/>
                     <SubThings Size="12px" Weight="900">{Info.name}</SubThings>
                 </FlexDiv>
-                <SubThings Size="12px" Colors="red">{Info.money}</SubThings>
+                <SubThings Size="12px" Colors={Info.money.includes('-')===true?"#0038FF":"red"}>{Info.money}</SubThings>
             </FlexDiv>
             <Line></Line>
         </SectionDiv>
@@ -201,6 +200,10 @@ const SectionDiv = styled.section`
   justify-content: space-between;
   align-items: ${props => props.Align || "start"};
   margin: ${props => props.Margin || "0 0 120px 0"};
+  transition: 0.3s;
+  &:hover{
+    transform: ${props=>props.Hover&&"scale(0.9)"};
+  }
 `;
 const Profile = styled.img`
   margin-right: 10px;
@@ -242,6 +245,7 @@ const Shop_view_box = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 120px;
 `
 
 const Shop_view_detail_box = styled.div`
