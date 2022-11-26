@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import { Image } from "../../../styleds";
 import { useCookies } from "react-cookie";
+import LogoImg from "../../../image/Logo.png";
 
 const Page_button = styled.span`
     font-family: 'Roboto', sans-serif;
@@ -57,7 +58,7 @@ const Header = () => {
     <>
       <Out_box>
         <Logo_box onClick={() => navigate('/main')}>
-          <Image src="Logo.png" width='34px' height='30px' alt='로고 이미지' />
+          <Image src={LogoImg} width='34px' height='30px' alt='로고 이미지' />
           <Title>RED GIT BLUE</Title>
         </Logo_box>
         <Page_box>

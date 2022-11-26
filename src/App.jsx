@@ -11,6 +11,7 @@ import {AnimatePresence} from "framer-motion";
 import {createGlobalStyle} from "styled-components";
 import {Fragment} from 'react';
 import {CookiesProvider} from 'react-cookie';
+import Admin from './Pages/Admin/index';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -35,6 +36,7 @@ function App() {
                             <Route element={<Main_Layout/>}>
                                 <Route path='/' element={<Landing/>}></Route>
                                 <Route path='/main' element={<Main/>}></Route>
+                                <Route path='/youDontKnow/AdminPage' element={<Admin/>}></Route>
                             </Route>
                             <Route element={<LS_Layout/>}>
                                 <Route path='/login' element={<LoginView/>}></Route>
