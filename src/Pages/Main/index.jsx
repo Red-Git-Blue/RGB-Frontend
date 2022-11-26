@@ -318,6 +318,7 @@ const Page_left_btn = styled.span`
   width: 50px;
   display: block;
   background-color: #ffffff;
+  transform: translateY(5px) rotate(-45deg);
   border-radius: 10px;
   cursor: pointer;
 

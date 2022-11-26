@@ -1,4 +1,30 @@
 import styled from "styled-components"
+import React from "react";
+
+const Commit_View = ({data, color}) => {
+    let result = [];
+    let tmp = [];
+    let x = 0;
+    let y = 0;
+    for(let i = 0; i < data.length; i++) {
+        if(data[i] === '') {
+            y+=22;
+            continue;
+        } else {
+            tmp.push(<Svg_commit_box y={y} color={color[data[i].level]} />);
+            y+=22;
+        }
+        if((i + 1) % 7 === 0) {
+            result.push(<Svg_commit_g trans={x} >{tmp}</Svg_commit_g>);
+            x+=22;
+            y=0;
+            tmp = [];
+        }
+    }
+    if(tmp.length) result.push(<Svg_commit_g trans={x} >{tmp}</Svg_commit_g>);
+
+    return result;
+}
 
 const Github_view = ({ data, margin }) => {
     let commitData = [];
@@ -16,6 +42,10 @@ const Github_view = ({ data, margin }) => {
         }
     } else {
         commitData.push(data);
+        for(let i = 0; i < commitData.length; i++) {
+            if(commitData[i] === '') continue;
+            commitCount += commitData[i].count;
+        }
     }
 
     return (
@@ -41,12 +71,10 @@ const Github_view = ({ data, margin }) => {
                     <span>DEC</span>
                 </div>
                 <div>
-                    {
-                        commitData.map((item, index) => {
-                            if(item == '') return <Commit_box key={index} margin='4px' color={color[0]} />
-                            return <Commit_box key={index} margin='4px' color={color[item.level]} />
-                        })
-                    }
+                    <svg width="1162" height="150" viewBox="0 0 1162 150" fill="none" >
+                        {<Commit_View data={commitData} color={color}/>
+                        }
+                    </svg>
                 </div>
                 <div>
                     <div>
@@ -68,7 +96,7 @@ const Github_view = ({ data, margin }) => {
     )
 }
 
-export default Github_view;
+export default React.memo(Github_view);
 
 const Github_box = styled.div`
     width: 1280px;
@@ -150,10 +178,22 @@ const Github_box = styled.div`
     }
 `
 
+const Svg_commit_g = styled.g`
+    transform: translate(${(props) => props.trans || 0}px, 0);
+`
+
+const Svg_commit_box = styled.rect`
+    width: 18px;
+    height: 18px;
+    rx: 3px;
+    y: ${(props) => props.y};
+    fill: ${(props) => props.color};
+`
+
 const Commit_box = styled.div`
     width: 18px;
     height: 18px;
-    margin: 0 4px ${(props) => props.margin || '0'} 0;
+    margin: 0 4px 0 0;
     background: ${(props) => props.color };
     backdrop-filter: blur(120px);
     border-radius: 3px;
