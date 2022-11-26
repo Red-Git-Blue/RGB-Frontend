@@ -75,7 +75,9 @@ const Main = () => {
 
     const PrintCoin = ({Info}) => {
         return (
-            <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0" Hover="1" onClick={()=>{setCoin(Info)}}>
+            <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0" Hover="1" onClick={() => {
+                setCoin(Info)
+            }}>
                 <FlexDiv Justify="space-between">
                     <FlexDiv Width="auto">
                         <Profile src={Info.coinImg}/>
