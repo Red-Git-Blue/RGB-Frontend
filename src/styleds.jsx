@@ -218,7 +218,7 @@ export const Auth_page = ({ string, name, move }) => {
 export const Background_view = styled.div`
     width: 100%;
     height: 100%;
-    background: url('background.png');
+    background: url('/image/background.png');
     background-size: cover;
     position: fixed;
     top: 0;

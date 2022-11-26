@@ -42,10 +42,10 @@ const Main = () => {
     });
 
     const haveCoin = [
-        {coinImg: 'Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price: "152,894"},
-        {coinImg: 'Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "10", price: "212,651"},
-        {coinImg: 'Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "10", price: "1,978"},
-        {coinImg: 'Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918"},
+        {coinImg: '/image/Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price: "152,894"},
+        {coinImg: '/image/Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "10", price: "212,651"},
+        {coinImg: '/image/Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "10", price: "1,978"},
+        {coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918"},
     ];
 
     const [coin, setCoin] = useState(haveCoin[0]);
@@ -57,7 +57,7 @@ const Main = () => {
         return (
             <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)" Width={width} Margin="0 10px 120px 0">
                 <FlexDiv Margin="20px">
-                    <Profile src="Profile.jpg"></Profile>
+                    <Profile src={Info.coinImg}></Profile>
                     <SubThings Weight="900">{Info.name}</SubThings>
                 </FlexDiv>
                 <Money>{Info.price}원</Money>
@@ -66,7 +66,7 @@ const Main = () => {
                     <SubThings Colors="#999999">{Info.Coin}코인 보유중</SubThings>
                 </FlexDiv>
                 <Graph>
-                    <TestChart src="TestChart.png"></TestChart>
+                    <TestChart src="/image/TestChart.png"></TestChart>
                 </Graph>
                 <Line></Line>
             </SectionDiv>
