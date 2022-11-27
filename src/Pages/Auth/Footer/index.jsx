@@ -6,7 +6,7 @@ const Footer = () => {
       <FooterBox>
         <InfoDiv>
           <RGB>RGB</RGB>
-          <Info>@ 2022 RED GIT BLUE</Info>
+          <Info>© 2022. Red Git Blue All rights reserved.</Info>
         </InfoDiv>
         <InfoDiv he="55px">
           <Info>문의    010-1234-5678</Info>
@@ -21,13 +21,14 @@ export default Footer;
 
 const FooterBox = styled.div`
   width:100%;
-  height:240px;
+  height:160px;
   background: #000000;
-  box-shadow: 0px 0px 200px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 200px rgba(255, 255, 255, 0.25);
+  padding: 40px 300px 40px 300px;
   color:#999999;
   display:flex;
   flex-direction:column;
-  justify-content:center;
+  justify-content:space-between;
   align-items:start;
 `;
 const InfoDiv = styled.div`
@@ -35,19 +36,18 @@ const InfoDiv = styled.div`
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  align-itmes:start;
-  margin:33px;
+  align-items:start;
 `;
 const RGB = styled.p`
   color:white;
-  font-family: 'Roboto';
+  font-family: 'Roboto', sans-serif;
   font-weight: 900;
   font-size: 40px;
   height:47px;
 `;
 const Info = styled.p`
-  font-family: 'NanumRegular';
+  font-family: 'NanumRegular', sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 12px;
   height:26px;
 `;

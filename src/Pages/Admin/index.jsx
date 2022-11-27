@@ -77,13 +77,13 @@ const SelectBox = styled.div`
 const Eng = styled.p`
   font-size: 36px;
   font-family: Roboto, sans-serif;
-  font-weight: 400;
+  font-weight: 900;
   margin-bottom: 10px;
   color: #4A56D3;
 `;
 const Kor = styled.p`
   font-size: 20px;
-  font-family: Roboto, sans-serif;
+  font-family: NanumGothicExtraBold, sans-serif;
   font-weight: 900;
   color: black;
 `;
