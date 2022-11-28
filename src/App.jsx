@@ -14,9 +14,11 @@ import {Fragment} from 'react';
 import {CookiesProvider} from 'react-cookie';
 import Admin from './Pages/Admin/index';
 import Ad from './Pages/Admin/ad';
-import Badge from './Pages/Admin/badge';
+import Index from './Pages/Admin/Badge';
 import Category from './Pages/Admin/category';
 import Grass from './Pages/Admin/grass';
+import {QueryClient, QueryClientProvider} from "react-query";
+import {ReactQueryDevtools} from "react-query/devtools";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -32,34 +34,36 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+    const queryClient = new QueryClient();
     return (
-        <Fragment>
-            <AnimatePresence>
-                <CookiesProvider>
-                    <GlobalStyle/>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route element={<Main_Layout/>}>
-                                <Route path='/' element={<Landing/>}></Route>
-                                <Route path='/main' element={<Main/>}></Route>
-                            </Route>
-                            <Route element={<LS_Layout/>}>
-                                <Route path='/login' element={<LoginView/>}></Route>
-                                <Route path='/signup' element={<SignUpView/>}></Route>
-                                <Route path='*' element={<ErrorPage/>}></Route>
-                            </Route>
-                            <Route element={<Admin_Layout/>}>
-                                <Route path='/youDontKnow/AdminPage' element={<Admin/>}></Route>
-                                <Route path='/youDontKnow/AdminPage/AdminBadge' element={<Badge/>}></Route>
-                                <Route path='/youDontKnow/AdminPage/AdminGrass' element={<Grass/>}></Route>
-                                <Route path='/youDontKnow/AdminPage/AdminAd' element={<Ad/>}></Route>
-                                <Route path='/youDontKnow/AdminPage/AdminCategory' element={<Category/>}></Route>
-                            </Route>
-                        </Routes>
-                    </BrowserRouter>
-                </CookiesProvider>
-            </AnimatePresence>
-        </Fragment>
+        <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={true}/>
+                <AnimatePresence>
+                    <CookiesProvider>
+                        <GlobalStyle/>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route element={<Main_Layout/>}>
+                                    <Route path='/' element={<Landing/>}></Route>
+                                    <Route path='/main' element={<Main/>}></Route>
+                                </Route>
+                                <Route element={<LS_Layout/>}>
+                                    <Route path='/login' element={<LoginView/>}></Route>
+                                    <Route path='/signup' element={<SignUpView/>}></Route>
+                                    <Route path='*' element={<ErrorPage/>}></Route>
+                                </Route>
+                                <Route element={<Admin_Layout/>}>
+                                    <Route path='/youDontKnow/AdminPage' element={<Admin/>}></Route>
+                                    <Route path='/youDontKnow/AdminPage/AdminBadge' element={<Index/>}></Route>
+                                    <Route path='/youDontKnow/AdminPage/AdminGrass' element={<Grass/>}></Route>
+                                    <Route path='/youDontKnow/AdminPage/AdminAd' element={<Ad/>}></Route>
+                                    <Route path='/youDontKnow/AdminPage/AdminCategory' element={<Category/>}></Route>
+                                </Route>
+                            </Routes>
+                        </BrowserRouter>
+                    </CookiesProvider>
+                </AnimatePresence>
+        </QueryClientProvider>
     );
 }
 
