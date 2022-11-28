@@ -14,18 +14,19 @@ import {Fragment} from 'react';
 import {CookiesProvider} from 'react-cookie';
 import Admin from './Pages/Admin/index';
 import Ad from './Pages/Admin/ad';
-import Index from './Pages/Admin/Badge';
+import Badge from './Pages/Admin/badge';
 import Category from './Pages/Admin/category';
 import Grass from './Pages/Admin/grass';
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
+import CoinView from './Pages/Coin';
 
 const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
     user-select: none;
-
+    overflow-x: hidden;
     &::-webkit-scrollbar {
       width: 0;
       height: 0;
@@ -46,6 +47,7 @@ function App() {
                                 <Route element={<Main_Layout/>}>
                                     <Route path='/' element={<Landing/>}></Route>
                                     <Route path='/main' element={<Main/>}></Route>
+                                    <Route path='/coin' element={<CoinView/>}></Route>
                                 </Route>
                                 <Route element={<LS_Layout/>}>
                                     <Route path='/login' element={<LoginView/>}></Route>

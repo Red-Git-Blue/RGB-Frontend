@@ -85,7 +85,7 @@ const Header = ({Admin}) => {
                                 <Page_button onClick={() => navigate('/mypage')}>My Page</Page_button>
                                 :
                                 <Fragment>
-                                    <Page_button onClick={() => navigate('/login')}>Log in</Page_button>
+                                    <Page_button onClick={() => navigate('/login')}>Log In</Page_button>
                                     <Page_button onClick={() => navigate('/signup')}>Sign Up</Page_button>
                                 </Fragment>
                             }
