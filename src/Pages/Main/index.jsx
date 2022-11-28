@@ -1,139 +1,134 @@
-import {Fragment, useEffect, useState} from "react";
+import { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import {Image} from "../../styleds";
-import {useMediaQuery} from "react-responsive";
+import { Image } from "../../styleds";
+import { useMediaQuery } from "react-responsive";
 import AnimationPage from "../AnimatedPage";
 import Github_view from "../Auth/Contribution";
 
-const gitCommitSort = () => {
-
-}
-
 const Main = () => {
-    const isMobile = useMediaQuery({query: '(max-width:768px)'});
-    const [commit, setCommit] = useState(undefined);
-    const gitCommit = async function () {
-        try {
-            let res = await axios({
-                method: 'GET',
-                url: 'http://local.lite24.net:8080/api/user/contribution',
-                credentials: 'include',
-                hearders: {
-                    "Content-Type": "application/json",
-                },
-                params: {
-                    name: 'eternrust',
-                    year: 2022
-                }
-            });
-            console.log('commit sccess!');
-            setCommit(res.data.contributions);
-            // console.log(res.data);
-        } catch (err) {
-            console.log('commit error...');
-            console.log(err)
+  const isMobile = useMediaQuery({ query: '(max-width:768px)' });
+  const [commit, setCommit] = useState(undefined);
+  const gitCommit = async function () {
+    try {
+      let res = await axios({
+        method: 'GET',
+        url: 'http://local.lite24.net:8080/api/user/contribution',
+        credentials: 'include',
+        hearders: {
+          "Content-Type": "application/json",
+        },
+        params: {
+          name: 'eternrust',
+          year: 2022
         }
-    };
-
-    useEffect(() => {
-        // gitCommitSort();
-        gitCommit();
-    });
-
-    const haveCoin = [
-        {coinImg: '/image/Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price: "152,894"},
-        {coinImg: '/image/Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "10", price: "212,651"},
-        {coinImg: '/image/Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "10", price: "1,978"},
-        {coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918"},
-    ];
-
-    const [coin, setCoin] = useState(haveCoin[0]);
-
-    let display = !isMobile ? 'flex' : 'block';
-    let width = isMobile ? "100%" : null;
-
-    const PrintCoinGraph = ({Info, width}) => {
-        return (
-            <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)" Width={width} Margin="0 10px 120px 0">
-                <FlexDiv Margin="20px">
-                    <Profile src={Info.coinImg}></Profile>
-                    <SubThings Weight="900">{Info.name}</SubThings>
-                </FlexDiv>
-                <Money>{Info.price}원</Money>
-                <FlexDiv Justify="space-between" Margin="40px">
-                    <SubThings Colors={Info.money.includes('-') === true ? "#0038FF" : "red"}>{Info.money}</SubThings>
-                    <SubThings Colors="#999999">{Info.Coin}코인 보유중</SubThings>
-                </FlexDiv>
-                <Graph>
-                    <TestChart src="/image/TestChart.png"></TestChart>
-                </Graph>
-                <Line></Line>
-            </SectionDiv>
-        );
+      });
+      console.log('commit sccess!');
+      setCommit(res.data.contributions);
+      // console.log(res.data);
+    } catch (err) {
+      console.log('commit error...');
+      console.log(err)
     }
+  };
 
-    const PrintCoin = ({Info}) => {
-        return (
-            <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0" Hover="1" onClick={() => {
-                setCoin(Info)
-            }}>
-                <FlexDiv Justify="space-between">
-                    <FlexDiv Width="auto">
-                        <Profile src={Info.coinImg}/>
-                        <SubThings Size="12px" Weight="900">{Info.name}</SubThings>
-                    </FlexDiv>
-                    <SubThings Size="12px"
-                               Colors={Info.money.includes('-') === true ? "#0038FF" : "red"}>{Info.money}</SubThings>
-                </FlexDiv>
-                <Line></Line>
-            </SectionDiv>
-        );
-    }
+  useEffect(() => {
+    gitCommit();
+  }, []);
 
+  const haveCoin = [
+    { coinImg: '/image/Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price: "152,894" },
+    { coinImg: '/image/Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "10", price: "212,651" },
+    { coinImg: '/image/Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "10", price: "1,978" },
+    { coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918" },
+  ];
+
+  const [coin, setCoin] = useState(haveCoin[0]);
+
+  let display = !isMobile ? 'flex' : 'block';
+  let width = isMobile ? "100%" : null;
+
+  const PrintCoinGraph = ({ Info, width }) => {
     return (
-        <AnimationPage>
-            <Body>
-                <TitleDiv>
-                    <Title Colors="#FFF500, #FE0D7A">COIN</Title>
-                    <SubTitle>내 코인을 관리해보세요</SubTitle>
-                </TitleDiv>
-                <FlexDiv Justify="space-between" Display={display}>
-                    <PrintCoinGraph width={width} Info={coin}/>
-                    <SectionDiv BColor="#111111" Width={width || "26%"} Padding="20px 10px 20px 10px" Align="center"
-                                Height="460px">
-                        <SubThings Colors="#999999" Weight="900" Size="18px" Margin="20px">보유 코인</SubThings>
-                        <ScrollDiv>
-                            {haveCoin.map((coin) =>
-                                <PrintCoin Info={coin}/>
-                            )}
-                        </ScrollDiv>
-                    </SectionDiv>
-                </FlexDiv>
-                <TitleDiv>
-                    <Title Colors="#FFF500, #35B2BA">SHOP</Title>
-                    <SubTitle>획득할 수 있는 배지를 살펴보세요</SubTitle>
-                </TitleDiv>
-            </Body>
-            <Shop_view_box>
-                <Pageing/>
-                <Shop_view_detail/>
-                <Shop_view_detail/>
-                <Shop_view_detail/>
-                <Shop_view_detail/>
-                <Shop_view_detail/>
-                <Shop_view_detail/>
-                <Pageing type='right'/>
-            </Shop_view_box>
-            <Body>
-                <TitleDiv>
-                    <Title Colors="#35B2BA, #4E55D2">GITHUB</Title>
-                    <SubTitle>커밋 현황을 살펴보세요</SubTitle>
-                </TitleDiv>
-                <Github_view margin='0 0 200px 0' data={commit}/>
-            </Body>
-        </AnimationPage>
-    )
+      <SectionDiv Shadow="0px 0px 200px rgba(255, 255, 255, 0.25)" Width={width} Margin="0 10px 120px 0">
+        <FlexDiv Margin="20px">
+          <Profile src={Info.coinImg}></Profile>
+          <SubThings Weight="900">{Info.name}</SubThings>
+        </FlexDiv>
+        <Money>{Info.price}원</Money>
+        <FlexDiv Justify="space-between" Margin="40px">
+          <SubThings Colors={Info.money.includes('-') === true ? "#0038FF" : "red"}>{Info.money}</SubThings>
+          <SubThings Colors="#999999">{Info.Coin}코인 보유중</SubThings>
+        </FlexDiv>
+        <Graph>
+          <TestChart src="/image/TestChart.png"></TestChart>
+        </Graph>
+        <Line></Line>
+      </SectionDiv>
+    );
+  }
+
+  const PrintCoin = ({ Info }) => {
+    return (
+      <SectionDiv Padding="20px 20px 0 20px" Width="84%" Height="50px" Margin="0 0 20px 0" Hover="1" onClick={() => {
+        setCoin(Info)
+      }}>
+        <FlexDiv Justify="space-between">
+          <FlexDiv Width="auto">
+            <Profile src={Info.coinImg} />
+            <SubThings Size="12px" Weight="900">{Info.name}</SubThings>
+          </FlexDiv>
+          <SubThings Size="12px"
+            Colors={Info.money.includes('-') === true ? "#0038FF" : "red"}>{Info.money}</SubThings>
+        </FlexDiv>
+        <Line></Line>
+      </SectionDiv>
+    );
+  }
+
+  return (
+    <AnimationPage>
+      <Body>
+        <TitleDiv>
+          <Title Colors="#FFF500, #FE0D7A">COIN</Title>
+          <SubTitle>내 코인을 관리해보세요</SubTitle>
+        </TitleDiv>
+        <FlexDiv Justify="space-between" Display={display}>
+          <PrintCoinGraph width={width} Info={coin} />
+          <SectionDiv BColor="#111111" Width={width || "26%"} Padding="20px 10px 20px 10px" Align="center"
+            Height="460px">
+            <SubThings Colors="#999999" Weight="900" Size="18px" Margin="20px">보유 코인</SubThings>
+            <ScrollDiv>
+              {haveCoin.map((coin) =>
+                <PrintCoin Info={coin} />
+              )}
+            </ScrollDiv>
+          </SectionDiv>
+        </FlexDiv>
+        <TitleDiv>
+          <Title Colors="#FFF500, #35B2BA">SHOP</Title>
+          <SubTitle>획득할 수 있는 배지를 살펴보세요</SubTitle>
+        </TitleDiv>
+      </Body>
+      <Shop_view_box>
+        <Pageing />
+        <Shop_view_detail />
+        <Shop_view_detail />
+        <Shop_view_detail />
+        <Shop_view_detail />
+        <Shop_view_detail />
+        <Shop_view_detail />
+        <Pageing type='right' />
+      </Shop_view_box>
+      <Body>
+        <TitleDiv>
+          <Title Colors="#35B2BA, #4E55D2">GITHUB</Title>
+          <SubTitle>커밋 현황을 살펴보세요</SubTitle>
+        </TitleDiv>
+        <Github_view margin='200px' data={commit} />
+      </Body>
+    </AnimationPage>
+  )
 }
 
 export default Main;
@@ -321,7 +316,7 @@ const Page_left_btn = styled.span`
   transform: translateY(5px) rotate(-45deg);
   border-radius: 10px;
   cursor: pointer;
-
+  overflow: visible;
   &::after {
     content: '';
     height: 10px;
@@ -341,7 +336,7 @@ const Page_right_btn = styled.span`
   transform: translateY(35px) rotate(135deg);
   border-radius: 10px;
   cursor: pointer;
-
+  overflow: visible;
   &::after {
     content: '';
     height: 10px;
@@ -353,29 +348,29 @@ const Page_right_btn = styled.span`
   }
 `
 
-const Shop_view_detail = ({data}) => {
-    return (
-        <Shop_view_detail_box>
-            <Image width='260px' height='260px' alt='뱃지 이미지'/>
-            <span>고급스러운 무의 배지</span>
-            <span>고급스러운 색감과 무의 예술적인 감각을 살린 배지</span>
-            <span>12,000원</span>
-        </Shop_view_detail_box>
-    )
+const Shop_view_detail = ({ data }) => {
+  return (
+    <Shop_view_detail_box>
+      <Image width='260px' height='260px' alt='뱃지 이미지' />
+      <span>고급스러운 무의 배지</span>
+      <span>고급스러운 색감과 무의 예술적인 감각을 살린 배지</span>
+      <span>12,000원</span>
+    </Shop_view_detail_box>
+  )
 }
 
-const Pageing = ({type = 'left'}) => {
-    return (
-        <Pageing_box
-            color={type == 'right' ? '#111111, rgba(17, 17, 17, 0)' : 'rgba(17, 17, 17, 0), #111111'}
-            right={type == 'right' ? 0 : 'auto'}
-        >
-            {
-                type == 'right' ?
-                    <Page_right_btn/>
-                    :
-                    <Page_left_btn/>
-            }
-        </Pageing_box>
-    )
+const Pageing = ({ type = 'left' }) => {
+  return (
+    <Pageing_box
+      color={type == 'right' ? '#111111, rgba(17, 17, 17, 0)' : 'rgba(17, 17, 17, 0), #111111'}
+      right={type == 'right' ? 0 : 'auto'}
+    >
+      {
+        type == 'right' ?
+          <Page_right_btn />
+          :
+          <Page_left_btn />
+      }
+    </Pageing_box>
+  )
 }
