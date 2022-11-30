@@ -14,7 +14,7 @@ import {Fragment} from 'react';
 import {CookiesProvider} from 'react-cookie';
 import Admin from './Pages/Admin/index';
 import Ad from './Pages/Admin/ad';
-import Badge from './Pages/Admin/badge';
+import Index from './Pages/Admin/Badge/index';
 import Category from './Pages/Admin/category';
 import Grass from './Pages/Admin/grass';
 import {QueryClient, QueryClientProvider} from "react-query";
@@ -26,7 +26,6 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     user-select: none;
-    overflow-x: hidden;
     &::-webkit-scrollbar {
       width: 0;
       height: 0;

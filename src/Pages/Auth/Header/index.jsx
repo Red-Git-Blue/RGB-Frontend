@@ -12,7 +12,6 @@ const Page_button = styled.span`
   line-height: 19px;
   color: #fff;
   cursor: pointer;
-  border-radius: 100px;
   text-align: center;
   position: relative;
   text-decoration: none;
@@ -111,6 +110,7 @@ const Out_box = styled.div`
   backdrop-filter: blur(120px);
   position: sticky;
   top: 0;
+  z-index: 9;
 `
 
 const Logo_box = styled.div`

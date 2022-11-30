@@ -7,12 +7,12 @@ import {useQuery} from "react-query";
 
 const BaseUrl = 'http://local.lite24.net:8080';
 
-async function Acces(){
+/*async function Acces() {
     const Token = await axios({
-        method:'post',
+        method: 'post',
         url: BaseUrl + '/api/auth/admin/sign-in',
         headers: {
-            "Content-Type":"application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({
             email: "asdf@asd.asd",
@@ -22,27 +22,36 @@ async function Acces(){
     return Token.data;
 }
 
-const AccesToken = Acces.accessToken;
+const AccesToken = Acces.accessToken;*/
 
-async function Response(){
+async function Response() {
     const badgeRes = await axios({
-            method:'get',
-            url: BaseUrl + '/api/item/badge',
+            method: 'get',
+            url: BaseUrl + '/api/item/badge?idx&size=20',
         }
-
     )
     return badgeRes.data;
 }
 
+async function DetailResponse({asdf}) {
+    const detailRes = await axios({
+        method: 'get',
+        url: BaseUrl + '/api/item/badge/' + asdf,
+    })
+    return detailRes.data;
+}
+
 const Index = () => {
-    useEffect(()=>{
-        Response();
-    }, []);
     const [isOpen, setOpen] = useState(false);
+    const [detail, setDetail] = useState(false);
+    const [detailInfo, setDetailInfo] = useState();
     const handleClick = () => {
         setOpen(true);
     };
-    const {isLoading, error, data, isRefetching} = useQuery([],
+    const detailClick = () => {
+        setDetail(true);
+    };
+    const {isLoading, error, data, refetch} = useQuery([],
         () => Response()
     )
 
@@ -51,25 +60,30 @@ const Index = () => {
     if (!data) return <button>불러오기</button>;
     console.log(data);
 
-    return(
+    const DetailR = ({asdf}) => {
+        setDetailInfo(() => DetailResponse({asdf}));
+        console.log(detailInfo);
+    }
+
+    return (
         <Fragment>
             <Body>
-                {isOpen?<Modal Set={setOpen}/>:null}
+                {isOpen ? <Modal Set={setOpen} Re={refetch}/> : null}
                 <Text Margin="100px" Size="36px" W="200">Manage Badge</Text>
                 <FlexDiv>
                     <Text>Badge List</Text>
                     <AddButton onClick={handleClick}>배지 추가</AddButton>
                 </FlexDiv>
                 <BadgeList>
-                    {data.content.map((dat)=>(
-                        <BadgeDiv key={dat.id} draggable>
+                    {data.content.map((dat) => (
+                        <BadgeDiv key={dat.id} draggable onClick={() => DetailR({asdf: dat.id})} name={dat.id}>
                             <Image src={dat.badgeMainFile.fileUrl}></Image>
-                            <Text Margin="20px">{dat.name}</Text>
-                            <TagDiv>
-                                {dat.tagList.map((info)=>(
-                                    <Tag key={info.tagName}>{info.tagName}</Tag>
-                                ))}
-                            </TagDiv>
+                            <Text Size="20px" W="100">{dat.name}</Text>
+                            {/*<TagDiv>*/}
+                            {/*    {dat.tagList.map((info)=>(*/}
+                            {/*        <Tag key={info.tagName}>{info.tagName}</Tag>*/}
+                            {/*    ))}*/}
+                            {/*</TagDiv>*/}
                         </BadgeDiv>
                     ))}
                 </BadgeList>
@@ -94,25 +108,35 @@ const TagDiv = styled.div`
   flex-wrap: wrap;
 `;
 const Image = styled.img`
-  height: 100px;
+  height: 240px;
+  width: 240px;
   border-radius: 10px;
   margin-bottom: 20px;
+  object-fit: cover;
 `;
-const BadgeDiv = styled.div`
+const BadgeDiv = styled.button`
   background-color: #000000;
   margin: 10px;
-  width: 200px;
+  width: 310px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px;
+  padding: 24px;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 200px rgba(255, 255, 255, 0.25);
+    z-index: 0;
+  }
 `;
 const BadgeList = styled.div`
   background-color: #222222;
   width: 100%;
-  height: 150vh;
+  height: auto;
   border-radius: 20px;
   display: flex;
   flex-wrap: wrap;
@@ -130,13 +154,13 @@ const FlexDiv = styled.div`
 `;
 const Text = styled.p`
   font-family: Roboto, sans-serif;
-  font-weight: ${props => props.W||"600"};
-  font-size: ${props => props.Size||'28px'};
+  font-weight: ${props => props.W || "600"};
+  font-size: ${props => props.Size || '28px'};
   color: white;
-  margin-bottom: ${props => props.Margin||'0'};
+  margin-bottom: ${props => props.Margin || '0'};
 `;
 const Body = styled.div`
-  height: 200vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -154,7 +178,8 @@ const AddButton = styled.button`
   font-weight: 400;
   font-size: 16px;
   transition: 0.3s;
-  &:hover{
+
+  &:hover {
     transform: scale(1.1);
     background-color: black;
     border: solid 2px white;
