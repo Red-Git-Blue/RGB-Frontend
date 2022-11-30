@@ -6,9 +6,63 @@ import { useMediaQuery } from "react-responsive";
 import AnimationPage from "../AnimatedPage";
 import Github_view from "../Auth/Contribution";
 
+class CircleQueue{
+  constructor(data, size){
+      this.maxQueueSize = size;
+      this.array = data;
+      this.front = 0;
+      this.rear = size < 6 ? size : 6;
+  }
+
+  movingRight() {
+    this.front = (this.front + 1) % this.maxQueueSize;
+    this.rear = (this.rear + 1) % this.maxQueueSize;
+  }
+
+  movingLeft() {
+    this.front = (this.front -1 + this.maxQueueSize) % this.maxQueueSize;
+    this.rear = (this.rear - 1 + this.maxQueueSize) % this.maxQueueSize;
+  }
+
+  print(){
+    let result = [];
+    let i = this.front;
+    do{
+        i = (i+1) % this.maxQueueSize;
+        result.push(this.array[i]);
+        if(i == this.rear) break;
+    }while(i != this.front);
+    
+    return result;
+  }
+}
+
 const Main = () => {
   const isMobile = useMediaQuery({ query: '(max-width:768px)' });
+  let [badgeData, setBadgeData] = useState(undefined);
+  const [viewBadge, setViewBadge] = useState(undefined);
   const [commit, setCommit] = useState(undefined);
+
+  const getBadge = () => {
+    axios({
+      method: 'get',
+      url: 'http://local.lite24.net:8080/api/item/badge/details',
+      params: {
+        idx: 0,
+        size: 20
+      }
+    })
+    .then((res) => {
+      if(res.data.empty) return;
+      setBadgeData(new CircleQueue(res.data.content, res.data.numberOfElements));
+      setViewBadge(res.data.content.slice(1, 7));
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   const gitCommit = async function () {
     try {
       let res = await axios({
@@ -23,17 +77,15 @@ const Main = () => {
           year: 2022
         }
       });
-      console.log('commit sccess!');
       setCommit(res.data.contributions);
-      // console.log(res.data);
     } catch (err) {
-      console.log('commit error...');
       console.log(err)
     }
   };
 
   useEffect(() => {
     gitCommit();
+    getBadge();
   }, []);
 
     const haveCoin = [
@@ -41,6 +93,8 @@ const Main = () => {
         {coinImg: '/image/Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "5", price: "212,651"},
         {coinImg: '/image/Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "12", price: "1,978"},
         {coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "2", price: "657,918"},
+    { coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918" },
+    { coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918" },
     ];
 
   const [coin, setCoin] = useState(haveCoin[0]);
@@ -86,6 +140,18 @@ const Main = () => {
     );
   }
 
+  const Moving_badge = (n) => {
+    if(badgeData === undefined) return;
+
+    if(n) {
+      badgeData.movingRight();
+      setViewBadge(badgeData.print());
+    } else {
+      badgeData.movingLeft();
+      setViewBadge(badgeData.print());
+    }
+  }
+
   return (
     <AnimationPage>
       <Body>
@@ -111,14 +177,14 @@ const Main = () => {
         </TitleDiv>
       </Body>
       <Shop_view_box>
-        <Pageing />
-        <Shop_view_detail />
-        <Shop_view_detail />
-        <Shop_view_detail />
-        <Shop_view_detail />
-        <Shop_view_detail />
-        <Shop_view_detail />
-        <Pageing type='right' />
+        <Pageing func={Moving_badge}/>
+          {
+            viewBadge !== undefined && 
+            viewBadge.map((item) => 
+              <Shop_view_detail key={item.id} data={item} />
+            )
+          }
+        <Pageing type='right' func={Moving_badge}/>
       </Shop_view_box>
       <Body>
         <TitleDiv>
@@ -262,7 +328,11 @@ const Shop_view_detail_box = styled.div`
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  transition: 0.5s;
 
+  &:hover {
+    transform: scale(1.05);
+  }
   span {
     font-family: 'NanumGothic', sans-serif;
     font-style: normal;
@@ -317,6 +387,9 @@ const Page_left_btn = styled.span`
   border-radius: 10px;
   cursor: pointer;
   overflow: visible;
+  transition: 0.5s;
+  transform-origin: left;
+
   &::after {
     content: '';
     height: 10px;
@@ -326,6 +399,10 @@ const Page_left_btn = styled.span`
     border-radius: 10px;
     transform: translate(-21px, 21px) rotate(90deg);
   }
+
+  &:hover {
+    transform: translateY(5px) rotate(-45deg) scale(1.5);
+  }
 `
 
 const Page_right_btn = styled.span`
@@ -333,10 +410,13 @@ const Page_right_btn = styled.span`
   width: 50px;
   display: block;
   background-color: #ffffff;
-  transform: translateY(35px) rotate(135deg);
+  transform: translateX(50px) rotate(135deg);
   border-radius: 10px;
   cursor: pointer;
   overflow: visible;
+  transition: 0.5s;
+  transform-origin: left;
+  
   &::after {
     content: '';
     height: 10px;
@@ -346,20 +426,24 @@ const Page_right_btn = styled.span`
     border-radius: 10px;
     transform: translate(-21px, 21px) rotate(-90deg);
   }
+
+  &:hover {
+    transform: translateX(50px) rotate(135deg) scale(1.5);
+  }
 `
 
 const Shop_view_detail = ({ data }) => {
   return (
-    <Shop_view_detail_box>
-      <Image width='260px' height='260px' alt='뱃지 이미지' />
-      <span>고급스러운 무의 배지</span>
-      <span>고급스러운 색감과 무의 예술적인 감각을 살린 배지</span>
-      <span>12,000원</span>
+    <Shop_view_detail_box data-id={data.id}>
+      <Image width='260px' height='260px' radius='10px' alt='뱃지 이미지' src={data.badgeMainFile.fileUrl}/>
+      <span>{data.name}</span>
+      <span>{data.introduction}</span>
+      <span>{data.price.toLocaleString('ko-KR')}원</span>
     </Shop_view_detail_box>
   )
 }
 
-const Pageing = ({ type = 'left' }) => {
+const Pageing = ({ type = 'left', func}) => {
   return (
     <Pageing_box
       color={type == 'right' ? '#111111, rgba(17, 17, 17, 0)' : 'rgba(17, 17, 17, 0), #111111'}
@@ -367,9 +451,9 @@ const Pageing = ({ type = 'left' }) => {
     >
       {
         type == 'right' ?
-          <Page_right_btn />
+          <Page_right_btn onClick={() => func(1)}/>
           :
-          <Page_left_btn />
+          <Page_left_btn onClick={() => func(0)}/>
       }
     </Pageing_box>
   )
