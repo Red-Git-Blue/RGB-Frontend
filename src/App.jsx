@@ -1,10 +1,14 @@
 import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
-import LoginView from "./Pages/Login/index";
-import SignUpView from "./Pages/Signup";
+import LoginView from "./Pages/User/Login/index";
+import SignUpView from "./Pages/User/Signup";
+import CoinView from './Pages/User/Coin';
+import SearchView from './Pages/User/Search';
+import Main from "./Pages/User/Main/index";
+import ShopView from './Pages/User/Shop';
+import MyPageView from './Pages/User/MyPage';
 import ErrorPage from "./Pages/Auth/ErrorPage/index";
 import Header from "./Pages/Auth/Header/index";
 import Landing from "./Pages/Auth/Landing/index";
-import Main from "./Pages/Main/index";
 import LS_Layout from './Pages/Auth/Layout/LS_Layout';
 import Main_Layout from './Pages/Auth/Layout/Main_Layout';
 import Admin_Layout from './Pages/Auth/Layout/Admin_Layout';
@@ -14,12 +18,11 @@ import {Fragment} from 'react';
 import {CookiesProvider} from 'react-cookie';
 import Admin from './Pages/Admin/index';
 import Ad from './Pages/Admin/ad';
-import Badge from './Pages/Admin/badge';
+import Index from './Pages/Admin/Badge/index';
 import Category from './Pages/Admin/category';
 import Grass from './Pages/Admin/grass';
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
-import CoinView from './Pages/Coin';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -48,6 +51,9 @@ function App() {
                                     <Route path='/' element={<Landing/>}></Route>
                                     <Route path='/main' element={<Main/>}></Route>
                                     <Route path='/coin' element={<CoinView/>}></Route>
+                                    <Route path='/search' element={<SearchView />}></Route>
+                                    <Route path='/shop' element={<ShopView />}></Route>
+                                    <Route path='/mypage' element={<MyPageView/>}></Route>
                                 </Route>
                                 <Route element={<LS_Layout/>}>
                                     <Route path='/login' element={<LoginView/>}></Route>

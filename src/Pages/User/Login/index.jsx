@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds";
+import { Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../../styleds";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
-import AnimatedPage from "../AnimatedPage";
+import AnimatedPage from "../../AnimatedPage";
 
 const LoginView = () => {
     const [login_data, set_login_data] = useState({
@@ -27,7 +27,7 @@ const LoginView = () => {
                 }
             });
             console.log('login sccess!');
-            setCookie('accessToken', res.data.refreshToken);
+            setCookie('accessToken', res.data.accessToken);
             setCookie('refreshToken', res.data.refreshToken);
         } catch (err) {
             console.log('login error...');
@@ -39,13 +39,11 @@ const LoginView = () => {
         if (cookies.accessToken) navigate('/main');
     }, [cookies])
 
-    const log = () => {
-        let login = document.querySelectorAll('input');
+    const midtermCheck = (name, data) => {
         set_login_data({
-            email: login[0].value,
-            password: login[1].value
-        });
-        Login();
+            ...login_data,
+            [name]: data
+        })
     }
 
     return (
@@ -62,12 +60,23 @@ const LoginView = () => {
                             link='/signup'
                         />
                         <Right_box>
-                            <Input_view name='닉네임 또는 이메일' text='닉네임 또는 이메일을 입력해주세요.' />
-                            <Input_view type='password' name='비밀번호' text='비밀번호를 입력해주세요.' />
+                            <Input_view
+                                check='email'
+                                func={midtermCheck}
+                                name='이메일'
+                                text='이메일을 입력해주세요.'
+                            />
+                            <Input_view
+                                check='password'
+                                func={midtermCheck}
+                                type='password'
+                                name='비밀번호'
+                                text='비밀번호를 입력해주세요.'
+                            />
                             <Button_box background='transparent' color="#ffffff" top='72px'>
                                 <Button_style>비밀번호를 잃어버리셨나요?</Button_style>
                             </Button_box>
-                            <Button_box onClick={() => log()}>로그인</Button_box>
+                            <Button_box onClick={() => Login()}>로그인</Button_box>
                         </Right_box>
                     </Flex_box>
                 </Blur_box>

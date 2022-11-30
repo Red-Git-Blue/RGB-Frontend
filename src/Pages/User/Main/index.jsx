@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Image } from "../../styleds";
+import { Image } from "../../../styleds";
 import { useMediaQuery } from "react-responsive";
-import AnimationPage from "../AnimatedPage";
-import Github_view from "../Auth/Contribution";
+import AnimationPage from "../../AnimatedPage";
+import Github_view from "../../Auth/Contribution";
 
 class CircleQueue{
   constructor(data, size){
@@ -39,7 +39,7 @@ class CircleQueue{
 
 const Main = () => {
   const isMobile = useMediaQuery({ query: '(max-width:768px)' });
-  let [badgeData, setBadgeData] = useState(undefined);
+  const [badgeData, setBadgeData] = useState(undefined);
   const [viewBadge, setViewBadge] = useState(undefined);
   const [commit, setCommit] = useState(undefined);
 
@@ -56,7 +56,6 @@ const Main = () => {
       if(res.data.empty) return;
       setBadgeData(new CircleQueue(res.data.content, res.data.numberOfElements));
       setViewBadge(res.data.content.slice(1, 7));
-      console.log(res.data);
     })
     .catch((err) => {
       console.log(err);
