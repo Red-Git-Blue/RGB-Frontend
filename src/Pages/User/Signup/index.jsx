@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Background_view, Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../styleds";
-import Alert from "../Alert.js";
+import { Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../../styleds";
+import Alert from "../../Alert.js";
 import styled from "styled-components";
-import AnimatedPage from "../AnimatedPage";
+import AnimatedPage from "../../AnimatedPage";
 
 const SignUpView = () => {
     const [signup_data, set_signup_data] = useState({
@@ -26,22 +26,17 @@ const SignUpView = () => {
                     email: signup_data.email
                 }
             });
-            console.log('signup sccess!');
             navigate('/main');
         } catch (err) {
-            console.log('signup error...');
             console.log(err)
         }
     };
 
-    const log = () => {
-        let signup = document.querySelectorAll('input');
+    const midtermCheck = (name, data) => {
         set_signup_data({
-            name: signup[0].value,
-            password: signup[1].value,
-            email: signup[2].value
-        });
-        Signup();
+            ...signup_data,
+            [name]: data
+        })
     }
 
     return (
@@ -60,10 +55,26 @@ const SignUpView = () => {
                             link='/login'
                         />
                         <Right_box>
-                            <Input_view name='닉네임' text='3~20자로 닉네임을 입력해주세요.' />
-                            <Input_view name='이메일' text='이메일을 입력해주세요.' />
-                            <Input_view type='password' name='비밀번호' text='숫자,대소문자,특수문자 포함 4~30자' />
-                            <Button_box top='31px'>회원가입</Button_box>
+                            <Input_view
+                                check='name'
+                                func={midtermCheck}
+                                name='닉네임'
+                                text='3~20자로 닉네임을 입력해주세요.'
+                            />
+                            <Input_view
+                                check='email'
+                                func={midtermCheck}
+                                name='이메일'
+                                text='이메일을 입력해주세요.'
+                            />
+                            <Input_view
+                                check='password'
+                                func={midtermCheck}
+                                type='password'
+                                name='비밀번호'
+                                text='숫자,대소문자,특수문자 포함 4~30자'
+                            />
+                            <Button_box onClick={() => Signup()} top='31px'>회원가입</Button_box>
                         </Right_box>
                     </Flex_box>
                 </Blur_box>

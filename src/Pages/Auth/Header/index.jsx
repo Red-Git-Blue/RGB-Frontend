@@ -18,42 +18,63 @@ const Page_button = styled.span`
   display: inline-block;
   transition: 0.3s;
   margin-left: 50px;
+  overflow: visible;
 
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    display: block;
-    background: #FFF500;
-    -webkit-transform-origin: right top;
-    -ms-transform-origin: right top;
-    transform-origin: right top;
-    -webkit-transform: scale(0, 1);
-    -ms-transform: scale(0, 1);
-    transform: scale(0, 1);
-    -webkit-transition: transform 0.4s cubic-bezier(1, 0, 0, 1);
-    transition: transform 0.4s cubic-bezier(1, 0, 0, 1);
-  }
-
-  &:hover {
-    transform: scale(1.1);
-    color: #FFF500;
-
+  ${(props) => props.bool ? 
+  `
+    color:#FFF500;
     &::before {
-      -webkit-transform-origin: left top;
-      -ms-transform-origin: left top;
-      transform-origin: left top;
-      -webkit-transform: scale(1, 1);
-      -ms-transform: scale(1, 1);
-      transform: scale(1, 1);
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      display: block;
+      background: #FFF500;
     }
+  `
+  :
+  `
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      display: block;
+      background: #FFF500;
+      -webkit-transform-origin: right top;
+      -ms-transform-origin: right top;
+      transform-origin: right top;
+      -webkit-transform: scale(0, 1);
+      -ms-transform: scale(0, 1);
+      transform: scale(0, 1);
+      -webkit-transition: transform 0.4s cubic-bezier(1, 0, 0, 1);
+      transition: transform 0.4s cubic-bezier(1, 0, 0, 1);
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      color: #FFF500;
+
+      &::before {
+        -webkit-transform-origin: left top;
+        -ms-transform-origin: left top;
+        transform-origin: left top;
+        -webkit-transform: scale(1, 1);
+        -ms-transform: scale(1, 1);
+        transform: scale(1, 1);
+      }
+    }
+  `
   }
 `
 
 const Header = ({Admin}) => {
+    const log = useLocation();
+    const data = log.pathname.split('/').filter((item) => item !== '');
     let navigate = useNavigate();
     const [cookies, ,] = useCookies(['refreshToken']);
     return (
@@ -68,24 +89,24 @@ const Header = ({Admin}) => {
                 <Page_box>
                     {Admin ?
                         <Fragment>
-                            <Page_button onClick={() => navigate('/youDontKnow/AdminPage')}>Main</Page_button>
-                            <Page_button onClick={() => navigate('/youDontKnow/AdminPage/AdminBadge')}>Manage Badge</Page_button>
-                            <Page_button onClick={() => navigate('/youDontKnow/AdminPage/AdminGrass')}>Manage Grass</Page_button>
-                            <Page_button onClick={() => navigate('/youDontKnow/AdminPage/AdminAd')}>Manage Ad</Page_button>
-                            <Page_button onClick={() => navigate('/youDontKnow/AdminPage/AdminCategory')}>Manage Category</Page_button>
+                            <Page_button bool={data[data.length - 1] === 'AdminPage'} onClick={() => navigate('/youDontKnow/AdminPage')}>Main</Page_button>
+                            <Page_button bool={data[data.length - 1] === 'AdminBadge'} onClick={() => navigate('/youDontKnow/AdminPage/AdminBadge')}>Manage Badge</Page_button>
+                            <Page_button bool={data[data.length - 1] === 'AdminGrass'} onClick={() => navigate('/youDontKnow/AdminPage/AdminGrass')}>Manage Grass</Page_button>
+                            <Page_button bool={data[data.length - 1] === 'AdminAd'} onClick={() => navigate('/youDontKnow/AdminPage/AdminAd')}>Manage Ad</Page_button>
+                            <Page_button bool={data[data.length - 1] === 'AdminCategory'} onClick={() => navigate('/youDontKnow/AdminPage/AdminCategory')}>Manage Category</Page_button>
                         </Fragment>
                         :
                         <Fragment>
-                            <Page_button onClick={() => navigate('/main')}>Main</Page_button>
-                            <Page_button onClick={() => navigate('/coin')}>Coin</Page_button>
-                            <Page_button onClick={() => navigate('/search')}>Search</Page_button>
-                            <Page_button onClick={() => navigate('/shop')}>Shop</Page_button>
+                            <Page_button bool={data[0] === 'main'} onClick={() => navigate('/main')}>Main</Page_button>
+                            <Page_button bool={data[0] === 'coin'} onClick={() => navigate('/coin')}>Coin</Page_button>
+                            <Page_button bool={data[0] === 'search'} onClick={() => navigate('/search')}>Search</Page_button>
+                            <Page_button bool={data[0] === 'shop'} onClick={() => navigate('/shop')}>Shop</Page_button>
                             {cookies.refreshToken ?
-                                <Page_button onClick={() => navigate('/mypage')}>My Page</Page_button>
+                                <Page_button bool={data[0] === 'mypage'} onClick={() => navigate('/mypage')}>My Page</Page_button>
                                 :
                                 <Fragment>
-                                    <Page_button onClick={() => navigate('/login')}>Log In</Page_button>
-                                    <Page_button onClick={() => navigate('/signup')}>Sign Up</Page_button>
+                                    <Page_button bool={data[0] === 'login'} onClick={() => navigate('/login')}>Log In</Page_button>
+                                    <Page_button bool={data[0] === 'signup'} onClick={() => navigate('/signup')}>Sign Up</Page_button>
                                 </Fragment>
                             }
                         </Fragment>
@@ -133,4 +154,5 @@ const Page_box = styled.div`
   width: auto;
   display: flex;
   justify-content: space-between;
+  overflow: visible;
 `

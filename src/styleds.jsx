@@ -52,6 +52,7 @@ export const Input_box = styled.input`
     border: 1px solid #FFFFFF;
     border-radius: 64px;
     padding: 0 24px 0 24px;
+    outline: none;
 
     font-family: 'NanumGothic';
     font-style: normal;
@@ -103,7 +104,9 @@ export const Button_box = styled.button`
     border: 1px solid #ffffff;
     background: ${(props) => props.background || '#FFFFFF'};
     color: ${(props) => props.color || '#000000'};
-    margin-top: ${(props) => props.top || '20px'};;
+    margin-top: ${(props) => props.top || '20px'};
+    overflow-x: visible;
+    z-index: 2;
 
     font-family: 'NanumGothic', sans-serif;
     font-style: normal;
@@ -144,7 +147,7 @@ const PsswordBox = styled.div`
     justify-content: center;
 `
 
-export const Input_view = ({ type = 'text', name, text }) => {
+export const Input_view = ({ type = 'text', name, text, check, func }) => {
     const [bool, setbool] = useState(true);
 
     return (
@@ -152,22 +155,22 @@ export const Input_view = ({ type = 'text', name, text }) => {
             <Sub_title>{name}</Sub_title>
             {
                 type == 'text' ?
-                    <Input_box type={'text'} placeholder={text} />
+                    <Input_box onChange={(e) => func(check, e.target.value)} type={'text'} placeholder={text} />
                     :
                     <Input_password_out_box>
                         {
                             bool ?
                                 <>
-                                    <Input_password_box type={type} placeholder={text} />
+                                    <Input_password_box onChange={(e) => func(check, e.target.value)} type={type} placeholder={text} />
                                     <PsswordBox onClick={(() => setbool(false))}>
-                                        <PasswordImage src='password_hidden.png' width='24px' height='24px' />
+                                        <PasswordImage src='image/password_hidden.png' width='24px' height='24px' />
                                     </PsswordBox>
                                 </>
                                 :
                                 <>
-                                    <Input_password_box type='text' placeholder={text} />
+                                    <Input_password_box onChange={(e) => func(check, e.target.value)} type='text' placeholder={text} />
                                     <PsswordBox onClick={(() => setbool(true))}>
-                                        <PasswordImage src='password_view.png' width='24px' height='24px' />
+                                        <PasswordImage src='image/password_view.png' width='24px' height='24px' />
                                     </PsswordBox>
                                 </>
                         }
@@ -202,6 +205,11 @@ const Auth_page_Text = styled.span`
     color: #FFF500;
     cursor: pointer;
     display: block;
+
+    transition: 0.3s;
+    &:hover {
+        transform: scale(1.05);
+    }
 `
 
 export const Auth_page = ({ string, name, move }) => {
@@ -241,6 +249,7 @@ export const Right_box = styled.div`
     width: 430px;
     display: flex;
     flex-direction: column;
+    overflow-x: visible;
 `
 
 const Set_box = styled.div`
@@ -269,7 +278,7 @@ export const Image = styled.img.attrs(({
 }))`
     width: ${(props) => props.width || '0px'};
     height: ${(props) => props.height || '0px'};
-    background-size: cover;
+    object-fit: cover;
     border-radius: ${(props) => props.radius || '0px'};
 `
 
@@ -278,7 +287,7 @@ const PasswordImage = styled.img.attrs(({
 }))`
     width: ${(props) => props.width || '0px'};
     height: ${(props) => props.height || '0px'};
-    background-size: cover;
+    object-fit: cover;
     border-radius: 60px;
     background: #FFF;
 `
