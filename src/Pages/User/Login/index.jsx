@@ -5,6 +5,7 @@ import { Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../../
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import AnimatedPage from "../../AnimatedPage";
+import { toast } from "react-toastify"
 
 const LoginView = () => {
     const [login_data, set_login_data] = useState({
@@ -26,12 +27,11 @@ const LoginView = () => {
                     password: login_data.password
                 }
             });
-            console.log('login sccess!');
+            toast.success("Login 성공!");
             setCookie('accessToken', res.data.accessToken);
             setCookie('refreshToken', res.data.refreshToken);
         } catch (err) {
-            console.log('login error...');
-            console.log(err)
+            toast.error("제대로 입력했는지 확인하세요");
         }
     };
 

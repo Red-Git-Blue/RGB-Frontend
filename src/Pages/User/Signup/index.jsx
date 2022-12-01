@@ -5,6 +5,7 @@ import { Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../../
 import Alert from "../../Alert.js";
 import styled from "styled-components";
 import AnimatedPage from "../../AnimatedPage";
+import { toast } from "react-toastify"
 
 const SignUpView = () => {
     const [signup_data, set_signup_data] = useState({
@@ -26,9 +27,10 @@ const SignUpView = () => {
                     email: signup_data.email
                 }
             });
+            toast.success("Login 성공!");
             navigate('/main');
         } catch (err) {
-            console.log(err)
+            toast.error("제대로 입력했는지 확인하세요");
         }
     };
 

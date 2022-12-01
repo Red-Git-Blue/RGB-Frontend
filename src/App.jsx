@@ -23,6 +23,9 @@ import Category from './Pages/Admin/category';
 import Grass from './Pages/Admin/grass';
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
+import { ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
+import styled from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -68,6 +71,7 @@ function App() {
                                 </Route>
                             </Routes>
                         </BrowserRouter>
+                        <StyledToastContainer />
                     </CookiesProvider>
                 </AnimatePresence>
         </QueryClientProvider>
@@ -75,3 +79,38 @@ function App() {
 }
 
 export default App;
+
+const StyledToastContainer = styled(ToastContainer).attrs({
+    className: "toast-container",
+    toastClassName: "toast",
+    bodyClassName: "body",
+    progressClassName: "progress",
+    position:"top-right",
+    autoClose:'1500',
+    newestOnTop:true
+  })`
+    /* .toast-container */
+    width: 400px;
+    font-size: 16px;
+    padding: 16px 28px;
+  
+    /* .toast is passed to toastClassName */
+    .toast {
+      border-radius: 10px;
+      background-color: var(--toastify-color-dark);
+      box-shadow: 0 0 10px 1px var(--toastify-color-light);
+    }
+  
+    button[aria-label="close"] {
+      color: var(--toastify-color-light);
+    }
+  
+    /* .body is passed to bodyClassName */
+    .body {
+        color: var(--toastify-color-light);
+    }
+  
+    /* .progress is passed to progressClassName */
+    .progress {
+    }
+`;
