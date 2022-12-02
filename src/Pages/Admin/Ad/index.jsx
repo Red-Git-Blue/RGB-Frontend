@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import {useMediaQuery} from "react-responsive";
 
-const Ad = () => {
+const Index = () => {
     return(
         <Fragment>
             <p style={{color:"white"}}>hello! this is Ad Page!</p>
@@ -11,4 +11,4 @@ const Ad = () => {
     );
 }
 
-export default Ad;
+export default Index;

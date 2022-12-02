@@ -2,9 +2,7 @@ import {Fragment, useEffect, useState} from "react";
 import styled, {keyframes} from "styled-components";
 import axios from "axios";
 import {focusManager} from "react-query";
-
-const BaseUrl = 'http://local.lite24.net:8080';
-const AccessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY2OTk2MDIyMiwiZXhwIjoxNjcwMDQ2NjIyfQ.Q3J8KX25JN2peX_L8ryll9eNR2rmdrEyLWajgObQWjc';
+import {postBadge} from "./api";
 
 const Modal = ({Set, Re}) => {
     const [bName, setBName] = useState("");
@@ -17,7 +15,9 @@ const Modal = ({Set, Re}) => {
     const [tag, setTag] = useState([]);
     const [jjason, setJjason] = useState({});
     const [previewImg, setPreviewImg] = useState("");
+    const [preImg, setPreImg] = useState(null);
     const [previewImg2, setPreviewImg2] = useState("");
+    const [preImg2, setPreImg2] = useState(null);
     const [subImgs, setSubImgs] = useState([]);
     const [img, setImg] = useState([]);
     const Change = e => setBName(e.target.value);
@@ -33,6 +33,7 @@ const Modal = ({Set, Re}) => {
 
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0]);
+            setPreImg(e.target.files[0]);
         }
         reader.onloadend = () => {
             const previewImgUrl = reader.result;
@@ -85,7 +86,7 @@ const Modal = ({Set, Re}) => {
 
         formData.append("mainImage", mFiles[0]);
         formData.append("iconImage", iFiles[0]);
-        formData.append("subImages", sFiles[0]);
+        for (let i = 0; i < sFiles.length; i++) formData.append("subImages", sFiles[i]);
 
         setJjason({
             name: bName,
@@ -100,23 +101,8 @@ const Modal = ({Set, Re}) => {
         formData.set("req", new Blob([JSON.stringify(jjason)], {
             type: "application/json"
         }));
-
         bName && rank && price && explain && tag && previewImg && previewImg2 && jjason ? console.log('success!') : console.log('fail...');
-
-        Response(e, formData);
-    }
-
-    async function Response(e, formData) {
-        await axios({
-            method: "POST",
-            url: BaseUrl + "/api/item/badge",
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${AccessToken}`
-            },
-            data: formData,
-        });
-        Re();
+        postBadge(Re, e, formData);
     }
 
     return (
@@ -138,8 +124,12 @@ const Modal = ({Set, Re}) => {
                                 <CloseBtn C="red" M="0" onClick={() => mRemove(setPreviewImg)}>X</CloseBtn> : null}
                             <File type="file" name="mfile" multiple="multiple" id="mfile"
                                   onChange={(e) => insertM(e, setPreviewImg)}></File>
-                            {previewImg !== "" ? <Img src={previewImg}/> : null}
-                            <p style={{color: "white"}}>{previewImg.name}</p>
+                            {previewImg ?
+                                <Fragment>
+                                    <Img src={previewImg}/>
+                                    <p>{}</p>
+                                </Fragment>
+                                : null}
 
                             <Label htmlFor="ifile" pre={previewImg2}>+</Label>
                             {previewImg2 ?
@@ -148,14 +138,14 @@ const Modal = ({Set, Re}) => {
                                   onChange={(e) => insertM(e, setPreviewImg2)}></File>
                             {previewImg2 !== "" ? <Img src={previewImg2}/> : null}
 
-                            <Label htmlFor="sfile" pr="flex">+</Label>
+                            <Label htmlFor="sfile" pr="flex" S="80px">+</Label>
                             <File type="file" name="sfile" multiple="multiple" id="sfile"
                                   style={{marginBottom: "20px"}} onChange={(e) => insertS(e)}></File>
                             {subImgs !== "" ? img.map((el, index) => {
                                     const {name} = el;
                                     return (
                                         <Fragment key={index}>
-                                            <Img src={subImgs[index]}/>
+                                            <Img src={subImgs[index]} S="80px"/>
                                             <p>{name}</p>
                                         </Fragment>
                                     );
@@ -195,20 +185,21 @@ const Modal = ({Set, Re}) => {
 export default Modal;
 
 const Img = styled.img`
-  width: 160px;
-  height: 160px;
+  width: ${props => props.S || "200px"};
+  height: ${props => props.S || "200px"};
   border-radius: 20px;
   border: #444444 solid 2px;
   object-fit: cover;
 `;
 const Label = styled.label`
   background-color: #333333;
-  width: 160px;
-  height: 160px;
+  width: ${props => props.S || "200px"};
+  height: ${props => props.S || "200px"};
   border-radius: 20px;
-  display: ${props => props.pr||(props => props.pre != "" ? "none" : "flex")};
+  display: ${props => props.pr || (props => props.pre != "" ? "none" : "flex")};
   justify-content: center;
   align-items: center;
+  font-size: 40px;
 `;
 const File = styled.input`
   display: none;
@@ -230,7 +221,7 @@ const AddBtn = styled.button`
   width: 120px;
   height: 40px;
   color: black;
-  background-color: yellow;
+  background-color: #00a6ff;
   border-radius: 100px;
   margin: 10px 0 10px 0;
   font-weight: 600;
@@ -244,18 +235,20 @@ const Form = styled.form`
 const FlexDiv = styled.div`
   display: flex;
   flex-direction: ${props => props.Direction || "row"};
+  align-items: center;
   width: 100%;
 `;
 const Input = styled.input`
   width: 80%;
   margin: 10px 0 10px 0;
   height: 30px;
-  border: white solid 2px;
+  border: #222222 solid 2px;
   border-radius: 100px;
   padding: 6px 20px 6px 20px;
+  background-color: #222222;
 
   &:focus {
-    border: midnightblue solid 2px;
+    border: #00a6ff solid 2px;
     outline: none;
   }
 `;

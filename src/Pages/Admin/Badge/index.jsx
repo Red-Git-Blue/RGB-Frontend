@@ -1,11 +1,10 @@
 import {Fragment, useEffect, useState} from "react";
 import styled from "styled-components";
 import axios from "axios";
-import {useMediaQuery} from "react-responsive";
 import Modal from './modal';
 import {useQuery} from "react-query";
-
-const BaseUrl = 'http://local.lite24.net:8080';
+import {getCoinList, getDetailCoin} from "./api";
+import DetailModal from "./detailModal";
 
 /*async function Acces() {
     const Token = await axios({
@@ -24,23 +23,6 @@ const BaseUrl = 'http://local.lite24.net:8080';
 
 const AccesToken = Acces.accessToken;*/
 
-async function Response() {
-    const badgeRes = await axios({
-            method: 'get',
-            url: BaseUrl + '/api/item/badge?idx&size=20',
-        }
-    )
-    return badgeRes.data;
-}
-
-async function DetailResponse({asdf}) {
-    const detailRes = await axios({
-        method: 'get',
-        url: BaseUrl + '/api/item/badge/' + asdf,
-    })
-    return detailRes.data;
-}
-
 const Index = () => {
     const [isOpen, setOpen] = useState(false);
     const [detail, setDetail] = useState(false);
@@ -48,11 +30,8 @@ const Index = () => {
     const handleClick = () => {
         setOpen(true);
     };
-    const detailClick = () => {
-        setDetail(true);
-    };
     const {isLoading, error, data, refetch} = useQuery([],
-        () => Response()
+        () => getCoinList()
     )
 
     if (isLoading) return <div>로딩중..</div>;
@@ -60,8 +39,9 @@ const Index = () => {
     if (!data) return <button>불러오기</button>;
     console.log(data);
 
-    const DetailR = ({asdf}) => {
-        setDetailInfo(() => DetailResponse({asdf}));
+    const DetailR = (dat) => {
+        setDetailInfo(() => getDetailCoin(dat));
+        setDetail(true);
         console.log(detailInfo);
     }
 
@@ -69,6 +49,7 @@ const Index = () => {
         <Fragment>
             <Body>
                 {isOpen ? <Modal Set={setOpen} Re={refetch}/> : null}
+                {detail ? <DetailModal Set={setDetail}/> : null}
                 <Text Margin="100px" Size="36px" W="200">Manage Badge</Text>
                 <FlexDiv>
                     <Text>Badge List</Text>
@@ -76,14 +57,9 @@ const Index = () => {
                 </FlexDiv>
                 <BadgeList>
                     {data.content.map((dat) => (
-                        <BadgeDiv key={dat.id} draggable onClick={() => DetailR({asdf: dat.id})} name={dat.id}>
+                        <BadgeDiv key={dat.id} draggable onClick={() => DetailR(dat.id)} name={dat.id}>
                             <Image src={dat.badgeMainFile.fileUrl}></Image>
                             <Text Size="20px" W="100">{dat.name}</Text>
-                            {/*<TagDiv>*/}
-                            {/*    {dat.tagList.map((info)=>(*/}
-                            {/*        <Tag key={info.tagName}>{info.tagName}</Tag>*/}
-                            {/*    ))}*/}
-                            {/*</TagDiv>*/}
                         </BadgeDiv>
                     ))}
                 </BadgeList>
@@ -94,19 +70,6 @@ const Index = () => {
 
 export default Index;
 
-const Tag = styled.div`
-  padding: 6px 20px 6px 20px;
-  margin: 4px;
-  border-radius: 100px;
-  background-color: #444444;
-  color: white;
-  font-family: Roboto, sans-serif;
-  font-weight: 100;
-`;
-const TagDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
 const Image = styled.img`
   height: 240px;
   width: 240px;

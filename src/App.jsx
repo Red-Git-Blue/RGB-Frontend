@@ -17,7 +17,7 @@ import {createGlobalStyle} from "styled-components";
 import {Fragment} from 'react';
 import {CookiesProvider} from 'react-cookie';
 import Admin from './Pages/Admin/index';
-import Ad from './Pages/Admin/ad';
+import Ad from './Pages/Admin/Ad/index';
 import Index from './Pages/Admin/Badge/index';
 import Category from './Pages/Admin/category';
 import Grass from './Pages/Admin/grass';
