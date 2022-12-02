@@ -5,6 +5,9 @@ import { Image } from "../../../styleds";
 import { useMediaQuery } from "react-responsive";
 import AnimationPage from "../../AnimatedPage";
 import Github_view from "../../Auth/Contribution";
+import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
+import { BaseUrl } from "../../../export/base";
 
 class CircleQueue{
   constructor(data, size){
@@ -38,6 +41,7 @@ class CircleQueue{
 }
 
 const Main = () => {
+  const [cookies, , ] = useCookies(['accessToken']);
   const isMobile = useMediaQuery({ query: '(max-width:768px)' });
   const [badgeData, setBadgeData] = useState(undefined);
   const [viewBadge, setViewBadge] = useState(undefined);
@@ -58,7 +62,6 @@ const Main = () => {
       setViewBadge(res.data.content.slice(1, 7));
     })
     .catch((err) => {
-      console.log(err);
     })
   }
 
@@ -66,19 +69,20 @@ const Main = () => {
     try {
       let res = await axios({
         method: 'GET',
-        url: 'http://local.lite24.net:8080/api/user/contribution',
-        credentials: 'include',
-        hearders: {
-          "Content-Type": "application/json",
+        url: BaseUrl + '/user/contribution',
+        headers: {
+          Authorization: `Bearer ${cookies.accessToken}`,
         },
         params: {
-          name: 'eternrust',
           year: 2022
         }
       });
       setCommit(res.data.contributions);
     } catch (err) {
-      console.log(err)
+      // if(err.response.data.message === 'Github Token Not Found') {
+      //   toast.info('Github를 연동하면 더 많은 기능을 즐길 수 있습니다.')
+      //   toast.info('깃허브가 연동되지 않았군요!')
+      // }
     }
   };
 
@@ -88,12 +92,12 @@ const Main = () => {
   }, []);
 
     const haveCoin = [
-        {coinImg: '/image/Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price: "152,894"},
-        {coinImg: '/image/Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "5", price: "212,651"},
-        {coinImg: '/image/Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "12", price: "1,978"},
-        {coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "2", price: "657,918"},
-    { coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918" },
-    { coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918" },
+      {coinImg: '/image/Profile.jpg', name: "HYUNSUK", money: "+12,000 (+4.2%)", Coin: "10", price: "152,894"},
+      {coinImg: '/image/Profile.jpg', name: "SeungWoo", money: "+64,652 (+8.9%)", Coin: "5", price: "212,651"},
+      {coinImg: '/image/Profile.jpg', name: "JunHa", money: "-132 (-1.1%)", Coin: "12", price: "1,978"},
+      {coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "2", price: "657,918"},
+      { coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918" },
+      { coinImg: '/image/Profile.jpg', name: "MOONER510", money: "+57,628 (+20.5%)", Coin: "10", price: "657,918" },
     ];
 
   const [coin, setCoin] = useState(haveCoin[0]);
@@ -164,8 +168,8 @@ const Main = () => {
             Height="460px">
             <SubThings Colors="#999999" Weight="900" Size="18px" Margin="20px">보유 코인</SubThings>
             <ScrollDiv>
-              {haveCoin.map((coin) =>
-                <PrintCoin Info={coin} />
+              {haveCoin.map((coin, index) =>
+                <PrintCoin key={index} Info={coin} />
               )}
             </ScrollDiv>
           </SectionDiv>

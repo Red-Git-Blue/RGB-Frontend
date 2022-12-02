@@ -26,7 +26,7 @@ const SignUpView = () => {
                     email: signup_data.email
                 }
             });
-            toast.success("Login 성공!");
+            toast.success("회원가입 성공!");
             navigate('/main');
         } catch (err) {
             toast.error("제대로 입력했는지 확인하세요");
