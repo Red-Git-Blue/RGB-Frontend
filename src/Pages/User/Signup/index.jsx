@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../../styleds";
-import Alert from "../../Alert.js";
 import styled from "styled-components";
 import AnimatedPage from "../../AnimatedPage";
 import { toast } from "react-toastify"
@@ -20,7 +19,7 @@ const SignUpView = () => {
         try {
             let res = await axios({
                 method: 'post',
-                url: 'http://local.lite24.net:8080/api/rgb/auth/sign-up',
+                url: 'http://local.lite24.net:8080/api/auth/sign-up',
                 data: {
                     name: signup_data.name,
                     password: signup_data.password,
@@ -43,8 +42,6 @@ const SignUpView = () => {
 
     return (
         <AnimatedPage>
-            {/* Alert 테스트 코드 */}
-            {/* <Alert string={'확인했습니까?'}/> */}
             <Center>
                 <Blur_box>
                     <Flex_box>

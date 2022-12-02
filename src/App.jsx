@@ -32,6 +32,9 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     user-select: none;
+    img {
+      user-drag: none;
+    }
     &::-webkit-scrollbar {
       width: 0;
       height: 0;
@@ -93,12 +96,16 @@ const StyledToastContainer = styled(ToastContainer).attrs({
     width: 400px;
     font-size: 16px;
     padding: 16px 28px;
-  
+    
     /* .toast is passed to toastClassName */
     .toast {
       border-radius: 10px;
       background-color: var(--toastify-color-dark);
       box-shadow: 0 0 10px 1px var(--toastify-color-light);
+      transition: 0.3s;
+      &:hover {
+        transform: scale(1.05);
+      }
     }
   
     button[aria-label="close"] {
