@@ -24,13 +24,13 @@ const Commit_View = ({ data, color, func }) => {
             y += 22;
         }
         if ((i + 1) % 7 === 0) {
-            result.push(<Svg_commit_g trans={x} >{tmp}</Svg_commit_g>);
+            result.push(<Svg_commit_g key={i + 365} trans={x} >{tmp}</Svg_commit_g>);
             x += 22;
             y = 0;
             tmp = [];
         }
     }
-    if (tmp.length) result.push(<Svg_commit_g trans={x} >{tmp}</Svg_commit_g>);
+    if (tmp.length) result.push(<Svg_commit_g key={1000} trans={x} >{tmp}</Svg_commit_g>);
 
     return result;
 }
