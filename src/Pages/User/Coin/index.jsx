@@ -54,8 +54,11 @@ const CoinView = () => {
                             <Doughnut data={data}/>
                         </div>
                     </My_coin_box>
-                    <AuthCoin_box>
-                    </AuthCoin_box>
+                    <AuthCoinBox>
+                        <AuthCoinDetail title='추천 코인' text='Recommended coin' />
+                        <AuthCoinDetail title='상승 코인' text='rise coin' />
+                        <AuthCoinDetail title='하락 코인' text='fell coin' />
+                    </AuthCoinBox>
                 </>
                 :
                 <>
@@ -259,6 +262,133 @@ const MyCoinDetailChartBox = styled.div`
     }
 `
 
-const AuthCoin_box = styled.div`
+const AuthCoinBox = styled.div`
+    width: 1320px;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+`
 
+const AuthCoinDetail = ({title, text, data = [1,2,3,4,5,6,7,8,9,10]}) => {
+    
+    return (
+        <AuthCoinDetailBox>
+            <div>
+                <span>{title}</span>
+                <span>{text}</span>
+            </div>
+            <div>
+                {
+                    data.map((item, index) => 
+                        <AuthCoinDetailInBox key={index} data={item} index={index} />
+                    )
+                }
+            </div>
+        </AuthCoinDetailBox>
+    )
+}
+
+const AuthCoinDetailBox = styled.div`
+    width: 400px;
+    height: auto;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+    & > div {
+        display: flex;
+        flex-direction: column;
+        &:first-child {
+            display: flex;
+            flex-direction: column;
+            & > :last-child {
+                margin: 10px 0 30px;
+                font-weight: 900;
+                font-size: 24px;
+                line-height: 28px;
+                text-transform: uppercase;
+                color: #888888;
+            }
+        }
+        &:last-child {
+            width: 380px;
+            height: auto;
+            padding: 10px;
+            background: #111111;
+            border-radius: 20px;
+        }
+    }
+`
+
+const AuthCoinDetailInBox = ({data, index}) => {
+    const Color = ['#FFFFFF', '#999999', '#666666', '#444444', '#222222'];
+
+    return (
+        <AuthCoinDetailStyled
+            color={index < 5 ? Color[index] : '#000000'}
+            UpDown='#ff0000'    
+        >
+            <div>
+                <Image src='/image/Profile.jpg' width='35px' height='35px' radius='35px' />
+                <div>
+                    <span>peach&niga</span>
+                    <span>박준하</span>
+                </div>
+            </div>
+            <div>
+                <span>23,904</span>
+                <span>+12.8%</span>
+            </div>
+        </AuthCoinDetailStyled>
+    )
+}
+
+const AuthCoinDetailStyled = styled.div`
+    width: 340px;
+    height: 35px;
+    padding: 20px;
+    background: ${(props) => props.color};
+    backdrop-filter: blur(120px);
+    border-radius: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    & > div {
+        display: flex;
+        &:first-child div {
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+            & > :first-child {
+                font-size: 14px;
+                line-height: 16px;
+                color: ${(props) => props.color=='#FFFFFF' ? '#000000' : '#ffffff'};
+            }
+            & > :last-child {
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 14px;
+                color: #828282;
+                margin-top: 5px;
+            }
+        }
+        &:last-child {
+            flex-direction: column;
+            text-align: right;
+            & > :first-child {
+                font-size: 14px;
+                line-height: 16px;
+                color: ${(props) => props.color=='#FFFFFF' ? '#000000' : '#ffffff'};
+            }
+            & > :last-child {
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 14px;
+                color: ${(props) => props.UpDown};
+                margin-top: 5px;
+            }
+        }
+    }
 `
