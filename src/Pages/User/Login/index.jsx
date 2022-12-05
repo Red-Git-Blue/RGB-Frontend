@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import AnimatedPage from "../../AnimatedPage";
 import { toast } from "react-toastify"
+import { BaseUrl } from "../../../export/baseUrl";
 
 const LoginView = () => {
     const [login_data, set_login_data] = useState({
@@ -21,7 +22,7 @@ const LoginView = () => {
         try {
             let res = await axios({
                 method: 'post',
-                url: 'http://local.lite24.net:8080/api/auth/sign-in',
+                url: BaseUrl + '/auth/sign-in',
                 data: {
                     email: login_data.email,
                     password: login_data.password

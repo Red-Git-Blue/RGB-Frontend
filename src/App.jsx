@@ -7,7 +7,6 @@ import Main from "./Pages/User/Main/index";
 import ShopView from './Pages/User/Shop';
 import MyPageView from './Pages/User/MyPage';
 import ErrorPage from "./Pages/Auth/ErrorPage/index";
-import Header from "./Pages/Auth/Header/index";
 import Landing from "./Pages/Auth/Landing/index";
 import LS_Layout from './Pages/Auth/Layout/LS_Layout';
 import Main_Layout from './Pages/Auth/Layout/Main_Layout';
@@ -26,6 +25,7 @@ import {ReactQueryDevtools} from "react-query/devtools";
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
+import CoinDetailView from './Pages/User/Coin/detail';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -60,6 +60,7 @@ function App() {
                                     <Route path='/shop' element={<ShopView />}></Route>
                                     <Route path='/mypage' element={<MyPageView/>}></Route>
                                 </Route>
+                                <Route path='/coin/:id' element={<CoinDetailView />}></Route>
                                 <Route element={<LS_Layout/>}>
                                     <Route path='/login' element={<LoginView/>}></Route>
                                     <Route path='/signup' element={<SignUpView/>}></Route>

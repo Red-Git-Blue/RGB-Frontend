@@ -7,7 +7,7 @@ import AnimationPage from "../../AnimatedPage";
 import Github_view from "../../Auth/Contribution";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
-import { BaseUrl } from "../../../export/base";
+import { BaseUrl } from "../../../export/baseUrl";
 
 class CircleQueue{
   constructor(data, size){
@@ -50,7 +50,7 @@ const Main = () => {
   const getBadge = () => {
     axios({
       method: 'get',
-      url: 'http://local.lite24.net:8080/api/item/badge/details',
+      url: BaseUrl + '/item/badge/details',
       params: {
         idx: 0,
         size: 20

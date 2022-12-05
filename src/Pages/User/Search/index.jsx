@@ -2,6 +2,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 import styled from "styled-components";
+import { BaseUrl } from "../../../export/baseUrl";
 
 const SearchView = () => {
     const [Btn_click, Set_click] = useState(1);
@@ -11,7 +12,7 @@ const SearchView = () => {
         if(!cookies.accessToken) return;
         axios({
             method: 'get',
-            url: 'http://local.lite24.net:8080/api/user/search',
+            url: BaseUrl + '/user/search',
             headers: {
                 Authorization: `Bearer ${cookies.accessToken}`,
             },
