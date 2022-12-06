@@ -56,9 +56,11 @@ const Github_view = ({ data, margin = 0 }) => {
             date.setDate(date.getDate() + 1);
         }
     } else {
+        let data = data.contribution.contributions;
         for (let i = 0; i < data.length; i++) {
             commitCount += data[i].count;
             commitData.push(data[i]);
+            console.log(data[i]);
         }
     }
 

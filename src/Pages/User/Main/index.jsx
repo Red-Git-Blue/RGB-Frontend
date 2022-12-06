@@ -77,7 +77,7 @@ const Main = () => {
           year: 2022
         }
       });
-      setCommit(res.data.contributions);
+      setCommit(res.data);
     } catch (err) {
       // if(err.response.data.message === 'Github Token Not Found') {
       //   toast.info('Github를 연동하면 더 많은 기능을 즐길 수 있습니다.')

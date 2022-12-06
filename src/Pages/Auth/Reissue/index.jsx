@@ -8,7 +8,7 @@ const reissue = () => {
     if(cookies.accessToken && cookies.refreshToken) {
     axios({
         method: 'post',
-        url: 'http://local.lite24.net:8080/api/auth/reissue',
+        url: BaseUrl + '/auth/reissue',
         data: {
             accessToken : cookies.accessToken,
             refreshToken : cookies.refreshToken
