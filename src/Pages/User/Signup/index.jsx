@@ -4,8 +4,8 @@ import axios from "axios";
 import { Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../../styleds";
 import styled from "styled-components";
 import AnimatedPage from "../../AnimatedPage";
-import { toast } from "react-toastify"
-import {BaseUrl} from "../../../export/baseUrl";
+import { toast } from "react-toastify";
+import { BaseUrl } from "../../../export/baseUrl";
 
 const SignUpView = () => {
     const [signup_data, set_signup_data] = useState({

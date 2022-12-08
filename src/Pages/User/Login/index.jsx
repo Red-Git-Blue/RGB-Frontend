@@ -37,7 +37,8 @@ const LoginView = () => {
     };
 
     useEffect(() => {
-        if (cookies.accessToken) navigate('/main');
+        if (cookies.accessToken && cookies.refreshToken)
+            navigate('/main');
     }, [cookies])
 
     const midtermCheck = (name, data) => {
