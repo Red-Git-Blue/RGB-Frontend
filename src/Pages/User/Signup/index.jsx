@@ -5,6 +5,7 @@ import { Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../../
 import styled from "styled-components";
 import AnimatedPage from "../../AnimatedPage";
 import { toast } from "react-toastify"
+import {BaseUrl} from "../../../export/baseUrl";
 
 const SignUpView = () => {
     const [signup_data, set_signup_data] = useState({
@@ -19,7 +20,7 @@ const SignUpView = () => {
         try {
             let res = await axios({
                 method: 'post',
-                url: 'http://local.lite24.net:8080/api/auth/sign-up',
+                url: BaseUrl + '/auth/sign-up',
                 data: {
                     name: signup_data.name,
                     password: signup_data.password,

@@ -58,6 +58,10 @@ const Modal = ({Set, Re}) => {
         }
     }
 
+    const SubDelete = (index) => {
+
+    }
+
     const mRemove = (remove) => {
         remove("");
     }
@@ -81,7 +85,7 @@ const Modal = ({Set, Re}) => {
 
         let mFiles = e.target.mfile.files;
         let iFiles = e.target.ifile.files;
-        let sFiles = e.target.sfile.files;
+        let sFiles = img;
         let formData = new FormData();
 
         formData.append("mainImage", mFiles[0]);
@@ -118,6 +122,7 @@ const Modal = ({Set, Re}) => {
                             color: "white",
                             height: "200px",
                         }}>
+                            {/*------------------------------------------------------------------------Add Main Image*/}
                             <Label htmlFor="mfile" pre={previewImg}><>+</>
                             </Label>
                             {previewImg ?
@@ -131,6 +136,7 @@ const Modal = ({Set, Re}) => {
                                 </Fragment>
                                 : null}
 
+                            {/*------------------------------------------------------------------------Add Icon Image*/}
                             <Label htmlFor="ifile" pre={previewImg2}>+</Label>
                             {previewImg2 ?
                                 <CloseBtn C="red" M="0" onClick={() => mRemove(setPreviewImg2)}>X</CloseBtn> : null}
@@ -138,20 +144,20 @@ const Modal = ({Set, Re}) => {
                                   onChange={(e) => insertM(e, setPreviewImg2)}></File>
                             {previewImg2 !== "" ? <Img src={previewImg2}/> : null}
 
+                            {/*------------------------------------------------------------------------Add Sub Images*/}
                             <Label htmlFor="sfile" pr="flex" S="80px">+</Label>
                             <File type="file" name="sfile" multiple="multiple" id="sfile"
                                   style={{marginBottom: "20px"}} onChange={(e) => insertS(e)}></File>
                             {subImgs !== "" ? img.map((el, index) => {
                                     const {name} = el;
                                     return (
-                                        <Fragment key={index}>
+                                        <div key={index} onClick={()=>SubDelete(index)}>
                                             <Img src={subImgs[index]} S="80px"/>
                                             <p>{name}</p>
-                                        </Fragment>
+                                        </div>
                                     );
                                 }
                             ) : null}
-
                             <AddBtn>배지추가!</AddBtn>
                         </Form>
                         <FlexDiv>
@@ -161,7 +167,7 @@ const Modal = ({Set, Re}) => {
                                 <Input value={rank} onChange={RankChange} type="text" placeholder="랭크"></Input>
                                 <Input value={category} onChange={CategoryChange} type="text"
                                        placeholder="카테고리"></Input>
-                                <Input value={explain} onChange={ExplainChange} type="text" placeholder="설명"></Input>
+                                <TextArea value={explain} onChange={ExplainChange} placeholder="설명"></TextArea>
                             </FlexDiv>
                             <FlexDiv Direction="column">
                                 <Input value={tagName} onChange={TagChange} type="text" placeholder="태그"></Input>
@@ -238,14 +244,31 @@ const FlexDiv = styled.div`
   align-items: center;
   width: 100%;
 `;
+const TextArea = styled.textarea`
+  width: 80%;
+  margin: 10px 0 10px 0;
+  height: 120px;
+  border: #222222 solid 2px;
+  border-radius: 10px;
+  padding: 6px 20px 6px 20px;
+  background-color: #222222;
+  color: white;
+  resize: none;
+
+  &:focus {
+    border: #00a6ff solid 2px;
+    outline: none;
+  }
+`;
 const Input = styled.input`
   width: 80%;
   margin: 10px 0 10px 0;
   height: 30px;
   border: #222222 solid 2px;
-  border-radius: 100px;
+  border-radius: 30px;
   padding: 6px 20px 6px 20px;
   background-color: #222222;
+  color: white;
 
   &:focus {
     border: #00a6ff solid 2px;

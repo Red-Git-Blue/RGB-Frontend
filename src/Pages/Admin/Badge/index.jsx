@@ -6,59 +6,42 @@ import {useQuery} from "react-query";
 import {getCoinList, getDetailCoin} from "./api";
 import DetailModal from "./detailModal";
 
-/*async function Acces() {
-    const Token = await axios({
-        method: 'post',
-        url: BaseUrl + '/api/auth/admin/sign-in',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            email: "asdf@asd.asd",
-            password: "asd",
-        }),
-    })
-    return Token.data;
-}
-
-const AccesToken = Acces.accessToken;*/
-
 const Index = () => {
     const [isOpen, setOpen] = useState(false);
     const [detail, setDetail] = useState(false);
-    const [detailInfo, setDetailInfo] = useState();
     const handleClick = () => {
         setOpen(true);
     };
-    const {isLoading, error, data, refetch} = useQuery([],
+    const {data: datList, isLoading, error, refetch} = useQuery(['List'],
         () => getCoinList()
     )
+    const [dats, setDats] = useState(0);
 
     if (isLoading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다</div>;
-    if (!data) return <button>불러오기</button>;
-    console.log(data);
+    if (!datList) return <button>불러오기</button>;
+    console.log(datList);
 
     const DetailR = (dat) => {
-        setDetailInfo(() => getDetailCoin(dat));
+        console.log("dat = "+dat);
         setDetail(true);
-        console.log(detailInfo);
+        setDats(dat);
     }
 
     return (
         <Fragment>
             <Body>
                 {isOpen ? <Modal Set={setOpen} Re={refetch}/> : null}
-                {detail ? <DetailModal Set={setDetail}/> : null}
+                {detail ? <DetailModal Set={setDetail} Detail={dats}/> : null}
                 <Text Margin="100px" Size="36px" W="200">Manage Badge</Text>
                 <FlexDiv>
                     <Text>Badge List</Text>
                     <AddButton onClick={handleClick}>배지 추가</AddButton>
                 </FlexDiv>
                 <BadgeList>
-                    {data.content.map((dat) => (
-                        <BadgeDiv key={dat.id} draggable onClick={() => DetailR(dat.id)} name={dat.id}>
-                            <Image src={dat.badgeMainFile.fileUrl}></Image>
+                    {datList.content.map((dat) => (
+                        <BadgeDiv key={dat.id} onClick={() => DetailR(dat.id)} name={dat.id}>
+                            <Image src={dat.badgeMainFile.fileUrl}/>
                             <Text Size="20px" W="100">{dat.name}</Text>
                         </BadgeDiv>
                     ))}

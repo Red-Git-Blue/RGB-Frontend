@@ -1,7 +1,23 @@
 import axios from "axios";
 import {BaseUrl} from "../../../export/baseUrl";
 
-const AccessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY2OTk2ODIyNywiZXhwIjoxNjcwMDU0NjI3fQ.9IYRuH3LavJdCXMPilgv733Dpfl37fGaw60xtx9Kc7A';
+// async function Access() {
+//     const Token = await axios({
+//         method: 'post',
+//         url: BaseUrl + '/auth/sign-in',
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//             email: "qqqq",
+//             password: "qqqq",
+//         }),
+//     })
+//     return Token.data;
+// }
+
+const AccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MDQ5Mjc4NCwiZXhwIjoxNjcwNTc5MTg0fQ.gr2s9hAFnUiGMODM9AmSqzlP_MbjBaTpEIOAgOFvUeg";
+console.log("Access Token is : "+AccessToken);
 
 export async function getCoinList() {
     const badgeRes = await axios({
