@@ -20,19 +20,21 @@ const MyPageView = () => {
             setUser(res.data);
         })
         .catch((err) => {
+            
         })
     }
 
     const GithubConnect = () => {
         axios({
           method: 'GET',
-          url: BaseUrl + '/auth/github',
+          url: BaseUrl.replace('/rgb/v1', '') + '/auth/github',
           headers: {
             Authorization: `Bearer ${cookies.accessToken}`,
           },
         })
         .then((res) => {
-            console.log(res);
+            console.log(res.data)
+            window.open(res.data).focus();
         })
         .catch((err) => {
             console.log(err.response);
@@ -41,7 +43,7 @@ const MyPageView = () => {
 
     useEffect(() => {
         GetUser();
-    }, [])
+    }, [cookies])
 
     if(UserData) return (
         <>
