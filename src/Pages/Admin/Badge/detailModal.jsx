@@ -17,7 +17,6 @@ const DetailModal = ({Set, Detail}) => {
         setOpacity(FadeOut);
         setTimeout(() => Set(false), 450);
     }
-    console.log(datDetail);
     return (
         <Fragment>
             <Blur A={opacity}>
@@ -36,7 +35,7 @@ const DetailModal = ({Set, Detail}) => {
                             <Img src={datDetail.iconImage.fileUrl}></Img>
                             <FlexDiv>
                                 {datDetail.subImages.map((imgs) => (
-                                    <Img src={imgs.fileUrl} Size="150px"/>
+                                    <Img src={imgs.fileUrl} Size="150px" key={imgs.fileUrl}/>
                                 ))}
                             </FlexDiv>
                         </ImgDiv>
@@ -64,6 +63,7 @@ const Img = styled.img`
   border-radius: 20px;
   margin: 10px;
   transition: 0.3s;
+  border: solid 2px white;
 
   &:hover {
     transform: scale(1.5);

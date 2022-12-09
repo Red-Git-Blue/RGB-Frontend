@@ -20,10 +20,8 @@ const Index = () => {
     if (isLoading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다</div>;
     if (!datList) return <button>불러오기</button>;
-    console.log(datList);
 
     const DetailR = (dat) => {
-        console.log("dat = "+dat);
         setDetail(true);
         setDats(dat);
     }

@@ -8,7 +8,7 @@ const Modal = ({Set, Re}) => {
     const [bName, setBName] = useState("");
     const [tagName, setTagName] = useState("");
     const [tagColor, setTagColor] = useState("");
-    const [price, setPrice] = useState();
+    const [price, setPrice] = useState(0);
     const [explain, setExplain] = useState("");
     const [rank, setRank] = useState("");
     const [category, setCategory] = useState("");
