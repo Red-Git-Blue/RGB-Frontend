@@ -59,7 +59,13 @@ const Modal = ({Set, Re}) => {
     }
 
     const SubDelete = (index) => {
-
+        console.log(index);
+        const subArr = subImgs.filter(()=>true);
+        const ImgArr = img.filter(()=>true);
+        subArr.splice(index, 1);
+        ImgArr.splice(index, 1);
+        setSubImgs(subArr);
+        setImg(ImgArr);
     }
 
     const mRemove = (remove) => {
@@ -129,12 +135,7 @@ const Modal = ({Set, Re}) => {
                                 <CloseBtn C="red" M="0" onClick={() => mRemove(setPreviewImg)}>X</CloseBtn> : null}
                             <File type="file" name="mfile" multiple="multiple" id="mfile"
                                   onChange={(e) => insertM(e, setPreviewImg)}></File>
-                            {previewImg ?
-                                <Fragment>
-                                    <Img src={previewImg}/>
-                                    <p>{}</p>
-                                </Fragment>
-                                : null}
+                            {previewImg ? <Img src={previewImg}/> : null}
 
                             {/*------------------------------------------------------------------------Add Icon Image*/}
                             <Label htmlFor="ifile" pre={previewImg2}>+</Label>
@@ -145,23 +146,23 @@ const Modal = ({Set, Re}) => {
                             {previewImg2 !== "" ? <Img src={previewImg2}/> : null}
 
                             {/*------------------------------------------------------------------------Add Sub Images*/}
-                            <Label htmlFor="sfile" pr="flex" S="80px">+</Label>
-                            <File type="file" name="sfile" multiple="multiple" id="sfile"
-                                  style={{marginBottom: "20px"}} onChange={(e) => insertS(e)}></File>
-                            {subImgs !== "" ? img.map((el, index) => {
-                                    const {name} = el;
-                                    return (
-                                        <div key={index} onClick={()=>SubDelete(index)}>
-                                            <Img src={subImgs[index]} S="80px"/>
-                                            <p>{name}</p>
-                                        </div>
-                                    );
-                                }
-                            ) : null}
-                            <AddBtn>배지추가!</AddBtn>
+                            <CellDiv>
+                                <Label htmlFor="sfile" pr="flex" S="80px">+</Label>
+                                <File type="file" name="sfile" multiple="multiple" id="sfile"
+                                      style={{marginBottom: "20px"}} onChange={(e) => insertS(e)}></File>
+                                {subImgs !== "" ? img.map((el, index) => {
+                                        return (
+                                            <div key={index} onClick={() => SubDelete(index)}>
+                                                <Img src={subImgs[index]} S="80px"/>
+                                            </div>
+                                        );
+                                    }
+                                ) : null}
+                            </CellDiv>
+                            <AddBtn Pos="absolute">배지추가!</AddBtn>
                         </Form>
-                        <FlexDiv>
-                            <FlexDiv Direction="column">
+                        <FlexDiv M="40px">
+                            <FlexDiv Direction="column" Align="start">
                                 <Input value={bName} onChange={Change} type="text" placeholder="뱃지 이름"></Input>
                                 <Input value={price} onChange={PriceChange} type="number" placeholder="뱃지 가격"></Input>
                                 <Input value={rank} onChange={RankChange} type="text" placeholder="랭크"></Input>
@@ -169,10 +170,11 @@ const Modal = ({Set, Re}) => {
                                        placeholder="카테고리"></Input>
                                 <TextArea value={explain} onChange={ExplainChange} placeholder="설명"></TextArea>
                             </FlexDiv>
-                            <FlexDiv Direction="column">
+                            <FlexDiv Direction="column" Align="end" J="start">
                                 <Input value={tagName} onChange={TagChange} type="text" placeholder="태그"></Input>
                                 <Input value={tagColor} onChange={ColorChange} type="text" placeholder="태그 색"></Input>
                                 <AddBtn onClick={TagClick}>태그추가</AddBtn>
+                                <Text Color="white" Size="16px" Weight="200" M="0 0 20px 20px" W="484px">추가된 태그</Text>
                                 <TagDiv>
                                     {tag.map((info, index) => (
                                         <Tag key={info.name} B={info.color}>{info.name}<CloseBtn M="0"
@@ -190,6 +192,12 @@ const Modal = ({Set, Re}) => {
 
 export default Modal;
 
+const CellDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 470px;
+  height: 100%;
+`;
 const Img = styled.img`
   width: ${props => props.S || "200px"};
   height: ${props => props.S || "200px"};
@@ -222,6 +230,8 @@ const Tag = styled.div`
 const TagDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: start;
+  width: 484px;
 `;
 const AddBtn = styled.button`
   width: 120px;
@@ -233,6 +243,9 @@ const AddBtn = styled.button`
   font-weight: 600;
   font-size: 16px;
   font-family: NanumGothicExtraBold, sans-serif;
+  position: ${props => props.Pos};
+  bottom: 60px;
+  left: 66%;
 `;
 const Form = styled.form`
   display: flex;
@@ -241,11 +254,14 @@ const Form = styled.form`
 const FlexDiv = styled.div`
   display: flex;
   flex-direction: ${props => props.Direction || "row"};
-  align-items: center;
+  align-items: ${props => props.Align || "center"};
   width: 100%;
+  justify-content: ${props => props.J};
+  margin-top: ${props => props.M};
+  height: 500px;
 `;
 const TextArea = styled.textarea`
-  width: 80%;
+  width: 440px;
   margin: 10px 0 10px 0;
   height: 120px;
   border: #222222 solid 2px;
@@ -261,7 +277,7 @@ const TextArea = styled.textarea`
   }
 `;
 const Input = styled.input`
-  width: 80%;
+  width: 440px;
   margin: 10px 0 10px 0;
   height: 30px;
   border: #222222 solid 2px;
@@ -297,7 +313,7 @@ const Blur = styled.div`
   align-items: center;
 `;
 const ModalBack = styled.div`
-  height: 800px;
+  height: 900px;
   width: 60%;
   background-color: black;
   box-shadow: 0 0 200px rgba(255, 255, 255, 0.25);
@@ -313,10 +329,12 @@ const TopBar = styled.div`
   align-items: center;
 `;
 const Text = styled.p`
-  margin-left: 30px;
+  margin: ${props => props.M || "0 0 0 30px"};
   font-family: Roboto, sans-serif;
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: ${props => props.Weight || "600"};
+  font-size: ${props => props.Size || "20px"};
+  color: ${props => props.Color || "black"};
+  width: ${props => props.W};
 `;
 const CloseBtn = styled.button`
   width: 30px;
@@ -334,5 +352,5 @@ const CloseBtn = styled.button`
   }
 `;
 const AddSection = styled.section`
-  padding: 20px 60px 20px 60px;
+  padding: 40px 60px 20px 60px;
 `;
