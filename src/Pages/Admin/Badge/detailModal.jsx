@@ -19,22 +19,22 @@ const DetailModal = ({Set, Detail}) => {
     }
 
     const rankColor = (rank) => {
-        if (rank === "일반 ") return "#AAAAAA";
-        else if (rank === "희귀 ") return "#5555FF";
-        else if (rank === "고급 ") return "#AA00AA";
-        else if (rank === "전설 ") return "#FFAA00";
-        else if (rank === "특별한 ") return "#FF5555";
-        else if (rank === "관리자 ") return "#55FFFF";
+        if (rank === "일반") return "#AAAAAA";
+        else if (rank === "희귀") return "#5555FF";
+        else if (rank === "고급") return "#AA00AA";
+        else if (rank === "전설") return "#FFAA00";
+        else if (rank === "특별") return "#FF5555";
+        else if (rank === "관리자") return "#55FFFF";
     }
 
     return (
         <Fragment>
             <Blur A={opacity}>
-                <ModalBack A={animation} Color={rankColor(datDetail.rarityType)}>
+                <ModalBack A={animation} Color={rankColor(datDetail.rarity.noun)}>
                     <Head><CloseButton onClick={click}>닫기</CloseButton></Head>
                     <Section>
                         <Flex>
-                            <Text Size="64px" W="900" B="20px">{datDetail.name}</Text><Box Color={rankColor(datDetail.rarityType)}></Box><Rank Color={rankColor(datDetail.rarityType)}>{datDetail.rarityType}</Rank>
+                            <Text Size="64px" W="900" B="20px">{datDetail.name}</Text><Box Color={rankColor(datDetail.rarity.noun)}></Box><Rank Color={rankColor(datDetail.rarity.noun)}>{datDetail.rarity.name}</Rank>
                         </Flex>
                         <Text W="200" B="40px">{datDetail.introduction}</Text>
                         <TagDiv>

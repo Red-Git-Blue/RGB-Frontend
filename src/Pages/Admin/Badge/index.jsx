@@ -26,6 +26,13 @@ const Index = () => {
         setDats(dat);
     }
 
+    const RightClick = (e, id) => {
+        e.preventDefault();
+        console.log(e);
+        console.log(id);
+        alert('light click');
+    }
+
     return (
         <Fragment>
             <Body>
@@ -38,7 +45,7 @@ const Index = () => {
                 </FlexDiv>
                 <BadgeList>
                     {datList.content.map((dat) => (
-                        <BadgeDiv key={dat.id} onClick={() => DetailR(dat.id)} name={dat.id}>
+                        <BadgeDiv key={dat.id} onClick={() => DetailR(dat.id)} name={dat.id} onContextMenu={(e)=>RightClick(e, dat.id)}>
                             <Image src={dat.badgeMainFile.fileUrl}/>
                             <Text Size="20px" W="100">{dat.name}</Text>
                         </BadgeDiv>
