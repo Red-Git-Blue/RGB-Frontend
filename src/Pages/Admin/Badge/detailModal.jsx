@@ -17,13 +17,25 @@ const DetailModal = ({Set, Detail}) => {
         setOpacity(FadeOut);
         setTimeout(() => Set(false), 450);
     }
+
+    const rankColor = (rank) => {
+        if (rank === "일반 ") return "#AAAAAA";
+        else if (rank === "희귀 ") return "#5555FF";
+        else if (rank === "고급 ") return "#AA00AA";
+        else if (rank === "전설 ") return "#FFAA00";
+        else if (rank === "특별한 ") return "#FF5555";
+        else if (rank === "관리자 ") return "#55FFFF";
+    }
+
     return (
         <Fragment>
             <Blur A={opacity}>
-                <ModalBack A={animation}>
+                <ModalBack A={animation} Color={rankColor(datDetail.rarityType)}>
                     <Head><CloseButton onClick={click}>닫기</CloseButton></Head>
                     <Section>
-                        <Text Size="64px" W="900" B="20px">{datDetail.name}</Text>
+                        <Flex>
+                            <Text Size="64px" W="900" B="20px">{datDetail.name}</Text><Box Color={rankColor(datDetail.rarityType)}></Box><Rank Color={rankColor(datDetail.rarityType)}>{datDetail.rarityType}</Rank>
+                        </Flex>
                         <Text W="200" B="40px">{datDetail.introduction}</Text>
                         <TagDiv>
                             {datDetail.tagList.map((tag) => (
@@ -48,6 +60,22 @@ const DetailModal = ({Set, Detail}) => {
 
 export default DetailModal;
 
+const Box = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: ${props => props.Color};
+  margin: 0 0 30px 40px;
+`;
+const Flex = styled.div`
+  display: flex;
+  align-items: end;
+`;
+const Rank = styled.div`
+  font-size: 20px;
+  font-weight: 900;
+  color: ${props => props.Color};
+  margin: 0 0 26px 10px;
+`;
 const FlexDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -60,13 +88,13 @@ const Img = styled.img`
   height: ${props => props.Size || "300px"};
   width: ${props => props.Size || "300px"};
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 30px;
   margin: 10px;
   transition: 0.3s;
   border: solid 2px white;
 
   &:hover {
-    transform: scale(1.5);
+    transform: scale(1.1);
     box-shadow: black 0 0 100px;
   }
 `;
@@ -178,7 +206,7 @@ const ModalBack = styled.div`
   bottom: 0;
   height: 90%;
   width: 100%;
-  background-color: black;
+  background: ${props => `linear-gradient(320deg, black 70%, ${props.Color})`};
   box-shadow: 0 0 200px rgba(255, 255, 255, 0.5);
   border-radius: 100px 100px 0 0;
   animation: ${props => props.A} 0.5s;
