@@ -3,7 +3,7 @@ import styled, {keyframes} from "styled-components";
 import axios from "axios";
 import Modal from './modal';
 import {useQuery} from "react-query";
-import {getCoinList, getDetailCoin} from "./api";
+import {getCoinList, deleteBadge} from "./api";
 import DetailModal from "./detailModal";
 
 const Index = () => {
@@ -13,11 +13,12 @@ const Index = () => {
     const handleClick = () => {
         setOpen(true);
     };
-    const {data: datList, isLoading: loading1, error:er1, refetch} = useQuery(['List'],
+    const {data: datList, isLoading: loading1, error: er1, refetch: re1} = useQuery(['List'],
         () => getCoinList()
     )
     const [dats, setDats] = useState(0);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [mousePosition, setMousePosition] = useState({x: 0, y: 0});
+    const [bId, setBId] = useState(0);
 
     if (loading1) return <div>로딩중..</div>;
     if (er1) return <div>에러가 발생했습니다</div>;
@@ -30,26 +31,26 @@ const Index = () => {
 
     const RightClick = (e, id) => {
         e.preventDefault();
-        setMousePosition({x:e.pageX, y:e.pageY});
-        console.log(mousePosition);
-        console.log(e);
-        console.log(id);
+        setMousePosition({x: e.pageX, y: e.pageY});
+        setBId(id);
         setContextMenu(true);
     }
 
     const backClick = () => setContextMenu(false);
 
+    const delClick = () => deleteBadge(re1, bId);
+
     const contextMenuMarkup = (
-        <ContextMenu style={{top:mousePosition.y, left:mousePosition.x}}>
+        <ContextMenu style={{top: mousePosition.y, left: mousePosition.x}}>
             <ConDiv>수정</ConDiv>
-            <ConDiv>삭제</ConDiv>
+            <ConDiv onClick={delClick}>삭제</ConDiv>
         </ContextMenu>
     );
 
     return (
         <Fragment>
             <Body onClick={backClick}>
-                {isOpen ? <Modal Set={setOpen} Re={refetch}/> : null}
+                {isOpen ? <Modal Set={setOpen} Re={re1}/> : null}
                 {detail ? <DetailModal Set={setDetail} Detail={dats}/> : null}
                 <Text Margin="100px" Size="36px" W="200">Manage Badge</Text>
                 <FlexDiv>
@@ -58,7 +59,8 @@ const Index = () => {
                 </FlexDiv>
                 <BadgeList>
                     {datList.content.map((dat) => (
-                        <BadgeDiv key={dat.id} onClick={() => DetailR(dat.id)} name={dat.id} onContextMenu={(e)=>RightClick(e, dat.id)}>
+                        <BadgeDiv key={dat.id} onClick={() => DetailR(dat.id)} name={dat.id}
+                                  onContextMenu={(e) => RightClick(e, dat.id)}>
                             <Image src={dat.badgeMainFile.fileUrl}/>
                             <Text Size="20px" W="100">{dat.name}</Text>
                         </BadgeDiv>
@@ -73,23 +75,27 @@ const Index = () => {
 export default Index;
 
 const Fade = keyframes`
-  0%{
+  0% {
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
   }
 `;
-const ConDiv = styled.div`
+const ConDiv = styled.button`
   color: white;
   height: auto;
   width: 100px;
   padding: 20px 20px 20px 20px;
   background-color: #222222;
   border-bottom: solid #222222 2px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
   line-height: 0;
   transition: 0.3s;
-  &:hover{
+
+  &:hover {
     background-color: #111111;
     border-bottom: #00a6ff solid 2px;
   }
@@ -104,6 +110,9 @@ const ContextMenu = styled.div`
   overflow: hidden;
   padding: 10px 0 10px 0;
   animation: ${Fade} 0.3s;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 `;
 const Image = styled.img`
   height: 240px;
