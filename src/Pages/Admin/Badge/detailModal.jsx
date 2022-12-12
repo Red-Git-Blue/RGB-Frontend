@@ -1,4 +1,4 @@
-import {Fragment, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import styled, {keyframes} from "styled-components";
 import {useQuery} from "react-query";
 import {getDetailCoin} from "./api";
@@ -7,15 +7,16 @@ const DetailModal = ({Set, Detail}) => {
     const [animation, setAnimation] = useState(Up);
     const [opacity, setOpacity] = useState(FadeIn);
 
-    const {data: datDetail, isLoading, error, refetch} = useQuery(['Detail'],
+    const {data: datDetail, remove ,isLoading:loading2, error:er2, refetch:re2} = useQuery(['Detail'],
         () => getDetailCoin(Detail)
     )
-    if (isLoading) return <div style={{backgroundColor: "white", color: "red"}}>로딩중...</div>
+    if (loading2) return <div style={{backgroundColor: "white", color: "red"}}>로딩중...</div>
 
     const click = () => {
         setAnimation(Down);
         setOpacity(FadeOut);
         setTimeout(() => Set(false), 450);
+        setTimeout(()=>remove(),460);
     }
 
     const rankColor = (rank) => {

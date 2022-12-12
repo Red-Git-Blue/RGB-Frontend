@@ -12,13 +12,13 @@ const Index = () => {
     const handleClick = () => {
         setOpen(true);
     };
-    const {data: datList, isLoading, error, refetch} = useQuery(['List'],
+    const {data: datList, isLoading: loading1, error:er1, refetch} = useQuery(['List'],
         () => getCoinList()
     )
     const [dats, setDats] = useState(0);
 
-    if (isLoading) return <div>로딩중..</div>;
-    if (error) return <div>에러가 발생했습니다</div>;
+    if (loading1) return <div>로딩중..</div>;
+    if (er1) return <div>에러가 발생했습니다</div>;
     if (!datList) return <button>불러오기</button>;
 
     const DetailR = (dat) => {

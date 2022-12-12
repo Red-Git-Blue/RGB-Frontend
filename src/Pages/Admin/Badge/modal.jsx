@@ -60,10 +60,8 @@ const Modal = ({Set, Re}) => {
 
     const SubDelete = (index) => {
         console.log(index);
-        const subArr = subImgs.filter(()=>true);
-        const ImgArr = img.filter(()=>true);
-        subArr.splice(index, 1);
-        ImgArr.splice(index, 1);
+        const subArr = subImgs.splice(index, 1);
+        const ImgArr = img.splice(index, 1);
         setSubImgs(subArr);
         setImg(ImgArr);
     }
