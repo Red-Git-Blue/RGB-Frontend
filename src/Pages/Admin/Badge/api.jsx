@@ -16,7 +16,7 @@ import {BaseUrl} from "../../../export/baseUrl";
 //     return Token.data;
 // }
 
-const AccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MDY4NDgyMiwiZXhwIjoxNjcwNzcxMjIyfQ.eVs0d8IZJa2aK9aXMBOaJA54viZjSVLyYSgAdOkQIeI";
+const AccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MDg0MzI2NCwiZXhwIjoxNjcwOTI5NjY0fQ.8qj3McjAobmgZR-Ql6rVm1vIIQsOd5GNT_t7ulT5_i8";
 console.log("Access Token is : "+AccessToken);
 
 export async function getCoinList() {
@@ -45,6 +45,17 @@ export async function postBadge(Re, e, formData) {
             Authorization: `Bearer ${AccessToken}`
         },
         data: formData,
+    });
+    Re();
+}
+
+export async function deleteBadge(Re, index){
+    const deleteRes = await axios({
+        method: 'delete',
+        url: BaseUrl + '/item/badge/' + index,
+        headers:{
+            Authorization: `Bearer ${AccessToken}`
+        },
     });
     Re();
 }
