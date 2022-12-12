@@ -4,7 +4,7 @@ import Header from "../../Auth/Header";
 import { Line } from 'react-chartjs-2';
 import Chart from "chart.js/auto";
 import 'chartjs-adapter-date-fns';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const data = {
     labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
@@ -32,10 +32,59 @@ const CoinDetailView = () => {
     const navigate = useNavigate();
     const [ChartDay, SetChartDay] = useState(1);
     const [coinData, SetCoin] = useState('');
-
+    const [InfoNum, setInfoNum] = useState(1);
+    
     const OnlyNumber = (e) => {
         SetCoin(e.target.value.replace(/[^0-9]/,''));
     }
+
+    useEffect(() => {
+        const GV = {
+            sync1 : null,
+            sync2 : null
+        }
+        const Main = document.querySelector('.ScrollMain');
+        const auth = document.querySelector('.toScroll');
+
+        Main.addEventListener('scroll', () => {
+            if(GV.sync1 && GV.sync1.target.className != this.className) return false;
+            GV.sync1 = this;
+            auth.scrollLeft = Main.scrollLeft;
+            if(GV.sync2) clearTimeout(GV.sync2);
+
+            GV.sync2 = setTimeout(() => {
+                if(Main.scrollLeft < 660) {
+                    auth.scrollLeft = 0;
+                    setInfoNum(1);
+                } else {
+                    auth.scrollLeft = 1320;
+                    setInfoNum(2);
+                }
+                GV.sync1 = null;
+                GV.sync2 = null;
+            }, 300);
+        });
+
+        auth.addEventListener('scroll', () => {
+            if(GV.sync1 && GV.sync1.target.className != this.className) return false;
+            GV.sync1 = this;
+            Main.scrollLeft = auth.scrollLeft;
+            if(GV.sync2) clearTimeout(GV.sync2);
+
+            GV.sync2 = setTimeout(() => {
+                if(auth.scrollLeft < 660) {
+                    Main.scrollLeft = 0;
+                    setInfoNum(1);
+                } else {
+                    Main.scrollLeft = 1320;
+                    setInfoNum(2);
+                }
+                GV.sync1 = null;
+                GV.sync2 = null;
+            }, 300);
+        })
+    }, [])
+
     return (
         <>
             <Header />
@@ -71,13 +120,54 @@ const CoinDetailView = () => {
                         </div>
                         <StyledSpan font='NanumGothic' height='18px' margin='20px 0' color='#888888'>0원 보유중</StyledSpan>
                         <div>
-                            <BuyBtn color={coinData !== '' ? '#FF0000' : false}>매수</BuyBtn>
-                            <BuyBtn color={coinData !== '' ? '#0038FF' : false}>매도</BuyBtn>
+                            <BuyBtn color={coinData !== '' ? '#FF0000' : undefined}>매수</BuyBtn>
+                            <BuyBtn color={coinData !== '' ? '#0038FF' : undefined}>매도</BuyBtn>
                         </div>
                     </div>
                 </div>
                 <div>
-
+                    <div>
+                        <InfoBtn
+                            bool={InfoNum === 1}
+                            onClick={() => {
+                                if(InfoNum === 2) {
+                                    setInfoNum(1);
+                                    document.querySelector('.ScrollMain').scrollLeft = 0;
+                                }
+                            }}>
+                                상세 정보
+                            </InfoBtn>
+                        <InfoBtn
+                            bool={InfoNum === 2}
+                            onClick={() => {
+                                if(InfoNum === 1) {
+                                    setInfoNum(2);
+                                    document.querySelector('.ScrollMain').scrollLeft = 1320;
+                                }
+                            }}>
+                                보유 정보
+                            </InfoBtn>
+                    </div>
+                    <div className="toScroll">
+                        <div></div>
+                    </div>
+                    <div className="ScrollMain">
+                        <div>
+                            <DetailContent title='전일종가' text='1,172원'/>
+                            <DetailContent title='개장가' text='1,172원'/>
+                            <DetailContent title='최고가' text='25,627,289원' color='#FF0000'/>
+                            <DetailContent title='최저가' text='2원' color='#0038FF'/>
+                            <DetailContent title='거래량' text='52.2조'/>
+                            <DetailContent title='고인상장일자' text='1950-06-25'/>
+                        </div>
+                        <div>
+                            <DetailContent title='평가액' text='152,894원' subText='원금 500,000원' />
+                            <DetailContent title='보유량' text='10코인'/>
+                            <DetailContent title='평단가' text='51,340원'/>
+                            <DetailContent title='총 수익' text='+12,000원' subText='(+4.2%)' color='#FF0000'/>
+                            <DetailContent title='일간 수익' text='+3,420원' subText='(+1.6%)' color='#FF0000'/>
+                        </div>
+                    </div>
                 </div>
             </Box>
         </>
@@ -142,7 +232,59 @@ const Box = styled.div`
             }
         }
         &:last-child {
-
+            display: flex;
+            flex-direction: column;
+            & > div {
+                &:first-child {
+                    width: 214px;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                &:nth-child(2) {
+                    margin: 19px 0 59px;
+                    min-width: 1320px;
+                    height: 2px;
+                    overflow-x: scroll;
+                    overflow-y: hidden;
+                    scroll-behavior: smooth;
+                    &::-webkit-scrollbar {
+                        height: 2px;
+                        border-radius: 6px;
+                        background: #333333;
+                    }
+                    &::-webkit-scrollbar-thumb {
+                        background: #FFF500;
+                        border-radius: 6px;
+                    }
+                    & > div {
+                        width: 2640px;
+                        height: 75px;
+                        overflow-x: scroll;
+                        overflow-y: hidden;
+                    }
+                }
+                &:last-child {
+                    min-width: 1320px;
+                    height: 80px;
+                    display: flex;
+                    overflow-x: scroll;
+                    scroll-behavior: smooth;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                    & > div {
+                        min-width: 1320px;
+                        height: 75px;
+                        display: flex;
+                        &:first-child > div {
+                            width: 240px;
+                        }
+                        &:last-child > div {
+                            width: 220px;
+                        }
+                    }
+                }
+            }
         }
     }
 `
@@ -258,5 +400,59 @@ const DayBtn = styled.div`
     transition: 0.3s;
     &:hover {
         transform: scale(1.1);
+    }
+`
+
+const InfoBtn = styled(DayBtn)`
+    width: 97px;
+    height: 30px;
+    border-radius: 10px;
+
+    ${(props) => props.bool && `
+        background: #FFF500;
+        color: #000000;
+    `}
+`
+
+const DetailContent = ({title, text, subText, color = '#FFFFFF'}) => {
+    return (
+        <ContentBox color={color}>
+            <span>{title}</span>
+            <span>{text}</span>
+            <span>{subText}</span>
+        </ContentBox>
+    )
+}
+
+const ContentBox = styled.div`
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    & > :nth-child(1) {
+        font-size: 16px;
+        line-height: 19px;
+        color: #888888;
+    }
+    & > :nth-child(2) {
+        font-size: 24px;
+        line-height: 28px;
+        margin: 6px 0;
+        color: ${(props) => props.color};
+    }
+    & > :nth-child(3) {
+        font-size: 14px;
+        line-height: 16px;
+        ${(props) => props.color === '#FFFFFF' ?
+        `
+            color: #666666;
+        `
+        :
+        `
+            font-weight: 400;
+            color: ${props.color};
+        `
+    }
     }
 `
