@@ -5,14 +5,14 @@ import Modal from './modal';
 import {useQuery} from "react-query";
 import {getCoinList, deleteBadge} from "./api";
 import DetailModal from "./detailModal";
+import EditModal from "./editModal";
 
 const Index = () => {
     const [isOpen, setOpen] = useState(false);
     const [detail, setDetail] = useState(false);
+    const [edit, setEdit] = useState(false);
     const [contextMenu, setContextMenu] = useState(false);
-    const handleClick = () => {
-        setOpen(true);
-    };
+    const handleClick = () => setOpen(true);
     const {data: datList, isLoading: loading1, error: er1, refetch: re1} = useQuery(['List'],
         () => getCoinList()
     )
@@ -38,11 +38,13 @@ const Index = () => {
 
     const backClick = () => setContextMenu(false);
 
-    const delClick = () => deleteBadge(re1, bId);
+    const delClick = () => deleteBadge(bId).finally(() => re1());
+
+    const editClick = () => setEdit(true);
 
     const contextMenuMarkup = (
         <ContextMenu style={{top: mousePosition.y, left: mousePosition.x}}>
-            <ConDiv>수정</ConDiv>
+            <ConDiv onClick={editClick}>수정</ConDiv>
             <ConDiv onClick={delClick}>삭제</ConDiv>
         </ContextMenu>
     );
@@ -52,6 +54,7 @@ const Index = () => {
             <Body onClick={backClick}>
                 {isOpen ? <Modal Set={setOpen} Re={re1}/> : null}
                 {detail ? <DetailModal Set={setDetail} Detail={dats}/> : null}
+                {edit ? <EditModal Set={setEdit} Id={bId}/> : null}
                 <Text Margin="100px" Size="36px" W="200">Manage Badge</Text>
                 <FlexDiv>
                     <Text>Badge List</Text>
@@ -61,7 +64,7 @@ const Index = () => {
                     {datList.content.map((dat) => (
                         <BadgeDiv key={dat.id} onClick={() => DetailR(dat.id)} name={dat.id}
                                   onContextMenu={(e) => RightClick(e, dat.id)}>
-                            <Image src={dat.badgeMainFile.fileUrl}/>
+                            <Image src={dat.badgeMainFile.fileUrl} loading="lazy"/>
                             <Text Size="20px" W="100">{dat.name}</Text>
                         </BadgeDiv>
                     ))}
@@ -74,6 +77,17 @@ const Index = () => {
 
 export default Index;
 
+const PageMove = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+    animation-timing-function: ease;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const Fade = keyframes`
   0% {
     opacity: 0;
@@ -133,6 +147,7 @@ const BadgeDiv = styled.button`
   padding: 24px;
   transition: 0.3s;
   cursor: pointer;
+  animation: ${PageMove} 0.5s;
 
   &:hover {
     transform: scale(1.1);
@@ -173,6 +188,7 @@ const Body = styled.div`
   justify-content: start;
   align-items: center;
   padding: 100px 300px 100px 300px;
+  animation: ${PageMove} 0.5s;
 `;
 const AddButton = styled.button`
   height: 50px;

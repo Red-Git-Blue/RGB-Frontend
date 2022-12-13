@@ -3,12 +3,12 @@ import styled from "styled-components";
 import axios from "axios";
 import {useMediaQuery} from "react-responsive";
 
-const Category = () => {
+const Index = () => {
     return(
         <Fragment>
-            <p style={{color:"white"}}>hello! this is Category Page!</p>
+            <p style={{color:"white"}}>hello! this is Grass Page!</p>
         </Fragment>
     );
 }
 
-export default Category;
+export default Index;

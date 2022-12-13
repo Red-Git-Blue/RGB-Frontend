@@ -100,7 +100,7 @@ const Modal = ({Set, Re}) => {
             name: bName,
             introduction: explain,
             price: price,
-            rarity: rank,
+            rarityType: rank,
             tags: tag,
             category: category,
         });

@@ -49,7 +49,7 @@ export async function postBadge(Re, e, formData) {
     Re();
 }
 
-export async function deleteBadge(Re, index){
+export async function deleteBadge(index){
     const deleteRes = await axios({
         method: 'delete',
         url: BaseUrl + '/item/badge/' + index,
@@ -57,5 +57,18 @@ export async function deleteBadge(Re, index){
             Authorization: `Bearer ${AccessToken}`
         },
     });
-    Re();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////    EDIT API    ////////////////
+
+export async function editBadgeInfo(id, badgeJson) {
+    const editInfoRes = await axios({
+        method: 'put',
+        url: BaseUrl + '/item/badge/' + id,
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${AccessToken}`,
+        },
+        body: badgeJson,
+    });
 }

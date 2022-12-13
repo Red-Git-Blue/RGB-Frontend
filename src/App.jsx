@@ -17,9 +17,9 @@ import {Fragment} from 'react';
 import {CookiesProvider} from 'react-cookie';
 import Admin from './Pages/Admin/index';
 import Ad from './Pages/Admin/Ad/index';
-import Index from './Pages/Admin/Badge/index';
-import Category from './Pages/Admin/category';
-import Grass from './Pages/Admin/grass';
+import Badge from './Pages/Admin/Badge/index';
+import Category from './Pages/Admin/Category';
+import Grass from './Pages/Admin/Grass';
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
 import { ToastContainer } from "react-toastify"
@@ -68,7 +68,7 @@ function App() {
                                 </Route>
                                 <Route element={<Admin_Layout/>}>
                                     <Route path='/youDontKnow/AdminPage' element={<Admin/>}></Route>
-                                    <Route path='/youDontKnow/AdminPage/AdminBadge' element={<Index/>}></Route>
+                                    <Route path='/youDontKnow/AdminPage/AdminBadge' element={<Badge/>}></Route>
                                     <Route path='/youDontKnow/AdminPage/AdminGrass' element={<Grass/>}></Route>
                                     <Route path='/youDontKnow/AdminPage/AdminAd' element={<Ad/>}></Route>
                                     <Route path='/youDontKnow/AdminPage/AdminCategory' element={<Category/>}></Route>

@@ -7,7 +7,7 @@ const DetailModal = ({Set, Detail}) => {
     const [animation, setAnimation] = useState(Up);
     const [opacity, setOpacity] = useState(FadeIn);
 
-    const {data: datDetail, remove ,isLoading:loading2, error:er2, refetch:re2} = useQuery(['Detail'],
+    const {data: datDetail, remove:rm1 ,isLoading:loading2, error:er2, refetch:re2} = useQuery(['Detail'],
         () => getDetailCoin(Detail)
     )
     if (loading2) return <div style={{backgroundColor: "white", color: "red"}}>로딩중...</div>
@@ -16,7 +16,7 @@ const DetailModal = ({Set, Detail}) => {
         setAnimation(Down);
         setOpacity(FadeOut);
         setTimeout(() => Set(false), 450);
-        setTimeout(()=>remove(),460);
+        setTimeout(()=>rm1(),460);
     }
 
     const rankColor = (rank) => {
@@ -37,7 +37,7 @@ const DetailModal = ({Set, Detail}) => {
                         <Flex>
                             <Text Size="64px" W="900" B="20px">{datDetail.name}</Text><Box Color={rankColor(datDetail.rarity.noun)}></Box><Rank Color={rankColor(datDetail.rarity.noun)}>{datDetail.rarity.name}</Rank>
                         </Flex>
-                        <Text W="200" B="40px">{datDetail.introduction}</Text>
+                        <Text W="200" B="40px" Time="0.7s">{datDetail.introduction}</Text>
                         <TagDiv>
                             {datDetail.tagList.map((tag) => (
                                 <Tag key={tag.tagName} B={tag.tagColor}>{tag.tagName}</Tag>
@@ -61,6 +61,17 @@ const DetailModal = ({Set, Detail}) => {
 
 export default DetailModal;
 
+const PageMove = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+    animation-timing-function: ease;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const Box = styled.div`
   width: 20px;
   height: 20px;
@@ -70,6 +81,7 @@ const Box = styled.div`
 const Flex = styled.div`
   display: flex;
   align-items: end;
+  animation: ${PageMove} 0.6s;
 `;
 const Rank = styled.div`
   font-size: 20px;
@@ -104,6 +116,7 @@ const ImgDiv = styled.div`
   height: 60%;
   display: flex;
   justify-content: space-between;
+  animation: ${PageMove} 0.9s;
 `;
 const Head = styled.div`
   height: 20%;
@@ -125,11 +138,13 @@ const TagDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 20px;
+  animation: ${PageMove} 0.8s;
 `;
 const Text = styled.p`
   font-size: ${props => props.Size};
   font-weight: ${props => props.W || 600};
   margin-bottom: ${props => props.B || 0};
+  animation: ${PageMove} ${props=>props.Time};
 `;
 const CloseButton = styled.button`
   height: 40px;
