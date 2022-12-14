@@ -2,6 +2,7 @@ import {Fragment, useEffect, useState} from "react";
 import styled, {keyframes} from "styled-components";
 import {useQuery} from "react-query";
 import {getDetailCoin} from "./api";
+import LoadingComponent from "./simpleLoading";
 
 const EditModal = ({Set, Id}) => {
     const [nSwitch, setNSwitch] = useState(true);
@@ -15,7 +16,7 @@ const EditModal = ({Set, Id}) => {
         () => getDetailCoin(Id),
         {refetchOnWindowFocus: false}
     );
-    if (loading3) return <div style={{backgroundColor: "white", color: "red"}}>로딩중...</div>
+    if (loading3) return <LoadingComponent/>;
 
     if(editData&&nSwitch) {
         setName(editData.name);
@@ -31,6 +32,10 @@ const EditModal = ({Set, Id}) => {
     const inputRank = (e) => setRank(e.target.value);
     const inputCategory = (e) => setCategory(e.target.value);
     const inputExplain = (e) => setExplain(e.target.value);
+
+    const putJson = () => {
+
+    }
 
     const closeModal = () => {
         Set(false);
@@ -50,6 +55,7 @@ const EditModal = ({Set, Id}) => {
                                 <Input value={rank} onChange={(e)=>inputRank(e)}/>
                                 <Input value={category} onChange={(e)=>inputCategory(e)}/>
                                 <TextArea value={explain} onChange={(e)=>inputExplain(e)}/>
+                                <Button onClick={putJson}>수정</Button>
                             </FlexDiv>
                         )
                     }
@@ -61,6 +67,11 @@ const EditModal = ({Set, Id}) => {
 
 export default EditModal;
 
+const Button = styled.button`
+  width: 100px;
+  height: 40px;
+  border-radius: 100px;
+`;
 const FlexDiv = styled.div`
   display: flex;
   justify-content: start;

@@ -2,21 +2,22 @@ import {Fragment, useEffect, useState} from "react";
 import styled, {keyframes} from "styled-components";
 import {useQuery} from "react-query";
 import {getDetailCoin} from "./api";
+import LoadingComponent from "./simpleLoading";
 
 const DetailModal = ({Set, Detail}) => {
     const [animation, setAnimation] = useState(Up);
     const [opacity, setOpacity] = useState(FadeIn);
 
-    const {data: datDetail, remove:rm1 ,isLoading:loading2, error:er2, refetch:re2} = useQuery(['Detail'],
+    const {data: datDetail, remove: rm1, isLoading: loading2, error: er2, refetch: re2} = useQuery(['Detail'],
         () => getDetailCoin(Detail)
     )
-    if (loading2) return <div style={{backgroundColor: "white", color: "red"}}>로딩중...</div>
+    if (loading2) return <LoadingComponent/>;
 
     const click = () => {
         setAnimation(Down);
         setOpacity(FadeOut);
         setTimeout(() => Set(false), 450);
-        setTimeout(()=>rm1(),460);
+        setTimeout(() => rm1(), 460);
     }
 
     const rankColor = (rank) => {
@@ -35,7 +36,9 @@ const DetailModal = ({Set, Detail}) => {
                     <Head><CloseButton onClick={click}>닫기</CloseButton></Head>
                     <Section>
                         <Flex>
-                            <Text Size="64px" W="900" B="20px">{datDetail.name}</Text><Box Color={rankColor(datDetail.rarity.noun)}></Box><Rank Color={rankColor(datDetail.rarity.noun)}>{datDetail.rarity.name}</Rank>
+                            <Text Size="64px" W="900" B="20px">{datDetail.name}</Text><Box
+                            Color={rankColor(datDetail.rarity.noun)}></Box><Rank
+                            Color={rankColor(datDetail.rarity.noun)}>{datDetail.rarity.name}</Rank>
                         </Flex>
                         <Text W="200" B="40px" Time="0.7s">{datDetail.introduction}</Text>
                         <TagDiv>
@@ -70,6 +73,42 @@ const PageMove = keyframes`
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+`;
+const FadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+const FadeOut = keyframes`
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+const Up = keyframes`
+  0% {
+    transform: translateY(100vh);
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 0 200px rgba(255, 255, 255, 0.5);
+  }
+`;
+const Down = keyframes`
+  0% {
+    transform: translateY(0);
+    box-shadow: 0 0 200px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    transform: translateY(100vh);
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
   }
 `;
 const Box = styled.div`
@@ -144,7 +183,7 @@ const Text = styled.p`
   font-size: ${props => props.Size};
   font-weight: ${props => props.W || 600};
   margin-bottom: ${props => props.B || 0};
-  animation: ${PageMove} ${props=>props.Time};
+  animation: ${PageMove} ${props => props.Time};
 `;
 const CloseButton = styled.button`
   height: 40px;
@@ -166,42 +205,6 @@ const Section = styled.section`
   height: 100%;
   width: 80%;
   padding: 0 100px 0 100px;
-`;
-const FadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-const FadeOut = keyframes`
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
-const Up = keyframes`
-  0% {
-    transform: translateY(100vh);
-    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-  }
-  100% {
-    transform: translateY(0);
-    box-shadow: 0 0 200px rgba(255, 255, 255, 0.5);
-  }
-`;
-const Down = keyframes`
-  0% {
-    transform: translateY(0);
-    box-shadow: 0 0 200px rgba(255, 255, 255, 0.5);
-  }
-  100% {
-    transform: translateY(100vh);
-    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-  }
 `;
 const Blur = styled.div`
   position: fixed;
