@@ -13,11 +13,8 @@ const Modal = ({Set, Re}) => {
     const [rank, setRank] = useState("");
     const [category, setCategory] = useState("");
     const [tag, setTag] = useState([]);
-    const [jjason, setJjason] = useState({});
     const [previewImg, setPreviewImg] = useState("");
-    const [preImg, setPreImg] = useState(null);
     const [previewImg2, setPreviewImg2] = useState("");
-    const [preImg2, setPreImg2] = useState(null);
     const [subImgs, setSubImgs] = useState([]);
     const [img, setImg] = useState([]);
     const Change = e => setBName(e.target.value);
@@ -33,7 +30,6 @@ const Modal = ({Set, Re}) => {
 
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0]);
-            setPreImg(e.target.files[0]);
         }
         reader.onloadend = () => {
             const previewImgUrl = reader.result;
@@ -96,20 +92,17 @@ const Modal = ({Set, Re}) => {
         formData.append("iconImage", iFiles[0]);
         for (let i = 0; i < sFiles.length; i++) formData.append("subImages", sFiles[i]);
 
-        setJjason({
+        formData.set("req", new Blob([JSON.stringify({
             name: bName,
             introduction: explain,
             price: price,
             rarityType: rank,
             tags: tag,
             category: category,
-        });
-        console.log(jjason);
-
-        formData.set("req", new Blob([JSON.stringify(jjason)], {
+        })], {
             type: "application/json"
         }));
-        bName && rank && price && explain && tag && previewImg && previewImg2 && jjason ? console.log('success!') : console.log('fail...');
+        bName && rank && price && explain && tag && previewImg && previewImg2 ? console.log('success!') : console.log('fail...');
         postBadge(Re, e, formData);
     }
 

@@ -54,7 +54,7 @@ const Index = () => {
             <Body onClick={backClick}>
                 {isOpen ? <Modal Set={setOpen} Re={re1}/> : null}
                 {detail ? <DetailModal Set={setDetail} Detail={dats}/> : null}
-                {edit ? <EditModal Set={setEdit} Id={bId}/> : null}
+                {edit ? <EditModal Set={setEdit} Id={bId} Reset={re1}/> : null}
                 <Text Margin="100px" Size="36px" W="200">Manage Badge</Text>
                 <FlexDiv>
                     <Text>Badge List</Text>

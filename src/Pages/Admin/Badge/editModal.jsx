@@ -1,10 +1,10 @@
 import {Fragment, useEffect, useState} from "react";
 import styled, {keyframes} from "styled-components";
 import {useQuery} from "react-query";
-import {getDetailCoin} from "./api";
+import {editBadgeInfo, getDetailCoin} from "./api";
 import LoadingComponent from "./simpleLoading";
 
-const EditModal = ({Set, Id}) => {
+const EditModal = ({Set, Id, Reset}) => {
     const [nSwitch, setNSwitch] = useState(true);
     const [name, setName] = useState("");
     const [explain, setExplain] = useState("");
@@ -12,13 +12,13 @@ const EditModal = ({Set, Id}) => {
     const [rank, setRank] = useState("");
     const [category, setCategory] = useState("");
     const [tag, setTag] = useState({});
-    const {data: editData, isLoading: loading3, refetch: re3, remove:rm2} = useQuery(['Edit'],
+    const {data: editData, isLoading: loading3, refetch: re3, remove: rm2} = useQuery(['Edit'],
         () => getDetailCoin(Id),
         {refetchOnWindowFocus: false}
     );
     if (loading3) return <LoadingComponent/>;
 
-    if(editData&&nSwitch) {
+    if (editData && nSwitch) {
         setName(editData.name);
         setPrice(editData.price);
         setRank(editData.rarity.name);
@@ -34,7 +34,12 @@ const EditModal = ({Set, Id}) => {
     const inputExplain = (e) => setExplain(e.target.value);
 
     const putJson = () => {
-
+        editBadgeInfo(Id, {
+            name: name,
+            introduction: explain,
+            price: price,
+            rarityType: rank,
+        }).finally(() => Reset());
     }
 
     const closeModal = () => {
@@ -47,18 +52,14 @@ const EditModal = ({Set, Id}) => {
             <Blur>
                 <ModalBack>
                     <button style={{backgroundColor: "red"}} onClick={closeModal}>닫기</button>
-                    {
-                        editData && (
-                            <FlexDiv>
-                                <Input value={name} onChange={(e)=>inputName(e)}/>
-                                <Input value={price} onChange={(e)=>inputPrice(e)}/>
-                                <Input value={rank} onChange={(e)=>inputRank(e)}/>
-                                <Input value={category} onChange={(e)=>inputCategory(e)}/>
-                                <TextArea value={explain} onChange={(e)=>inputExplain(e)}/>
-                                <Button onClick={putJson}>수정</Button>
-                            </FlexDiv>
-                        )
-                    }
+                    <FlexDiv>
+                        <Input value={name} onChange={(e) => inputName(e)}/>
+                        <Input value={price} onChange={(e) => inputPrice(e)}/>
+                        <Input value={rank} onChange={(e) => inputRank(e)}/>
+                        <Input value={category} onChange={(e) => inputCategory(e)}/>
+                        <TextArea value={explain} onChange={(e) => inputExplain(e)}/>
+                        <Button onClick={putJson}>수정</Button>
+                    </FlexDiv>
                 </ModalBack>
             </Blur>
         </Fragment>

@@ -16,7 +16,7 @@ import {BaseUrl} from "../../../export/baseUrl";
 //     return Token.data;
 // }
 
-const AccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MDg0MzI2NCwiZXhwIjoxNjcwOTI5NjY0fQ.8qj3McjAobmgZR-Ql6rVm1vIIQsOd5GNT_t7ulT5_i8";
+const AccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MDk4MDYxMSwiZXhwIjoxNjcxMDY3MDExfQ.Thh_X-XW0oi89SfwXezi1ffsecgNhTaz-GxzEx33qRM";
 console.log("Access Token is : "+AccessToken);
 
 export async function getCoinList() {
@@ -62,6 +62,7 @@ export async function deleteBadge(index){
 ////////////////////////////////////////////////////////////////////////////////////////    EDIT API    ////////////////
 
 export async function editBadgeInfo(id, badgeJson) {
+    console.log(JSON.stringify(badgeJson));
     const editInfoRes = await axios({
         method: 'put',
         url: BaseUrl + '/item/badge/' + id,
@@ -69,6 +70,6 @@ export async function editBadgeInfo(id, badgeJson) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${AccessToken}`,
         },
-        body: badgeJson,
+        data: JSON.stringify(badgeJson),
     });
 }
