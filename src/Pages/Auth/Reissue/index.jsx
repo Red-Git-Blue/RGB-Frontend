@@ -8,8 +8,11 @@ const Reissue = () => {
     const navigate = useNavigate();
     if(cookies.accessToken && cookies.refreshToken) {
         axios({
-            method: 'post',
+            method: 'POST',
             url: BaseUrl + '/auth/reissue',
+            headers: {
+                Authorization: `Bearer ${cookies.accessToken}`,
+            },
             data: {
                 accessToken : cookies.accessToken,
                 refreshToken : cookies.refreshToken

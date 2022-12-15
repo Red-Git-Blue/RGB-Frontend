@@ -2,7 +2,6 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import styled from "styled-components";
 import {Image} from "../../../styleds";
 import {useCookies} from "react-cookie";
-import {Fragment} from "react";
 import Reissue from '../Reissue';
 
 const Page_button = styled.span`
@@ -74,11 +73,14 @@ const Page_button = styled.span`
 `
 
 const Header = ({Admin}) => {
-    // Reissue();
     const log = useLocation();
     const data = log.pathname.split('/').filter((item) => item !== '');
+    const [cookies, setCookie, removeCookie] = useCookies(['refreshToken']);
     let navigate = useNavigate();
-    const [cookies, ,] = useCookies(['refreshToken']);
+
+    if(data[0] !== 'login' && !(cookies.accessToken && cookies.refreshToken)) {
+      Reissue();
+    }
 
     return (
         <>
@@ -91,15 +93,15 @@ const Header = ({Admin}) => {
                 </Logo_box>
                 <Page_box>
                     {Admin ?
-                        <Fragment>
+                        <>
                             <Page_button bool={data[data.length - 1] === 'AdminPage'} onClick={() => navigate('/youDontKnow/AdminPage')}>Main</Page_button>
                             <Page_button bool={data[data.length - 1] === 'AdminBadge'} onClick={() => navigate('/youDontKnow/AdminPage/AdminBadge')}>Manage Badge</Page_button>
                             <Page_button bool={data[data.length - 1] === 'AdminGrass'} onClick={() => navigate('/youDontKnow/AdminPage/AdminGrass')}>Manage Grass</Page_button>
                             <Page_button bool={data[data.length - 1] === 'AdminAd'} onClick={() => navigate('/youDontKnow/AdminPage/AdminAd')}>Manage Ad</Page_button>
                             <Page_button bool={data[data.length - 1] === 'AdminCategory'} onClick={() => navigate('/youDontKnow/AdminPage/AdminCategory')}>Manage Category</Page_button>
-                        </Fragment>
+                        </>
                         :
-                        <Fragment>
+                        <>
                             <Page_button bool={data[0] === 'main'} onClick={() => navigate('/main')}>Main</Page_button>
                             <Page_button bool={data[0] === 'coin'} onClick={() => navigate('/coin')}>Coin</Page_button>
                             <Page_button bool={data[0] === 'search'} onClick={() => navigate('/search')}>Search</Page_button>
@@ -107,12 +109,12 @@ const Header = ({Admin}) => {
                             {cookies.refreshToken ?
                                 <Page_button bool={data[0] === 'mypage'} onClick={() => navigate('/mypage')}>My Page</Page_button>
                                 :
-                                <Fragment>
+                                <>
                                     <Page_button bool={data[0] === 'login'} onClick={() => navigate('/login')}>Log In</Page_button>
                                     <Page_button bool={data[0] === 'signup'} onClick={() => navigate('/signup')}>Sign Up</Page_button>
-                                </Fragment>
+                                </>
                             }
-                        </Fragment>
+                        </>
                     }
                 </Page_box>
             </Out_box>
