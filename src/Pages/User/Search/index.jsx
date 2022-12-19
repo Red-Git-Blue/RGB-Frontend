@@ -2,19 +2,40 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 import styled from "styled-components";
-import {BaseUrl} from "../../../export/baseUrl";
+import { BaseUrl } from "../../../export/baseUrl";
 import { Image } from "../../../styleds";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const SearchView = () => {
-    const [BtnClick, SetClick] = useState(1);
-    const [cookies, , ] = useCookies(['accessToken']);
+    const [BtnClick, SetClick] = useState(0);
+    const [cookies, setCookies, removeCookie] = useCookies();
+    const [Text, setText] = useState('')
     const [userData, setUser] = useState([]);
     const [CoinData, setCoin] = useState([]);
 
+    const TextSort = (e) => {
+        setText(e.target.value.replace(/[^a-zA-Z0-9가-힣ㄱ-ㅎ]/g, ''));
+        if(e.target.value.trim() === '') SetClick(0);
+        else SetClick(1);
+    }
+
     const Search = (e) => {
-        if(!cookies.accessToken) return;
-        
+        if (!cookies.accessToken || e.target.value.trim() === '') return;
+
+        if(cookies.search) {
+            if(cookies.search.indexOf(Text) !== -1) return;
+
+            if(cookies.search.split(',').length > 8) {
+                setCookies('search', Text + ',' + cookies.search.split(',').slice(1, 9).join(','));
+            } else {
+                setCookies('search', Text + ',' + cookies.search);
+            }
+        }
+        else {
+            setCookies('search', Text);
+        }
+
         axios({
             method: 'get',
             url: BaseUrl + '/coin/search',
@@ -22,14 +43,14 @@ const SearchView = () => {
                 Authorization: `Bearer ${cookies.accessToken}`,
             },
             params: {
-                query: e.target.value.trim(),
+                query: Text,
                 idx: 0,
                 size: 10
             }
         })
-        .then((res) => {
-            setCoin(res.data);
-        })
+            .then((res) => {
+                setCoin(res.data);
+            })
 
         axios({
             method: 'get',
@@ -38,19 +59,36 @@ const SearchView = () => {
                 Authorization: `Bearer ${cookies.accessToken}`,
             },
             params: {
-                query: e.target.value.trim(),
+                query: Text,
                 idx: 0,
                 size: 10
             }
         })
-        .then((res) => {
-            setUser(res.data);
-        })
+            .then((res) => {
+                setUser(res.data);
+            })
+    }
+
+    const DeleteText = (value) => {
+        const Data = cookies.search.split(',').filter((item) => item !== value).join(',');
+        if(Data === '') {
+            removeCookie('search');
+        } else {
+            setCookies('search', Data);
+        }
+        
     }
 
     return (
         <OutBox>
-            <SearchInput onKeyDown={(e) => {if(e.key === 'Enter') Search(e)}}/>
+            <SearchInput
+                onChange={(e) => TextSort(e)}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') Search(e);
+                    if (e.key == 'Backspace') TextSort(e);
+                }}
+                value={Text}
+            />
             <AuthPage_btn_box>
                 <AuthPage_btn
                     bool={BtnClick === 1}
@@ -62,25 +100,45 @@ const SearchView = () => {
                     bool={BtnClick === -1}
                     onClick={(() => BtnClick === 1 && SetClick(-BtnClick))}
                 >
-                    순위
+                    유저
                 </AuthPage_btn>
             </AuthPage_btn_box>
-            <GridBox>
-                {
-                    BtnClick === 1 ?
-                    <>
-                    {
-                        CoinData.map((item, index) => <Result key={index} type={1} data={item}/>)
-                    }
-                    </>
+            {
+                BtnClick === 0 ?
+                    <BeforeSearch>
+                        <BeforeSearchTitle>지금까지 검색했던 검색어</BeforeSearchTitle>
+                        {
+                            cookies.search === undefined ?
+                            <BeforeSearchTitle>검색어가 존재하지 않습니다.</BeforeSearchTitle>
+                            :
+                            <>
+                            {
+                                cookies.search.split(',').map((item, index) => 
+                                    <BeforeSearchText key={index} value={item} Fn1={setText} Fn2={SetClick} Fn3={DeleteText} />
+                                )
+                            }
+                            </>
+                        }
+                        
+                    </BeforeSearch>
                     :
-                    <>
-                    {
-                        userData.map((item, index) => <Result key={index} type={-1} data={item}/>)
-                    }
-                    </>
-                }
-            </GridBox>
+                    <GridBox>
+                        {
+                            BtnClick === 1 ?
+                                <>
+                                    {
+                                        CoinData.map((item, index) => <Result key={index} type={1} data={item} />)
+                                    }
+                                </>
+                                :
+                                <>
+                                    {
+                                        userData.map((item, index) => <Result key={index} type={-1} data={item} />)
+                                    }
+                                </>
+                        }
+                    </GridBox>
+            }
         </OutBox>
     )
 }
@@ -148,6 +206,92 @@ const AuthPage_btn = styled.div`
     }
 `
 
+const BeforeSearch = styled.div`
+    width: 940px;
+    min-height: 100px;
+    padding: 0 28px;
+    background: #222222;
+    border: 2px solid #444444;
+    border-radius: 20px;
+    position: absolute;
+    top: 260px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #ffffff;
+    & > span:first-child {
+        border: none;
+    }
+`
+
+const BeforeSearchTitle = styled.span`
+    display: inline-block;
+    width: 940px;
+    padding: 20px 0;
+    border-top: 2px solid #444444;
+`
+
+const BeforeSearchText = ({value, Fn1, Fn2, Fn3}) => {
+    return (
+        <BeforeSearchTextBox>
+            <span onClick={() => {Fn1(value); Fn2(1);}}>{value}</span>
+            <DeleteX onClick={() => Fn3(value)}/>
+        </BeforeSearchTextBox>
+    )
+}
+
+const BeforeSearchTextBox = styled(BeforeSearchTitle)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #909090;
+    & > span{
+        display: inline-block;
+        cursor: pointer;
+        transition: 0.3s;
+        &:first-child:hover {
+            color: #FFFFFF;
+            transform: scale(1.05);
+        }
+    }
+`
+
+const DeleteX = styled.span`
+    height: 4px;
+    width: 20px;
+    display: block;
+    background-color: #909090;
+    transform: rotate(-45deg);
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: visible;
+    transition: 0.5s;
+    transform-origin: center;
+
+    &::after {
+        content: '';
+        height: 4px;
+        width: 20px;
+        display: block;
+        background-color: #909090;
+        border-radius: 10px;
+        transform: rotate(90deg);
+        transition: 0.5s;
+    }
+
+    &:hover {
+        background-color: #ffffff;
+        &::after {
+            background-color: #ffffff;
+        }
+        transform: rotate(-45deg) scale(1.5);
+    }
+`
+
 const GridBox = styled.div`
     width: 1150px;
     height: auto;
@@ -156,17 +300,17 @@ const GridBox = styled.div`
     gap: 20px;
 `
 
-const Result = ({type, data}) => {
+const Result = ({ type, data }) => {
     const Navigate = useNavigate();
 
     return (
         <ResultBox onClick={() => type === 1 ? Navigate('/coin/' + data.id) : Navigate('/userPage/' + data.id)}>
             <div>
                 {
-                    data.profile? 
-                    <Image src={data.profile.fileUrl} width='35px' height='35px' radius='20px'/>
-                    :
-                    <EmptyImage />
+                    data.profile ?
+                        <Image src={data.profile.fileUrl} width='35px' height='35px' radius='20px' />
+                        :
+                        <EmptyImage />
                 }
                 <div>
                     <span>{data.nickName}</span>
@@ -175,17 +319,17 @@ const Result = ({type, data}) => {
             </div>
             {
                 type === 1 ?
-                <CoinBox color={data.increment.includes('-') === true ? "#0038FF" : "#FF0000"}>
-                    <span>{data.price}</span>
-                    <span>{data.increment.includes('-') ? data.increment : `+${data.increment}`}</span>
-                </CoinBox>
-                :
-                <BadgeBox>
-                    {
-                        data.representBadge &&
-                        <Image src={data.representBadge.fileUrl} width='70px' height='75px' radius='20px'/>
-                    }
-                </BadgeBox>
+                    <CoinBox color={data.increment.includes('-') === true ? "#0038FF" : "#FF0000"}>
+                        <span>{data.price}</span>
+                        <span>{data.increment.includes('-') ? data.increment : `+${data.increment}`}</span>
+                    </CoinBox>
+                    :
+                    <BadgeBox>
+                        {
+                            data.representBadge &&
+                            <Image src={data.representBadge.fileUrl} width='70px' height='75px' radius='20px' />
+                        }
+                    </BadgeBox>
             }
         </ResultBox>
     )
