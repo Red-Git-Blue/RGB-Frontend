@@ -27,6 +27,8 @@ const SignUpView = () => {
                     email: signup_data.email
                 }
             });
+            toast.success("이메일을 확인해주세요.");
+            toast.success("인증 메일이 전송되었습니다.");
             toast.success("회원가입 성공!");
             navigate('/main');
         } catch (err) {
