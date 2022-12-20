@@ -274,16 +274,16 @@ export const Text = styled.span`
 `
 
 export const Image = styled.img.attrs(({
-    onError: (e) => console.log(e),
+    onError: (e) => console.log(e)
 }))`
     width: ${(props) => props.width || '0px'};
     height: ${(props) => props.height || '0px'};
-    object-fit: cover;
+    object-fit: ${(props) => props.fit || 'cover'};
     border-radius: ${(props) => props.radius || '0px'};
 `
 
 const PasswordImage = styled.img.attrs(({
-    onError: (e) => console.log(e),
+    onError: (e) => console.log(e)
 }))`
     width: ${(props) => props.width || '0px'};
     height: ${(props) => props.height || '0px'};
