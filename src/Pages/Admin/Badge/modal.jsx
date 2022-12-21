@@ -62,9 +62,7 @@ const Modal = ({Set, Re}) => {
         setImg(ImgArr);
     }
 
-    const mRemove = (remove) => {
-        remove("");
-    }
+    const mRemove = (remove) => remove("");
 
     const TagClick = () => {
         tagName && tagColor ? setTag([...tag, {

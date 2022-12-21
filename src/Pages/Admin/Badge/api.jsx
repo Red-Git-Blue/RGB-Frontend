@@ -16,8 +16,8 @@ import {BaseUrl} from "../../../export/baseUrl";
 //     return Token.data;
 // }
 
-const AccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MDk4MDYxMSwiZXhwIjoxNjcxMDY3MDExfQ.Thh_X-XW0oi89SfwXezi1ffsecgNhTaz-GxzEx33qRM";
-console.log("Access Token is : "+AccessToken);
+const AccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MTQ0NzMxNiwiZXhwIjoxNjcxNTMzNzE2fQ.89UmwlmuDna2pPNhT398FHDm0J5TvejD1L0mNKylWnA";
+console.log("Access Token is : " + AccessToken);
 
 export async function getCoinList() {
     const badgeRes = await axios({
@@ -49,11 +49,11 @@ export async function postBadge(Re, e, formData) {
     Re();
 }
 
-export async function deleteBadge(index){
+export async function deleteBadge(index) {
     const deleteRes = await axios({
         method: 'delete',
         url: BaseUrl + '/item/badge/' + index,
-        headers:{
+        headers: {
             Authorization: `Bearer ${AccessToken}`
         },
     });
@@ -62,7 +62,6 @@ export async function deleteBadge(index){
 ////////////////////////////////////////////////////////////////////////////////////////    EDIT API    ////////////////
 
 export async function editBadgeInfo(id, badgeJson) {
-    console.log(JSON.stringify(badgeJson));
     const editInfoRes = await axios({
         method: 'put',
         url: BaseUrl + '/item/badge/' + id,
@@ -71,5 +70,94 @@ export async function editBadgeInfo(id, badgeJson) {
             Authorization: `Bearer ${AccessToken}`,
         },
         data: JSON.stringify(badgeJson),
+    });
+}
+
+export async function editCategory(id, category) {
+    const editCategoryRes = await axios({
+        method: 'put',
+        url: BaseUrl + '/item/badge/' + id + '/category',
+        params: {
+            category: category,
+        },
+        headers: {
+            Authorization: `Bearer ${AccessToken}`,
+        },
+    });
+}
+
+export async function addTag(id, tagName, tagColor) {
+    const addTagRes = await axios({
+        method: 'put',
+        url: BaseUrl + '/item/badge/' + id + '/tag',
+        params: {
+            tagName: tagName,
+            tagColor: tagColor,
+        },
+        headers: {
+            Authorization: `Bearer ${AccessToken}`,
+        },
+    });
+}
+
+export async function deleteTag(id, tagName) {
+    const deleteTagRes = await axios({
+        method: 'delete',
+        url: BaseUrl + '/item/badge/' + id + '/tag',
+        params: {
+            tagName: tagName,
+        },
+        headers: {
+            Authorization: `Bearer ${AccessToken}`,
+        },
+    });
+}
+
+export async function changeMainImg(id, formData) {
+    const changeMainImgRes = await axios({
+        method: 'put',
+        url: BaseUrl + '/item/badge/' + id + '/main',
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${AccessToken}`
+        },
+        data: formData,
+    });
+}
+
+export async function changeIconImg(id, formData) {
+    const changeIconImgRes = await axios({
+        method: 'put',
+        url: BaseUrl + '/item/badge/' + id + '/icon',
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${AccessToken}`
+        },
+        data: formData,
+    });
+}
+
+export async function deleteSubImg(id, fileId) {
+    const deleteSubImgRes = await axios({
+        method: 'delete',
+        url: BaseUrl + '/item/badge/' + id + '/sub',
+        params: {
+            fileId: fileId
+        },
+        headers: {
+            Authorization: `Bearer ${AccessToken}`
+        },
+    })
+}
+
+export async function changeSubImg(id, formData) {
+    const changeSubImgRes = await axios({
+        method: 'put',
+        url: BaseUrl + '/item/badge/' + id + '/sub',
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${AccessToken}`
+        },
+        data: formData,
     });
 }
