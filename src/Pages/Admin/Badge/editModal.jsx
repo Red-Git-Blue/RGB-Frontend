@@ -19,6 +19,7 @@ const EditModal = ({Set, Id, Reset}) => {
     const [mPre, setMPre] = useState("");
     const [iPre, setIPre] = useState("");
     const [sPre, setSPre] = useState([]);
+    const [subList, setSubList] = useState([]);
     const {data: editData, isLoading: loading3, refetch: re3, remove: rm2} = useQuery(['Edit'],
         () => getDetailCoin(Id),
         {refetchOnWindowFocus: false}
@@ -29,7 +30,7 @@ const EditModal = ({Set, Id, Reset}) => {
         setName(editData.name);
         setPrice(editData.price);
         setRank(editData.rarity.name);
-        setCategory(editData.category);
+        setCategory(editData.category.categoryName);
         setExplain(editData.introduction);
         setShowTag(editData.tagList);
         setMPre(editData.mainImage.fileUrl);
@@ -52,7 +53,7 @@ const EditModal = ({Set, Id, Reset}) => {
 
         let mFiles = e.target.mfile.files;
         let iFiles = e.target.ifile.files;
-        let sFiles = e.target.sfile.files;
+        let sFiles = subList;
         console.log(mFiles);
         console.log(iFiles);
         console.log(sFiles);
@@ -65,13 +66,11 @@ const EditModal = ({Set, Id, Reset}) => {
         if (sFiles[0]) {
             for (let i = 0; i < sFiles.length; i++) {
                 sFormData.append("subImage", sFiles[i]);
-                changeSubImg(Id, sFormData).finally(()=>
-                    sFormData.delete("subImage")
-                );
+                console.log('추가하고 있는 서브 이미지 : ' + sFormData.get('subImage').name);
+                changeSubImg(Id, sFormData);
+                sFormData.delete("subImage");
             }
-            console.log('sFormData : ' + sFormData);
         }
-
 
         editBadgeInfo(Id, {
             name: name,
@@ -101,9 +100,11 @@ const EditModal = ({Set, Id, Reset}) => {
     const deleteSubImageClick = (index) => {
         if (sPre[index].fileId === undefined) {
             setSPre(sPre.filter(img => img.fileUrl !== sPre[index].fileUrl));
+            setSubList(subList.filter(img=>img.fileUrl !== subList[index].fileUrl));
         } else {
             console.log(sPre[index].fileId);
             deleteSubImg(Id, sPre[index].fileId);
+            setSPre(sPre.filter(img => img.fileId !== sPre[index].fileId));
         }
     }
 
@@ -130,6 +131,10 @@ const EditModal = ({Set, Id, Reset}) => {
         console.log(sPre);
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0]);
+            let newVar = [...subList, e.target.files[0]];
+            setSubList(newVar);
+            console.log(e.target.files[0]);
+            console.log('subList = ' + newVar);
         }
         reader.onloadend = () => {
             const previewImgUrl = reader.result;
