@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { BaseUrl } from "../../../export/baseUrl";
 import { useCookies } from "react-cookie";
 
-const Model = ({ Fn1, Fn2 }) => {
-    const [cookies,,] = useCookies();
+const Model = ({ Type = [], Fn1, Fn2, setType }) => {
+    const [cookies, ,] = useCookies();
     const [ImgFile, setImg] = useState(undefined);
     const [Data, setData] = useState({
         name: '',
@@ -15,6 +15,37 @@ const Model = ({ Fn1, Fn2 }) => {
         Introduce: '',
         src: ''
     })
+    const [pastData, setPastData] = useState(undefined);
+
+    if (Type[0] === 'VIEW' && pastData === undefined) {
+        axios({
+            method: 'GET',
+            url: BaseUrl + '/advertise/' + Type[1],
+            headers: {
+                Authorization: `Bearer ${cookies.accessToken}`,
+            }
+        })
+            .then((res) => {
+                toast.success('정보를 성공적으로 불러왔습니다.');
+                setPastData({
+                    name: res.data.name,
+                    startDay: res.data.startDate,
+                    endDay: res.data.endDate,
+                    Introduce: res.data.introduction,
+                    src: res.data.advertiseFile.fileUrl
+                });
+                setData({
+                    name: res.data.name,
+                    startDay: res.data.startDate,
+                    endDay: res.data.endDate,
+                    Introduce: res.data.introduction,
+                    src: res.data.advertiseFile.fileUrl
+                });
+            })
+            .catch(() => {
+                toast.error('너 뭔가 잘못됐어!');
+            })
+    }
 
     const Reading = (e) => {
         const fileReader = new FileReader();
@@ -38,45 +69,112 @@ const Model = ({ Fn1, Fn2 }) => {
     }
 
     const Push = () => {
-        if(cookies.accessToken === undefined) {
+        if (cookies.accessToken === undefined) {
             toast.error('로그인도 안 했구나?');
             return;
         }
 
-        if(Object.values(Data).filter((item) => item === '').length) {
+        if (Object.values(Data).filter((item) => item === '').length) {
             toast.error('모두 입력해주세요!');
             return;
         }
 
-        const formData = new FormData();
+        if (Type[0] === 'EDIT') {
+            if (Data.src !== pastData.src) {
+                const formData = new FormData();
+                formData.append("advertiseFile", ImgFile);
 
-        formData.set("req", new Blob([JSON.stringify({
-            name: Data.name,
-            introduction: Data.Introduce,
-            startDate: Data.startDay,
-            endDate: Data.endDay
-        })], {
-            type: "application/json"
-        }));
-        
-        formData.append("advertiseFile", ImgFile);
+                axios({
+                    method: 'PUT',
+                    url: BaseUrl + '/advertise/file/' + Type[1],
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${cookies.accessToken}`,
+                    },
+                    data: formData
+                })
+                    .then(() => {
+                        toast.success('이미지를 성공적으로 변경했습니다.');
+                        Fn1(false);
+                    })
+                    .catch(() => {
+                        toast.error('너 뭔가 잘못됐어!');
+                    })
+            }
 
-        axios({
-            method: 'POST',
-            url: BaseUrl + '/advertise',
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${cookies.accessToken}`,
-            },
-            data: formData
-        }).then(() => {
-            toast.success('매우 성공적이다');
+            if ((Data.name !== pastData.name) || (Data.startDay !== pastData.startDay) || (Data.endDay !== pastData.endDay) || (Data.Introduce !== pastData.Introduce)) {
+                axios({
+                    method: 'PUT',
+                    url: BaseUrl + '/advertise/' + Type[1],
+                    headers: {
+                        Authorization: `Bearer ${cookies.accessToken}`,
+                    },
+                    data: {
+                        name: Data.name,
+                        introduction: Data.Introduce,
+                        startDate: Data.startDay,
+                        endDate: Data.endDay
+                    }
+                })
+                    .then(() => {
+                        toast.success('내용을 성공적으로 변경했습니다.');
+                        Fn1(false);
+                    })
+                    .catch(() => {
+                        toast.error('너 뭔가 잘못됐어!');
+                    })
+            }
+
             Fn2();
-            Fn1(false);
+        } else {
+            const formData = new FormData();
+
+            formData.set("req", new Blob([JSON.stringify({
+                name: Data.name,
+                introduction: Data.Introduce,
+                startDate: Data.startDay,
+                endDate: Data.endDay
+            })], {
+                type: "application/json"
+            }));
+
+            formData.append("advertiseFile", ImgFile);
+
+            axios({
+                method: 'POST',
+                url: BaseUrl + '/advertise',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${cookies.accessToken}`,
+                },
+                data: formData
+            }).then(() => {
+                toast.success('매우 성공적이다');
+                Fn2();
+                Fn1(false);
+            })
+                .catch(() => {
+                    toast.error('너 뭔가 잘못됐어!');
+                })
+        }
+    }
+
+    const DeteleAd = () => {
+        axios({
+            method: 'DELETE',
+            url: BaseUrl + '/advertise/' + Type[1],
+            headers: {
+                Authorization: `Bearer ${cookies.accessToken}`,
+            }
         })
-        .catch(() => {
-            toast.error('너 뭔가 잘못됐어!');
-        })
+            .then(() => {
+                toast.success('성공적으로 삭제했습니다.');
+                Fn2();
+                Fn1(false);
+            })
+            .catch(() => {
+                toast.error('너 뭔가 잘못됐어!');
+            })
     }
 
     return (
@@ -87,15 +185,17 @@ const Model = ({ Fn1, Fn2 }) => {
                     <CancelX onClick={() => Fn1(false)} />
                 </Header>
                 <InBox>
-                    <AddAd onChange={(e) => Reading(e)} />
-                    <AddAdLabel src={Data.src === '' ? undefined : Data.src}>
-                        <AddX display={Data.src === '' ? 'block' : 'none'}/>
+                    {Type[0] === 'VIEW' || <AddAd onChange={(e) => Reading(e)} />}
+                    <AddAdLabel mouse={Type[0] === 'VIEW' ? 'default' : 'pointer'} src={Data.src === '' ? undefined : Data.src}>
+                        <AddX display={Data.src === '' ? 'block' : 'none'} />
                     </AddAdLabel>
                     <SubTitle>광고 이름</SubTitle>
                     <InputBox
                         onChange={(e) => DataChange('name', e.target.value)}
                         type='text'
                         placeholder='광고 이름을 입력해주세요.'
+                        value={Data.name}
+                        disabled={Type[0] === 'VIEW'}
                     />
                     <SubTitle>날짜</SubTitle>
                     <InputBox
@@ -104,19 +204,35 @@ const Model = ({ Fn1, Fn2 }) => {
                         min='2022-12-01'
                         max='2100-12-31'
                         placeholder='광고 시작일을 입력해주세요.'
+                        value={Data.startDay}
+                        disabled={Type[0] === 'VIEW'}
                     />
                     <InputBox
                         onChange={(e) => DataChange('endDay', e.target.value)}
                         type='date'
+                        min='2022-12-01'
+                        max='2100-12-31'
                         placeholder='광고 종료일을 입력해주세요.'
+                        value={Data.endDay}
+                        disabled={Type[0] === 'VIEW'}
                     />
                     <SubTitle>설명</SubTitle>
                     <BigInputBox
                         onChange={(e) => DataChange('Introduce', e.target.value)}
                         placeholder='광고 설명을 입력해주세요.'
+                        value={Data.Introduce}
+                        disabled={Type[0] === 'VIEW'}
                     />
                     <FlexBox>
-                        <AddBtn onClick={() => Push()}>광고 추가하기</AddBtn>
+                        {
+                            Type[0] === 'VIEW' ?
+                                <>
+                                    <AddBtn onClick={() => setType(['EDIT', Type[1]])}>광고 수정하기</AddBtn>
+                                    <AddBtn onClick={() => { if (window.confirm("정말로 삭제하실 건가요?")) DeteleAd() }}>광고 삭제하기</AddBtn>
+                                </>
+                                :
+                                <AddBtn onClick={() => Push()}>{Type[0] === 'EDIT' ? '광고 수정하기' : '광고 추가하기'}</AddBtn>
+                        }
                     </FlexBox>
                 </InBox>
             </Box>
@@ -247,7 +363,7 @@ const AddAdLabel = styled.label.attrs({
     background-repeat: no-repeat;
     border-radius: 20px;
     margin: 10px 0;
-    cursor: pointer;
+    cursor: ${(props) => props.mouse};
 
     display: flex;
     justify-content: center;
@@ -328,6 +444,7 @@ const FlexBox = styled.div`
 const AddBtn = styled.div`
     width: 196px;
     height: 46px;
+    margin-left: 10px;
     border: 2px solid #222222;
     background: #222222;
     border-radius: 20px;
@@ -340,6 +457,7 @@ const AddBtn = styled.div`
     justify-content: center;
     align-items: center;
 
+    transition: 0.3s;
     &:hover {
         border: 2px solid #FFFFFF;
     }

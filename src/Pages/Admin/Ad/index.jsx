@@ -1,7 +1,6 @@
-import {useEffect, useState} from "react";
-import styled, {keyframes} from "styled-components";
+import { useState } from "react";
+import styled, { keyframes } from "styled-components";
 import axios from "axios";
-import {useMediaQuery} from "react-responsive";
 import { Image } from "../../../styleds";
 import Model from "./model";
 import { useQuery } from "react-query";
@@ -9,47 +8,53 @@ import { BaseUrl } from "../../../export/baseUrl";
 import { useCookies } from "react-cookie";
 
 const Index = () => {
-    const [cookies,,] = useCookies();
-    const [openModel, setModel] = useState(false);
+  const [cookies, ,] = useCookies();
+  const [openModel, setModel] = useState(false);
+  const [modelType, setType] = useState(['MAKE']);
 
-    const { status, data, error, refetch } = useQuery(['AdData'], () => 
-      axios({
-        method: 'GET',
-        url: BaseUrl + '/advertise',
-        headers: {
-            Authorization: `Bearer ${cookies.accessToken}`,
-        },
-        params: {
-          idx: 0,
-          size: 20
-        }
-      }),
-      {
-        refetchOnWindowFocus: false,
-        retry: 0
+  const openDetail = (data) => {
+    setType(['VIEW', data]);
+    setModel(true);
+  }
+
+  const { status, data, error, refetch } = useQuery(['AdData'], () =>
+    axios({
+      method: 'GET',
+      url: BaseUrl + '/advertise',
+      headers: {
+        Authorization: `Bearer ${cookies.accessToken}`,
+      },
+      params: {
+        idx: 0,
+        size: 20
       }
-    )
+    }),
+    {
+      refetchOnWindowFocus: false,
+      retry: 0
+    }
+  )
 
-    return(
-        <>
-            <Body>
-                {openModel && <Model Fn1={setModel} Fn2={refetch}/>}
-                <Text Margin="100px" Size="36px" W="200">Manage Ad</Text>
-                <FlexDiv>
-                    <Text>Ad List</Text>
-                    <AddButton onClick={() => setModel(true)}>광고 추가</AddButton>
-                </FlexDiv>
-                <MainBox>
-                    {
-                      status === 'success' && 
-                      data.data.content.map((item, index) =>
-                        <Advertisement key={index} data={item} />
-                      )
-                    }
-                </MainBox>
-            </Body>
-        </>
-    );
+  return (
+    <>
+      <Body>
+        {openModel && <Model Type={modelType} Fn1={setModel} Fn2={refetch} setType={setType} />}
+        <Text Margin="100px" Size="36px" W="200">Manage Ad</Text>
+        <FlexDiv>
+          <Text onClick={() => setModel(true)}>Ad List</Text>
+          <AddButton onClick={() => setModel(true)}>광고 추가</AddButton>
+        </FlexDiv>
+        <MainBox>
+          {
+            status === 'success' &&
+            data.data.content.map((item, index) =>
+              <Advertisement key={index} data={item} Fn1={openDetail} />
+            )
+          }
+        </MainBox>
+      </Body>
+    </>
+  );
 }
 
 export default Index;
@@ -122,13 +127,13 @@ const MainBox = styled.div`
     padding: 60px 60px 60px 60px;
 `
 
-const Advertisement = ({data}) => {
-    return (
-        <AdBox>
-            <Image src={data.advertiseFile.fileUrl} fit='contain' width='400px' height='200px' radius='20px'/>
-            <Text W='400' Size='20px'>{data.name}</Text>
-        </AdBox>
-    )
+const Advertisement = ({ data, Fn1 }) => {
+  return (
+    <AdBox onClick={() => Fn1(data.id)}>
+      <Image src={data.advertiseFile.fileUrl} fit='contain' width='400px' height='200px' radius='20px' />
+      <Text W='400' Size='20px'>{data.name}</Text>
+    </AdBox>
+  )
 }
 
 const AdBox = styled.div`
