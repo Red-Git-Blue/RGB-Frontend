@@ -12,12 +12,17 @@ const Index = () => {
   const [openModel, setModel] = useState(false);
   const [modelType, setType] = useState(['MAKE']);
 
+  const openMAKE = () => {
+    setType(['MAKE']);
+    setModel(true);
+  }
+
   const openDetail = (data) => {
     setType(['VIEW', data]);
     setModel(true);
   }
 
-  const { status, data, error, refetch } = useQuery(['AdData'], () =>
+  const { status, data, refetch } = useQuery(['AdData'], () =>
     axios({
       method: 'GET',
       url: BaseUrl + '/advertise',
@@ -41,8 +46,8 @@ const Index = () => {
         {openModel && <Model Type={modelType} Fn1={setModel} Fn2={refetch} setType={setType} />}
         <Text Margin="100px" Size="36px" W="200">Manage Ad</Text>
         <FlexDiv>
-          <Text onClick={() => setModel(true)}>Ad List</Text>
-          <AddButton onClick={() => setModel(true)}>광고 추가</AddButton>
+          <Text>Ad List</Text>
+          <AddButton onClick={() => openMAKE()}>광고 추가</AddButton>
         </FlexDiv>
         <MainBox>
           {
