@@ -1,6 +1,5 @@
 import {Fragment, useEffect, useState} from "react";
 import styled, {keyframes} from "styled-components";
-import axios from "axios";
 import Modal from './modal';
 import {useQuery} from "react-query";
 import {getCoinList, deleteBadge} from "./api";
@@ -50,7 +49,7 @@ const Index = () => {
     );
 
     return (
-        <Fragment>
+        <>
             <Body onClick={backClick}>
                 {isOpen ? <Modal Set={setOpen} Re={re1}/> : null}
                 {detail ? <DetailModal Set={setDetail} Detail={dats}/> : null}
@@ -71,7 +70,7 @@ const Index = () => {
                 </BadgeList>
                 {contextMenu && contextMenuMarkup}
             </Body>
-        </Fragment>
+        </>
     );
 }
 
