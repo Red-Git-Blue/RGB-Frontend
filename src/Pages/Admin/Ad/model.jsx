@@ -12,7 +12,7 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
         name: '',
         startDay: '',
         endDay: '',
-        Introduce: '',
+        introduction: '',
         src: ''
     })
     const [pastData, setPastData] = useState(undefined);
@@ -31,14 +31,14 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
                     name: res.data.name,
                     startDay: res.data.startDate,
                     endDay: res.data.endDate,
-                    Introduce: res.data.introduction,
+                    introduction: res.data.introduction,
                     src: res.data.advertiseFile.fileUrl
                 });
                 setData({
                     name: res.data.name,
                     startDay: res.data.startDate,
                     endDay: res.data.endDate,
-                    Introduce: res.data.introduction,
+                    introduction: res.data.introduction,
                     src: res.data.advertiseFile.fileUrl
                 });
             })
@@ -102,7 +102,7 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
                     })
             }
 
-            if ((Data.name !== pastData.name) || (Data.startDay !== pastData.startDay) || (Data.endDay !== pastData.endDay) || (Data.Introduce !== pastData.Introduce)) {
+            if ((Data.name !== pastData.name) || (Data.startDay !== pastData.startDay) || (Data.endDay !== pastData.endDay) || (Data.introduction !== pastData.introduction)) {
                 axios({
                     method: 'PUT',
                     url: BaseUrl + '/advertise/' + Type[1],
@@ -111,7 +111,7 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
                     },
                     data: {
                         name: Data.name,
-                        introduction: Data.Introduce,
+                        introduction: Data.introduction,
                         startDate: Data.startDay,
                         endDate: Data.endDay
                     }
@@ -131,7 +131,7 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
 
             formData.set("req", new Blob([JSON.stringify({
                 name: Data.name,
-                introduction: Data.Introduce,
+                introduction: Data.introduction,
                 startDate: Data.startDay,
                 endDate: Data.endDay
             })], {
@@ -218,9 +218,9 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
                     />
                     <SubTitle>설명</SubTitle>
                     <BigInputBox
-                        onChange={(e) => DataChange('Introduce', e.target.value)}
+                        onChange={(e) => DataChange('introduction', e.target.value)}
                         placeholder='광고 설명을 입력해주세요.'
-                        value={Data.Introduce}
+                        value={Data.introduction}
                         disabled={Type[0] === 'VIEW'}
                     />
                     <FlexBox>
