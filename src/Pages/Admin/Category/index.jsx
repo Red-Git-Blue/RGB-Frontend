@@ -4,6 +4,7 @@ import axios from "axios";
 import {useQuery} from "react-query";
 import {BaseUrl} from "../../../export/baseUrl";
 import {useCookies} from "react-cookie";
+import {toast} from "react-toastify";
 
 const Index = () => {
     const {data: categoryList, isLoading: cLoading} = useQuery(['category'],
@@ -12,9 +13,11 @@ const Index = () => {
     const [cookies, ,] = useCookies();
     const [cOpen, setCOpen] = useState(false);
     const [cName, setCName] = useState('');
-    const [cColor, setCColor] = useState(["FFFFFF", "FFFFFF"]);
+    const [cColor, setCColor] = useState(["#FFFFFF", "#FFFFFF"]);
     const [imgFile, setImgFile] = useState(undefined);
     const [preImg, setPreImg] = useState(undefined);
+    const [isAdd, setIsAdd] = useState(false);
+    const [mousePos, setMousePos] = useState({x: 0, y: 0});
     if (cLoading) return <div>로딩딩딩딩딩딩딩딩딩디리리딩디리딩딩딩</div>;
 
     async function getCategoryList() {
@@ -30,7 +33,7 @@ const Index = () => {
         setPreImg(undefined);
         setCOpen(false);
         setImgFile(undefined);
-        setCColor(["FFFFFF", "FFFFFF"]);
+        setCColor(["#FFFFFF", "#FFFFFF"]);
     }
 
     const insertImg = (e) => {
@@ -47,27 +50,56 @@ const Index = () => {
         }
     }
 
+    const categoryAdd = () => {
+        if (imgFile !== undefined && cName !== undefined) {
+        } else {
+            toast.error('모두 입력해주세요!!!!!!!!!!');
+        }
+    }
+
+    const startColorChange = (e) => setCColor([e, cColor[1]]);
+    const endColorChange = (e) => setCColor([cColor[0], e]);
+
+    const colorClick = (e) => setMousePos({x: e.pageX, y: e.pageY});
+
     const addCategory = (
         <AddBack>
             <AddDiv>
                 <CategoryBox Start={cColor[0]} End={cColor[1]}>
-                    <Label htmlFor="cFile" pre={preImg}><p>+</p></Label>
+                    <Label htmlFor="cFile" pre={preImg}><Plus Dis={imgFile && "none"}>+</Plus></Label>
                     <File type="file" id="cFile" name="cFile" onChange={(e) => insertImg(e)}></File>
                     <Text Size="20px" W="900" Top="20px">{cName}</Text>
                 </CategoryBox>
                 <Text Size="20px" W="600" Width="400px" Top="20px">카테고리 이름</Text>
                 <Input value={cName} onChange={(e) => setCName(e.target.value)} placeholder="카테고리 이름을 입력해주세요"/>
                 <AddFlex>
-                    <ColorDiv Color={cColor[0]}></ColorDiv>
-                    <ColorDiv Color={cColor[1]}></ColorDiv>
+                    <InputColor
+                        id="start"
+                        onChange={(e) => startColorChange(e.target.value)}
+                        name="start"
+                        value={cColor[0]}
+                        disabled={isAdd}
+                        type="color"
+                        style={{top: mousePos.y, left: mousePos.x}}
+                    />
+                    <ColorLabel htmlFor='start' onClick={(e) => colorClick(e)} color={cColor[0]}/>
+                    <InputColor
+                        id="end"
+                        onChange={(e) => endColorChange(e.target.value)}
+                        name="end"
+                        value={cColor[1]}
+                        disabled={isAdd}
+                        style={{top: mousePos.y, left: mousePos.x}}
+                    />
+                    <ColorLabel htmlFor='end' onClick={(e) => colorClick(e)} color={cColor[1]}/>
                 </AddFlex>
                 <AddFlex Jus="end">
-                    <Button>추가</Button>
+                    <Button onClick={categoryAdd}>추가</Button>
                     <Button onClick={categoryClose}>취소</Button>
                 </AddFlex>
             </AddDiv>
         </AddBack>
-    );
+    )
 
     return (
         <Fragment>
@@ -112,6 +144,24 @@ const Fade = keyframes`
     opacity: 1;
   }
 `;
+const ColorLabel = styled.label.attrs((props) => ({
+    style: {
+        background: props.color,
+    },
+}))`
+  width: 48%;
+  height: 100px;
+  border-radius: 20px;
+`;
+const InputColor = styled.input.attrs({
+    type: 'color',
+})`
+  position: fixed;
+  opacity: 0;
+`;
+const Plus = styled.p`
+  display: ${props => props.Dis};
+`;
 const Label = styled.label`
   background-image: url(${props => props.pre});
   width: ${props => props.S || "200px"};
@@ -135,12 +185,6 @@ const AddFlex = styled.div`
   justify-content: ${props => props.Jus || "space-between"};
   align-items: center;
   margin-top: 20px;
-`;
-const ColorDiv = styled.div`
-  width: 48%;
-  height: 100px;
-  background-color: #${props => props.Color};
-  border-radius: 20px;
 `;
 const Button = styled.button`
   width: 100px;

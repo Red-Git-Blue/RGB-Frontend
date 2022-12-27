@@ -1,8 +1,6 @@
 import {Fragment, useEffect, useState} from "react";
 import {useNavigate, useLocation} from 'react-router-dom';
 import styled from "styled-components";
-import axios from "axios";
-import {useMediaQuery} from "react-responsive";
 
 const Admin = () => {
     let navigate = useNavigate();

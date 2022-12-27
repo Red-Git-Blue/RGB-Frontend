@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
-import { toast } from "react-toastify";
+import {useState} from "react";
+import {toast} from "react-toastify";
 import styled from "styled-components";
-import { BaseUrl } from "../../../export/baseUrl";
-import { useCookies } from "react-cookie";
-import { useRef } from "react";
+import {BaseUrl} from "../../../export/baseUrl";
+import {useCookies} from "react-cookie";
+import {useRef} from "react";
 
-const Model = ({ Type = [], Fn1, Fn2, setType }) => {
+const Model = ({Type = [], Fn1, Fn2, setType}) => {
     const [cookies, ,] = useCookies();
     const colorInter = useRef(null);
     const [Data, setData] = useState({
@@ -15,12 +15,12 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
         introduction: '',
         price: 0,
         color: {
-          less: '#2D333B',
-          low: '#0E4429',
-          normal: '#006D32',
-          high: '#26A641',
-          max: '#39D353',
-          background: '#22272E'
+            less: '#2D333B',
+            low: '#0E4429',
+            normal: '#006D32',
+            high: '#26A641',
+            max: '#39D353',
+            background: '#22272E'
         }
     })
     const [pastData, setPastData] = useState(undefined);
@@ -149,11 +149,11 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
                 },
                 data: Data
             })
-            .then(() => {
-                toast.success('매우 성공적이다');
-                Fn2();
-                Fn1(false);
-            })
+                .then(() => {
+                    toast.success('매우 성공적이다');
+                    Fn2();
+                    Fn1(false);
+                })
                 .catch(() => {
                     toast.error('너 뭔가 잘못됐어!');
                 })
@@ -183,148 +183,148 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
             <Box>
                 <Header>
                     <span>잔디 추가하기</span>
-                    <CancelX onClick={() => Fn1(false)} />
+                    <CancelX onClick={() => Fn1(false)}/>
                 </Header>
                 <InBox>
                     <BetweenBox>
                         <div>
-                    <SubTitle>잔디 이름</SubTitle>
-                    <InputBox
-                        onChange={(e) => DataChange('name', e.target.value)}
-                        type='text'
-                        placeholder='잔디 이름을 입력해주세요.'
-                        value={Data.name}
-                        disabled={Type[0] === 'VIEW'}
-                    />
-                    <SubTitle>등급</SubTitle>
-                    <BtnOutBox>
-                        <RarityBtn
-                            bool={Data.rarityType === 'COMMON'}
-                            color='#AAAAAA'
-                            onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'COMMON')}
-                        >
-                            COMMON
-                        </RarityBtn>
-                        <RarityBtn
-                            bool={Data.rarityType === 'RARE'}
-                            color='#5555FF'
-                            onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'RARE')}
-                        >
-                            RARE
-                        </RarityBtn>
-                        <RarityBtn 
-                            bool={Data.rarityType === 'EPIC'}
-                            color='#AA00AA'
-                            onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'EPIC')}
-                        >
-                            EPIC
-                        </RarityBtn>
-                        <RarityBtn
-                            bool={Data.rarityType === 'LEGENDARY'}
-                            color='#FFAA00'
-                            onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'LEGENDARY')}
-                        >
-                            LEGENDARY
-                        </RarityBtn>
-                        <RarityBtn
-                            bool={Data.rarityType === 'SPECIAL'}
-                            color='#FF5555'
-                            onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'SPECIAL')}
-                        >
-                            SPECIAL
-                        </RarityBtn>
-                        <RarityBtn
-                            bool={Data.rarityType === 'STAFF'}
-                            color='#55FFFF'
-                            onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'STAFF')}
-                        >
-                            STAFF
-                        </RarityBtn>
-                    </BtnOutBox>
-                    <SubTitle>가격</SubTitle>
-                    <InputBox
-                        onChange={(e) => DataChange('price', e.target.value)}
-                        type='number'
-                        placeholder='잔디 가격을 입력해주세요.'
-                        value={Data.price}
-                        disabled={Type[0] === 'VIEW'}
-                    />
-                    </div>
-                    <div>
-                        <InputColor 
-                            id="Background"
-                            onChange={(e) => ColorChange('background', e.target.value)}
-                            value={Data.color.background}
-                            disabled={Type[0] === 'VIEW'}
-                        />
-                        <ColorLabel
-                            htmlFor='Background'
-                            color={Data.color.background}
-                            width='390px'
-                            height='240px'
-                        >
-                            {/*----------------------------------------------*/}
+                            <SubTitle>잔디 이름</SubTitle>
+                            <InputBox
+                                onChange={(e) => DataChange('name', e.target.value)}
+                                type='text'
+                                placeholder='잔디 이름을 입력해주세요.'
+                                value={Data.name}
+                                disabled={Type[0] === 'VIEW'}
+                            />
+                            <SubTitle>등급</SubTitle>
+                            <BtnOutBox>
+                                <RarityBtn
+                                    bool={Data.rarityType === 'COMMON'}
+                                    color='#AAAAAA'
+                                    onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'COMMON')}
+                                >
+                                    COMMON
+                                </RarityBtn>
+                                <RarityBtn
+                                    bool={Data.rarityType === 'RARE'}
+                                    color='#5555FF'
+                                    onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'RARE')}
+                                >
+                                    RARE
+                                </RarityBtn>
+                                <RarityBtn
+                                    bool={Data.rarityType === 'EPIC'}
+                                    color='#AA00AA'
+                                    onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'EPIC')}
+                                >
+                                    EPIC
+                                </RarityBtn>
+                                <RarityBtn
+                                    bool={Data.rarityType === 'LEGENDARY'}
+                                    color='#FFAA00'
+                                    onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'LEGENDARY')}
+                                >
+                                    LEGENDARY
+                                </RarityBtn>
+                                <RarityBtn
+                                    bool={Data.rarityType === 'SPECIAL'}
+                                    color='#FF5555'
+                                    onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'SPECIAL')}
+                                >
+                                    SPECIAL
+                                </RarityBtn>
+                                <RarityBtn
+                                    bool={Data.rarityType === 'STAFF'}
+                                    color='#55FFFF'
+                                    onClick={() => Type[0] !== 'VIEW' && DataChange('rarityType', 'STAFF')}
+                                >
+                                    STAFF
+                                </RarityBtn>
+                            </BtnOutBox>
+                            <SubTitle>가격</SubTitle>
+                            <InputBox
+                                onChange={(e) => DataChange('price', e.target.value)}
+                                type='number'
+                                placeholder='잔디 가격을 입력해주세요.'
+                                value={Data.price}
+                                disabled={Type[0] === 'VIEW'}
+                            />
+                        </div>
+                        <div>
                             <InputColor
-                                id="less"
-                                onChange={(e) => ColorChange('less', e.target.value)}
-                                value={Data.color.less}
+                                id="Background"
+                                onChange={(e) => ColorChange('background', e.target.value)}
+                                value={Data.color.background}
                                 disabled={Type[0] === 'VIEW'}
                             />
                             <ColorLabel
-                                htmlFor='less'
-                                bool={Data.color.less === Data.color.background}
-                                color={Data.color.less}
-                            />
-                            {/*----------------------------------------------*/}
-                            <InputColor
-                                id="low"
-                                onChange={(e) => ColorChange('low', e.target.value)}
-                                value={Data.color.low}
-                                disabled={Type[0] === 'VIEW'}
-                            />
-                            <ColorLabel
-                                htmlFor='low'
-                                bool={Data.color.low === Data.color.background}
-                                color={Data.color.low}
-                            />
-                            {/*----------------------------------------------*/}
-                            <InputColor
-                                id="normal"
-                                onChange={(e) => ColorChange('normal', e.target.value)}
-                                value={Data.color.normal}
-                                disabled={Type[0] === 'VIEW'}
-                            />
-                            <ColorLabel
-                                htmlFor='normal'
-                                bool={Data.color.normal === Data.color.background}
-                                color={Data.color.normal}
-                            />
-                            {/*----------------------------------------------*/}
-                            <InputColor
-                                id="high"
-                                onChange={(e) => ColorChange('high', e.target.value)}
-                                value={Data.color.high}
-                                disabled={Type[0] === 'VIEW'}
-                            />
-                            <ColorLabel
-                                htmlFor='high'
-                                bool={Data.color.high === Data.color.background}
-                                color={Data.color.high}
-                            />
-                            {/*----------------------------------------------*/}
-                            <InputColor
-                                id="max"
-                                onChange={(e) => ColorChange('max', e.target.value)}
-                                value={Data.color.max}
-                                disabled={Type[0] === 'VIEW'}
-                            />
-                            <ColorLabel
-                                htmlFor='max'
-                                bool={Data.color.max === Data.color.background}
-                                color={Data.color.max}
-                            />
-                        </ColorLabel>
-                    </div>
+                                htmlFor='Background'
+                                color={Data.color.background}
+                                width='390px'
+                                height='240px'
+                            >
+                                {/*----------------------------------------------*/}
+                                <InputColor
+                                    id="less"
+                                    onChange={(e) => ColorChange('less', e.target.value)}
+                                    value={Data.color.less}
+                                    disabled={Type[0] === 'VIEW'}
+                                />
+                                <ColorLabel
+                                    htmlFor='less'
+                                    bool={Data.color.less === Data.color.background}
+                                    color={Data.color.less}
+                                />
+                                {/*----------------------------------------------*/}
+                                <InputColor
+                                    id="low"
+                                    onChange={(e) => ColorChange('low', e.target.value)}
+                                    value={Data.color.low}
+                                    disabled={Type[0] === 'VIEW'}
+                                />
+                                <ColorLabel
+                                    htmlFor='low'
+                                    bool={Data.color.low === Data.color.background}
+                                    color={Data.color.low}
+                                />
+                                {/*----------------------------------------------*/}
+                                <InputColor
+                                    id="normal"
+                                    onChange={(e) => ColorChange('normal', e.target.value)}
+                                    value={Data.color.normal}
+                                    disabled={Type[0] === 'VIEW'}
+                                />
+                                <ColorLabel
+                                    htmlFor='normal'
+                                    bool={Data.color.normal === Data.color.background}
+                                    color={Data.color.normal}
+                                />
+                                {/*----------------------------------------------*/}
+                                <InputColor
+                                    id="high"
+                                    onChange={(e) => ColorChange('high', e.target.value)}
+                                    value={Data.color.high}
+                                    disabled={Type[0] === 'VIEW'}
+                                />
+                                <ColorLabel
+                                    htmlFor='high'
+                                    bool={Data.color.high === Data.color.background}
+                                    color={Data.color.high}
+                                />
+                                {/*----------------------------------------------*/}
+                                <InputColor
+                                    id="max"
+                                    onChange={(e) => ColorChange('max', e.target.value)}
+                                    value={Data.color.max}
+                                    disabled={Type[0] === 'VIEW'}
+                                />
+                                <ColorLabel
+                                    htmlFor='max'
+                                    bool={Data.color.max === Data.color.background}
+                                    color={Data.color.max}
+                                />
+                            </ColorLabel>
+                        </div>
                     </BetweenBox>
                     <SubTitle>설명</SubTitle>
                     <BigInputBox
@@ -338,7 +338,9 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
                             Type[0] === 'VIEW' ?
                                 <>
                                     <AddBtn onClick={() => setType(['EDIT', Type[1]])}>잔디 수정하기</AddBtn>
-                                    <AddBtn onClick={() => { if (window.confirm("정말로 삭제하실 건가요?")) DeteleAd() }}>잔디 삭제하기</AddBtn>
+                                    <AddBtn onClick={() => {
+                                        if (window.confirm("정말로 삭제하실 건가요?")) DeteleAd()
+                                    }}>잔디 삭제하기</AddBtn>
                                 </>
                                 :
                                 <AddBtn onClick={() => Push()}>{Type[0] === 'EDIT' ? '잔디 수정하기' : '잔디 추가하기'}</AddBtn>
@@ -353,83 +355,86 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
 export default Model;
 
 const OutBox = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    background: rgba(0,0,0,0.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const Box = styled.div`
-     min-width: 1000px;
-     min-height: 900px;
-     background: #000000;
-     border-radius: 20px;
-     box-shadow: 0 0 100px 1px #FFFFFF;
+  min-width: 1000px;
+  min-height: 900px;
+  background: #000000;
+  border-radius: 20px;
+  box-shadow: 0 0 100px 1px #FFFFFF;
 
 `
 
 const Header = styled.div`
-    width: 900px;
-    height: 50px;
-    background: #FFFFFF;
-    padding: 0 50px;
-    border-radius: 20px 20px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    & > span {
-        font-family: Roboto, sans-serif;
-        font-weight: 500;
-        font-size: 20px;
-        color: #000000;
-    }
+  width: 900px;
+  height: 50px;
+  background: #FFFFFF;
+  padding: 0 50px;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & > span {
+    font-family: Roboto, sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: #000000;
+  }
 `
 
 const CancelX = styled.span`
+  height: 4px;
+  width: 20px;
+  display: block;
+  background-color: #909090;
+  transform: rotate(-45deg);
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: visible;
+  transition: 0.5s;
+  transform-origin: center;
+
+  &::after {
+    content: '';
     height: 4px;
     width: 20px;
     display: block;
     background-color: #909090;
-    transform: rotate(-45deg);
     border-radius: 10px;
-    cursor: pointer;
-    overflow: visible;
+    transform: rotate(90deg);
     transition: 0.5s;
-    transform-origin: center;
+  }
+
+  &:hover {
+    background-color: #000000;
 
     &::after {
-        content: '';
-        height: 4px;
-        width: 20px;
-        display: block;
-        background-color: #909090;
-        border-radius: 10px;
-        transform: rotate(90deg);
-        transition: 0.5s;
+      background-color: #000000;
     }
 
-    &:hover {
-        background-color: #000000;
-        &::after {
-            background-color: #000000;
-        }
-        transform: rotate(-45deg) scale(1.5);
-    }
+    transform: rotate(-45deg) scale(1.5);
+  }
 `
 
 const InBox = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 0 50px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 50px;
 `
 
 const SubTitle = styled.span`
@@ -441,158 +446,164 @@ const SubTitle = styled.span`
 `
 
 const InputBox = styled.input`
-    width: 386px;
-    height: 36px;
-    border: 2px solid #333333;
-    border-radius: 20px;
-    background: #333333;
-    outline: none;
-    padding: 0 20px;
-    margin-top: 10px;
-    font-family: Roboto, sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    color: #FFFFFF;
-    
-    transition: 0.3s;
+  width: 386px;
+  height: 36px;
+  border: 2px solid #333333;
+  border-radius: 20px;
+  background: #333333;
+  outline: none;
+  padding: 0 20px;
+  margin-top: 10px;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #FFFFFF;
 
-    &:focus {
-        border: 2px solid #FFFFFF;
-    }
+  transition: 0.3s;
+
+  &:focus {
+    border: 2px solid #FFFFFF;
+  }
 `
 
 const BigInputBox = styled.textarea`
-    display: inline-block;
-    width: 856px;
-    height: 126px;
-    padding: 10px 20px;
-    border: 2px solid #333333;
-    border-radius: 20px;
-    background: #333333;
-    outline: none;
-    margin-top: 10px;
-    font-family: Roboto, sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    color: #FFFFFF;
-    resize: none;
-    
-    transition: 0.3s;
-    &:focus {
-        border: 2px solid #FFFFFF;
-    }
+  display: inline-block;
+  width: 856px;
+  height: 126px;
+  padding: 10px 20px;
+  border: 2px solid #333333;
+  border-radius: 20px;
+  background: #333333;
+  outline: none;
+  margin-top: 10px;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #FFFFFF;
+  resize: none;
+
+  transition: 0.3s;
+
+  &:focus {
+    border: 2px solid #FFFFFF;
+  }
 `
 
 const BtnOutBox = styled.div`
-    width: 430px;
-    height: 120px;
-    margin-top: 20px;
+  width: 430px;
+  height: 120px;
+  margin-top: 20px;
 
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, auto));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, auto));
+  gap: 20px;
 `
 
 const RarityBtn = styled.div`
-    width: 126px;
-    height: 46px;
+  width: 126px;
+  height: 46px;
 
-    background: transparent;
-    border: 2px solid ${(props) => props.bool ? props.color : '#FFFFFF'};
-    box-shadow: 0 0 10px 5px ${(props) => props.bool ? props.color : 'transparent'};
-    border-radius: 10px;
-    cursor: pointer;
+  background: transparent;
+  border: 2px solid ${(props) => props.bool ? props.color : '#FFFFFF'};
+  box-shadow: 0 0 10px 5px ${(props) => props.bool ? props.color : 'transparent'};
+  border-radius: 10px;
+  cursor: pointer;
 
-    font-family: Roboto, sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    color: ${(props) => props.bool ? props.color : '#FFFFFF'};
+  font-family: Roboto, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: ${(props) => props.bool ? props.color : '#FFFFFF'};
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    transition: 0.3s;
-    &:hover {
-        border: 2px solid ${(props) => props.color};
-        box-shadow: 0 0 10px 5px ${(props) => props.color};
-        color: ${(props) => props.color};
-        transform: scale(1.1);
-        z-index: 9;
-    }
+  transition: 0.3s;
+
+  &:hover {
+    border: 2px solid ${(props) => props.color};
+    box-shadow: 0 0 10px 5px ${(props) => props.color};
+    color: ${(props) => props.color};
+    transform: scale(1.1);
+    z-index: 9;
+  }
 `
 
 const BetweenBox = styled.div`
-    width: 900px;
-    height: 410px;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 50px;
-    & > div {
-        width: 430px;
-        height: 410px;
+  width: 900px;
+  height: 410px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
 
-        display: flex;
-        &:first-child {
-            flex-direction: column;
-        }
-        &:last-child {
-            margin-top: 30px;
-        }
+  & > div {
+    width: 430px;
+    height: 410px;
+
+    display: flex;
+
+    &:first-child {
+      flex-direction: column;
     }
+
+    &:last-child {
+      margin-top: 30px;
+    }
+  }
 `
 
 const InputColor = styled.input.attrs({
     type: 'color',
 })`
-    display: block;
-    visibility: hidden;
-    position: absolute;
+  display: block;
+  visibility: hidden;
+  position: absolute;
 `
 
 const ColorLabel = styled.label.attrs((props) => ({
     style: {
-      background: props.color,
+        background: props.color,
     },
-  }))`
-    width: ${(props) => props.width || '10px'};
-    height: ${(props) => props.height || '10px'};
+}))`
+  width: ${(props) => props.width || '10px'};
+  height: ${(props) => props.height || '10px'};
 
-    padding: 20px;
+  padding: 20px;
 
-    border-radius: 10px;
+  border-radius: 10px;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
 const FlexBox = styled.div`
-    width: 900px;
-    height: 50px;
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
+  width: 900px;
+  height: 50px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 `
 
 const AddBtn = styled.div`
-    width: 196px;
-    height: 46px;
-    margin-left: 10px;
-    border: 2px solid #222222;
-    background: #222222;
-    border-radius: 20px;
-    font-family: Roboto, sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    color: #FFFFFF;
+  width: 196px;
+  height: 46px;
+  margin-left: 10px;
+  border: 2px solid #222222;
+  background: #222222;
+  border-radius: 20px;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    transition: 0.3s;
-    &:hover {
-        border: 2px solid #FFFFFF;
-    }
+  transition: 0.3s;
+
+  &:hover {
+    border: 2px solid #FFFFFF;
+  }
 `
