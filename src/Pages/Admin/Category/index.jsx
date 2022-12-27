@@ -246,8 +246,11 @@ const Image = styled.img`
   margin-bottom: 20px;
   object-fit: cover;
 `;
-const CategoryBox = styled.div`
-  background-image: linear-gradient(#000000, #000000), linear-gradient(to bottom, #${props => props.Start}, #${props => props.End});
+const CategoryBox = styled.div.attrs((props) => ({
+  style: {
+    backgroundImage: `linear-gradient(#000000, #000000), linear-gradient(to bottom, ${props.Start}, ${props.End})`,
+  }
+}))`
   background-origin: border-box;
   background-clip: content-box, border-box;
   border: 4px solid transparent;
