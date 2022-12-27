@@ -77,21 +77,13 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
     }
 
     const ColorChange = (name, value) => {
-        if(colorInter.current) {
-            clearInterval(colorInter.current);
-            colorInter.current = null;
-        }
-        colorInter.current = setInterval(() => {
-            setData({
-                ...Data,
-                color: {
-                    ...Data.color,
-                    [name]: value
-                }
-            });
-            clearInterval(colorInter.current);
-            colorInter.current = null;
-        }, 100)
+        setData({
+            ...Data,
+            color: {
+                ...Data.color,
+                [name]: value
+            }
+        });
     }
 
     const Push = () => {
@@ -558,13 +550,16 @@ const InputColor = styled.input.attrs({
     position: absolute;
 `
 
-const ColorLabel = styled.label`
+const ColorLabel = styled.label.attrs((props) => ({
+    style: {
+      background: props.color,
+    },
+  }))`
     width: ${(props) => props.width || '10px'};
     height: ${(props) => props.height || '10px'};
 
     padding: 20px;
 
-    background: ${(props) => props.color};
     border-radius: 10px;
 
     display: flex;
