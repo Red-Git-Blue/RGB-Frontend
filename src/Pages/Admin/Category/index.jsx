@@ -7,7 +7,7 @@ import {useCookies} from "react-cookie";
 import {toast} from "react-toastify";
 
 const Index = () => {
-    const {data: categoryList, isLoading: cLoading} = useQuery(['category'],
+    const {data: categoryList, isLoading: cLoading, refetch: CRe} = useQuery(['category'],
         () => getCategoryList()
     );
     const [cookies, ,] = useCookies();
@@ -18,6 +18,8 @@ const Index = () => {
     const [preImg, setPreImg] = useState(undefined);
     const [isAdd, setIsAdd] = useState(false);
     const [mousePos, setMousePos] = useState({x: 0, y: 0});
+    const [cId, setCId] = useState(0);
+    const [contextMenu, setContextMenu] = useState(false);
     if (cLoading) return <div>로딩딩딩딩딩딩딩딩딩디리리딩디리딩딩딩</div>;
 
     async function getCategoryList() {
@@ -28,12 +30,66 @@ const Index = () => {
         return getCategoryListRes.data;
     }
 
+    async function postCategoryList(formData) {
+        const postCategoryListRes = await axios({
+            method: 'post',
+            url: BaseUrl + '/item/category',
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${cookies.accessToken}`
+            },
+            data: formData,
+        })
+        CRe();
+    }
+
+    async function editCategoryList(jjason) {
+        const editCategoryListRes = await axios({
+            method: 'put',
+            url: BaseUrl + '/item/category/' + categoryList.content[cId].categoryName,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${cookies.accessToken}`
+            },
+            data: jjason,
+        })
+        CRe();
+    }
+
+    async function editIcon(formData) {
+        const editIconRes = await axios({
+            method: 'post',
+            url: BaseUrl + '/item/category/' + categoryList.content[cId].categoryName,
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${cookies.accessToken}`
+            },
+            data: formData,
+        })
+        CRe();
+    }
+
+    async function deleteCategoryList() {
+        const deleteCategoryListRes = await axios({
+            method: 'delete',
+            url: BaseUrl + '/item/category/' + categoryList.content[cId].categoryName,
+            headers: {
+                Authorization: `Bearer ${cookies.accessToken}`
+            },
+        }).catch(() => {
+            toast.error('사용중인 카테고리는 삭제가 불가합니다');
+        })
+        CRe();
+    }
+
     const categoryOpen = () => setCOpen(true);
     const categoryClose = () => {
         setPreImg(undefined);
         setCOpen(false);
         setImgFile(undefined);
         setCColor(["#FFFFFF", "#FFFFFF"]);
+        setCName('');
+        setIsAdd(false);
     }
 
     const insertImg = (e) => {
@@ -52,6 +108,16 @@ const Index = () => {
 
     const categoryAdd = () => {
         if (imgFile !== undefined && cName !== undefined) {
+            let formData = new FormData();
+            formData.append("categoryIconFile", imgFile);
+            formData.set("req", new Blob([JSON.stringify({
+                name: cName,
+                startColor: cColor[0],
+                endColor: cColor[1],
+            })], {
+                type: "application/json"
+            }));
+            postCategoryList(formData);
         } else {
             toast.error('모두 입력해주세요!!!!!!!!!!');
         }
@@ -60,26 +126,72 @@ const Index = () => {
     const startColorChange = (e) => setCColor([e, cColor[1]]);
     const endColorChange = (e) => setCColor([cColor[0], e]);
 
-    const colorClick = (e) => setMousePos({x: e.pageX, y: e.pageY});
+    const colorClick = (e) => {
+        setMousePos({x: e.pageX, y: e.pageY});
+        console.log('click!!!');
+    }
+
+    const RightClick = (e, id) => {
+        e.preventDefault();
+        setMousePos({x: e.pageX, y: e.pageY});
+        setCId(id);
+        setContextMenu(true);
+    }
+
+    const backClick = () => setContextMenu(false);
+
+    const editClick = () => {
+        setIsAdd(true);
+        setCOpen(true);
+        setCColor(["#" + categoryList.content[cId].color.startColor, "#" + categoryList.content[cId].color.endColor]);
+        setCName(categoryList.content[cId].categoryName);
+        setPreImg(categoryList.content[cId].categoryIcon.fileUrl);
+    }
+
+    const categoryEdit = () => {
+        let formData = new FormData();
+        if(imgFile) {
+            formData.append("categoryIconFile", imgFile);
+            editIcon(formData);
+        }
+        let jjason = JSON.stringify({
+            startColor: cColor[0],
+            endColor: cColor[1],
+        })
+        editCategoryList(jjason);
+    }
+
+    const delClick = () => {
+        deleteCategoryList();
+    }
+
+    const contextMenuMarkup = (
+        <ContextMenu style={{top: mousePos.y, left: mousePos.x}}>
+            <ConDiv onClick={editClick}>수정</ConDiv>
+            <ConDiv onClick={delClick}>삭제</ConDiv>
+        </ContextMenu>
+    );
 
     const addCategory = (
         <AddBack>
             <AddDiv>
                 <CategoryBox Start={cColor[0]} End={cColor[1]}>
-                    <Label htmlFor="cFile" pre={preImg}><Plus Dis={imgFile && "none"}>+</Plus></Label>
+                    <Label htmlFor="cFile" pre={preImg} Back={preImg && "black"}><Plus Dis={preImg && "none"}>+</Plus></Label>
                     <File type="file" id="cFile" name="cFile" onChange={(e) => insertImg(e)}></File>
                     <Text Size="20px" W="900" Top="20px">{cName}</Text>
                 </CategoryBox>
-                <Text Size="20px" W="600" Width="400px" Top="20px">카테고리 이름</Text>
-                <Input value={cName} onChange={(e) => setCName(e.target.value)} placeholder="카테고리 이름을 입력해주세요"/>
+                {!isAdd ?
+                    <>
+                        <Text Size="20px" W="600" Width="400px" Top="20px">카테고리 이름</Text>
+                        <Input value={cName} onChange={(e) => setCName(e.target.value)} placeholder="카테고리 이름을 입력해주세요"/>
+                    </> : null
+                }
                 <AddFlex>
                     <InputColor
                         id="start"
                         onChange={(e) => startColorChange(e.target.value)}
                         name="start"
                         value={cColor[0]}
-                        disabled={isAdd}
-                        type="color"
                         style={{top: mousePos.y, left: mousePos.x}}
                     />
                     <ColorLabel htmlFor='start' onClick={(e) => colorClick(e)} color={cColor[0]}/>
@@ -88,13 +200,13 @@ const Index = () => {
                         onChange={(e) => endColorChange(e.target.value)}
                         name="end"
                         value={cColor[1]}
-                        disabled={isAdd}
                         style={{top: mousePos.y, left: mousePos.x}}
                     />
                     <ColorLabel htmlFor='end' onClick={(e) => colorClick(e)} color={cColor[1]}/>
                 </AddFlex>
                 <AddFlex Jus="end">
-                    <Button onClick={categoryAdd}>추가</Button>
+                    {!isAdd && <Button onClick={categoryAdd}>추가</Button>}
+                    {isAdd && <Button onClick={categoryEdit}>수정</Button>}
                     <Button onClick={categoryClose}>취소</Button>
                 </AddFlex>
             </AddDiv>
@@ -103,21 +215,22 @@ const Index = () => {
 
     return (
         <Fragment>
-            <Body>
+            <Body onClick={backClick}>
                 <Text Margin="100px" Size="36px" W="200">Manage Category</Text>
                 <FlexDiv>
                     <Text>Category List</Text>
                     <AddButton onClick={categoryOpen}>카테고리 추가</AddButton>
                 </FlexDiv>
                 <CategoryList>
-                    {categoryList.content.map((dat) => (
-                        <CategoryDiv key={dat.categoryName} name={dat.id} Start={dat.color.startColor} End={dat.color.endColor}>
+                    {categoryList.content.map((dat, index) => (
+                        <CategoryDiv key={dat.categoryName} name={dat.id} Start={dat.color.startColor} End={dat.color.endColor} onContextMenu={(e) => RightClick(e, index)}>
                             <Image Big="80px" src={dat.categoryIcon.fileUrl} loading="lazy"/>
                             <Text Size="20px" W="900">{dat.categoryName}</Text>
                         </CategoryDiv>
                     ))}
                 </CategoryList>
                 {cOpen && addCategory}
+                {contextMenu && contextMenuMarkup}
             </Body>
         </Fragment>
     );
@@ -144,6 +257,38 @@ const Fade = keyframes`
     opacity: 1;
   }
 `;
+const ConDiv = styled.button`
+  color: white;
+  height: auto;
+  width: 100px;
+  padding: 20px 20px 20px 20px;
+  background-color: #222222;
+  border-bottom: solid #222222 2px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  line-height: 0;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: #111111;
+    border-bottom: #00a6ff solid 2px;
+  }
+`;
+const ContextMenu = styled.div`
+  box-shadow: black 0 0 100px;
+  position: absolute;
+  background-color: #222222;
+  height: auto;
+  width: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 10px 0 10px 0;
+  animation: ${Fade} 0.3s;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
 const ColorLabel = styled.label.attrs((props) => ({
     style: {
         background: props.color,
@@ -169,7 +314,7 @@ const Label = styled.label`
   border-radius: 20px;
   font-size: 40px;
   background-size: cover;
-  background-color: #222222;
+  background-color: ${props => props.Back || "#222222"};
   color: #666666;
   display: flex;
   justify-content: center;
@@ -247,9 +392,9 @@ const Image = styled.img`
   object-fit: cover;
 `;
 const CategoryBox = styled.div.attrs((props) => ({
-  style: {
-    backgroundImage: `linear-gradient(#000000, #000000), linear-gradient(to bottom, ${props.Start}, ${props.End})`,
-  }
+    style: {
+        backgroundImage: `linear-gradient(#000000, #000000), linear-gradient(to bottom, ${props.Start}, ${props.End})`,
+    }
 }))`
   background-origin: border-box;
   background-clip: content-box, border-box;
