@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Blur_box, Left_box, Input_view, Button_box, Right_box } from "../../../styleds";
+import { Blur_box, Left_box, Input_view, Button_box, Right_box, Background_view } from "../../../styleds";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import AnimatedPage from "../../AnimatedPage";
 import { toast } from "react-toastify"
 import { BaseUrl } from "../../../export/baseUrl";
 
-const LoginView = () => {
+const AdminLoginView = () => {
     const AxiosTime = useRef(undefined);
     const [loginData, setLoginData] = useState({
         email: '',
@@ -29,7 +29,7 @@ const LoginView = () => {
         }
         AxiosTime.current = setInterval(() => {
             axios({
-                method: 'post',
+                method: 'POST',
                 url: BaseUrl + '/auth/sign-in',
                 data: {
                     email: loginData.email,
@@ -56,7 +56,7 @@ const LoginView = () => {
 
     useEffect(() => {
         if (cookies.accessToken && cookies.refreshToken) {
-            navigate('/main');
+            navigate('/youDontKnow/AdminPage');
         }
         (() => document.addEventListener('keydown', KeyEnvent))();
         return () => { document.removeEventListener('keydown', KeyEnvent) };
@@ -71,16 +71,14 @@ const LoginView = () => {
 
     return (
         <AnimatedPage>
+            <Background_view />
             <Center>
                 <Blur_box>
                     <Flex_box>
                         <Left_box
                             title='log in'
-                            text1='회원이신가요?'
+                            text1='관리자이신가요?'
                             text2='로그인 후 서비스를 이용해보세요.'
-                            text3='아직 회원이 아니신가요?'
-                            text4='회원가입'
-                            link='/signup'
                         />
                         <Right_box>
                             <Input_view
@@ -98,10 +96,7 @@ const LoginView = () => {
                                 text='비밀번호를 입력해주세요.'
                                 value={loginData.password}
                             />
-                            <Button_box background='transparent' color="#ffffff" top='72px'>
-                                <Button_style>비밀번호를 잃어버리셨나요?</Button_style>
-                            </Button_box>
-                            <Button_box onClick={() => Login()}>로그인</Button_box>
+                            <Button_box top='104px' onClick={() => Login()}>로그인</Button_box>
                         </Right_box>
                     </Flex_box>
                 </Blur_box>
@@ -110,7 +105,7 @@ const LoginView = () => {
     )
 }
 
-export default LoginView;
+export default AdminLoginView;
 
 const Button_style = styled.span`
     font-weight: 400;

@@ -26,6 +26,7 @@ import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import CoinDetailView from './Pages/User/Coin/detail';
+import AdminLoginView from './Pages/Admin/LogIn';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -72,6 +73,7 @@ function App() {
                                     <Route path='/youDontKnow/AdminPage/AdminGrass' element={<Grass/>}></Route>
                                     <Route path='/youDontKnow/AdminPage/AdminAd' element={<Ad/>}></Route>
                                     <Route path='/youDontKnow/AdminPage/AdminCategory' element={<Category/>}></Route>
+                                    <Route path='/youDontKnow/AdminPage/Login' element={<AdminLoginView />}></Route>
                                 </Route>
                             </Routes>
                         </BrowserRouter>

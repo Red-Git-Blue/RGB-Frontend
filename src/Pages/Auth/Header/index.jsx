@@ -1,8 +1,9 @@
-import {useNavigate, useLocation} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from "styled-components";
-import {Image} from "../../../styleds";
-import {useCookies} from "react-cookie";
+import { Image } from "../../../styleds";
+import { useCookies } from "react-cookie";
 import Reissue from '../Reissue';
+import { useQuery } from 'react-query';
 
 const Page_button = styled.span`
   font-family: 'Roboto', sans-serif;
@@ -20,8 +21,8 @@ const Page_button = styled.span`
   margin-left: 50px;
   overflow: visible;
 
-  ${(props) => props.bool ? 
-  `
+  ${(props) => props.bool ?
+    `
     color:#FFF500;
     &::before {
       content: '';
@@ -34,8 +35,8 @@ const Page_button = styled.span`
       background: #FFF500;
     }
   `
-  :
-  `
+    :
+    `
     &::before {
       content: '';
       position: absolute;
@@ -72,54 +73,64 @@ const Page_button = styled.span`
   }
 `
 
-const Header = ({Admin}) => {
-    const log = useLocation();
-    const data = log.pathname.split('/').filter((item) => item !== '');
-    const [cookies, setCookie, removeCookie] = useCookies(['refreshToken']);
-    let navigate = useNavigate();
+const Header = ({ Admin = false }) => {
+  const log = useLocation();
+  const data = log.pathname.split('/').filter((item) => item !== '');
+  const [cookies, setCookie, removeCookie] = useCookies(['refreshToken']);
+  let navigate = useNavigate();
 
-    if(data[0] !== 'login' && !(cookies.accessToken && cookies.refreshToken)) {
-      Reissue();
-    }
+  if (data[0] !== 'login' && !(cookies.accessToken && cookies.refreshToken)) {
+    //Reissue();
+  }
 
-    return (
-        <>
-            <Out_box>
-                <Logo_box onClick={() => {
-                    Admin ? navigate('/youDontKnow/AdminPage') : navigate('/main')
-                }}>
-                    <Image src={process.env.PUBLIC_URL+"/image/Logo.png"} width='34px' height='30px' alt='로고 이미지'/>
-                    <Title>RED GIT BLUE</Title>
-                </Logo_box>
-                <Page_box>
-                    {Admin ?
-                        <>
-                            <Page_button bool={data[data.length - 1] === 'AdminPage'} onClick={() => navigate('/youDontKnow/AdminPage')}>Main</Page_button>
-                            <Page_button bool={data[data.length - 1] === 'AdminBadge'} onClick={() => navigate('/youDontKnow/AdminPage/AdminBadge')}>Manage Badge</Page_button>
-                            <Page_button bool={data[data.length - 1] === 'AdminGrass'} onClick={() => navigate('/youDontKnow/AdminPage/AdminGrass')}>Manage Grass</Page_button>
-                            <Page_button bool={data[data.length - 1] === 'AdminAd'} onClick={() => navigate('/youDontKnow/AdminPage/AdminAd')}>Manage Ad</Page_button>
-                            <Page_button bool={data[data.length - 1] === 'AdminCategory'} onClick={() => navigate('/youDontKnow/AdminPage/AdminCategory')}>Manage Category</Page_button>
-                        </>
-                        :
-                        <>
-                            <Page_button bool={data[0] === 'main'} onClick={() => navigate('/main')}>Main</Page_button>
-                            <Page_button bool={data[0] === 'coin'} onClick={() => navigate('/coin')}>Coin</Page_button>
-                            <Page_button bool={data[0] === 'search'} onClick={() => navigate('/search')}>Search</Page_button>
-                            <Page_button bool={data[0] === 'shop'} onClick={() => navigate('/shop')}>Shop</Page_button>
-                            {cookies.refreshToken ?
-                                <Page_button bool={data[0] === 'mypage'} onClick={() => navigate('/mypage')}>My Page</Page_button>
-                                :
-                                <>
-                                    <Page_button bool={data[0] === 'login'} onClick={() => navigate('/login')}>Log In</Page_button>
-                                    <Page_button bool={data[0] === 'signup'} onClick={() => navigate('/signup')}>Sign Up</Page_button>
-                                </>
-                            }
-                        </>
-                    }
-                </Page_box>
-            </Out_box>
-        </>
-    );
+  if (data[0] !== 'youDontKnow' || Admin === false) {
+    navigate('/youDontKnow/AdminPage');
+  }
+
+  return (
+    <>
+      <Out_box>
+        <Logo_box onClick={() => {
+          Admin ? navigate('/youDontKnow/AdminPage') : navigate('/main')
+        }}>
+          <Image src={process.env.PUBLIC_URL + "/image/Logo.png"} width='34px' height='30px' alt='로고 이미지' />
+          <Title>RED GIT BLUE</Title>
+        </Logo_box>
+        <Page_box>
+          {Admin ?
+            <>
+              <Page_button bool={data[data.length - 1] === 'AdminPage'} onClick={() => navigate('/youDontKnow/AdminPage')}>Main</Page_button>
+              <Page_button bool={data[data.length - 1] === 'AdminBadge'} onClick={() => navigate('/youDontKnow/AdminPage/AdminBadge')}>Manage Badge</Page_button>
+              <Page_button bool={data[data.length - 1] === 'AdminGrass'} onClick={() => navigate('/youDontKnow/AdminPage/AdminGrass')}>Manage Grass</Page_button>
+              <Page_button bool={data[data.length - 1] === 'AdminAd'} onClick={() => navigate('/youDontKnow/AdminPage/AdminAd')}>Manage Ad</Page_button>
+              <Page_button bool={data[data.length - 1] === 'AdminCategory'} onClick={() => navigate('/youDontKnow/AdminPage/AdminCategory')}>Manage Category</Page_button>
+              {
+                cookies.refreshToken ?
+                <></>
+                :
+                <Page_button bool={data[data.length - 1] === 'login'} onClick={() => navigate('/youDontKnow/AdminPage/login')}>Log In</Page_button>
+              }
+            </>
+            :
+            <>
+              <Page_button bool={data[0] === 'main'} onClick={() => navigate('/main')}>Main</Page_button>
+              <Page_button bool={data[0] === 'coin'} onClick={() => navigate('/coin')}>Coin</Page_button>
+              <Page_button bool={data[0] === 'search'} onClick={() => navigate('/search')}>Search</Page_button>
+              <Page_button bool={data[0] === 'shop'} onClick={() => navigate('/shop')}>Shop</Page_button>
+              {cookies.refreshToken ?
+                <Page_button bool={data[0] === 'mypage'} onClick={() => navigate('/mypage')}>My Page</Page_button>
+                :
+                <>
+                  <Page_button bool={data[0] === 'login'} onClick={() => navigate('/login')}>Log In</Page_button>
+                  <Page_button bool={data[0] === 'signup'} onClick={() => navigate('/signup')}>Sign Up</Page_button>
+                </>
+              }
+            </>
+          }
+        </Page_box>
+      </Out_box>
+    </>
+  );
 }
 
 export default Header;

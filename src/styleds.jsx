@@ -147,7 +147,7 @@ const PsswordBox = styled.div`
     justify-content: center;
 `
 
-export const Input_view = ({ type = 'text', name, text, check, func }) => {
+export const Input_view = ({ type = 'text', name, text, check, func, value }) => {
     const [bool, setbool] = useState(true);
 
     return (
@@ -155,22 +155,49 @@ export const Input_view = ({ type = 'text', name, text, check, func }) => {
             <Sub_title>{name}</Sub_title>
             {
                 type == 'text' ?
-                    <Input_box onChange={(e) => func(check, e.target.value)} type={'text'} placeholder={text} />
+                    <Input_box
+                        onChange={(e) => func(check, e.target.value)}
+                        type='text'
+                        placeholder={text}
+                        value={value}
+                    />
                     :
                     <Input_password_out_box>
                         {
                             bool ?
                                 <>
-                                    <Input_password_box onChange={(e) => func(check, e.target.value)} type={type} placeholder={text} />
-                                    <PsswordBox onClick={(() => setbool(false))}>
-                                        <PasswordImage src='image/password_hidden.png' width='24px' height='24px' />
+                                    <Input_password_box
+                                        onChange={(e) => func(check, e.target.value)}
+                                        type={type}
+                                        placeholder={text}
+                                        value={value}
+                                    />
+                                    <PsswordBox
+                                        onClick={(() => setbool(false))}
+                                    >
+                                        <PasswordImage
+                                            src='/image/password_hidden.png'
+                                            width='24px'
+                                            height='24px'
+                                        />
                                     </PsswordBox>
                                 </>
                                 :
                                 <>
-                                    <Input_password_box onChange={(e) => func(check, e.target.value)} type='text' placeholder={text} />
-                                    <PsswordBox onClick={(() => setbool(true))}>
-                                        <PasswordImage src='image/password_view.png' width='24px' height='24px' />
+                                    <Input_password_box
+                                        onChange={(e) => func(check, e.target.value)}
+                                        type='text'
+                                        placeholder={text}
+                                        value={value}
+                                    />
+                                    <PsswordBox
+                                        onClick={(() => setbool(true))}
+                                    >
+                                        <PasswordImage
+                                            src='/image/password_view.png'
+                                            width='24px'
+                                            height='24px'
+                                        />
                                     </PsswordBox>
                                 </>
                         }
@@ -240,7 +267,7 @@ export const Left_box = ({ title, text1, text2, text3, text4, link }) => {
             <Text bottom='30px'>{title}</Text>
             <Text bottom='10px'>{text1}</Text>
             <Text weight='400' size='18px' height='21px' bottom='60px'>{text2}</Text>
-            <Auth_page string={text3} name={text4} move={link} />
+            {(text3 && text4 && link) &&<Auth_page string={text3} name={text4} move={link} />}
         </Set_box>
     )
 }
