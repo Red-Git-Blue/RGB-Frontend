@@ -15,12 +15,12 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
         introduction: '',
         price: 0,
         color: {
-          less: '2D333B',
-          low: '0E4429',
-          normal: '006D32',
-          high: '26A641',
-          max: '39D353',
-          background: '22272E'
+          less: '#2D333B',
+          low: '#0E4429',
+          normal: '#006D32',
+          high: '#26A641',
+          max: '#39D353',
+          background: '#22272E'
         }
     })
     const [pastData, setPastData] = useState(undefined);
@@ -40,14 +40,28 @@ const Model = ({ Type = [], Fn1, Fn2, setType }) => {
                     rarityType: res.data.rarity.name,
                     introduction: res.data.introduction,
                     price: res.data.price,
-                    color: res.data.color
+                    color: {
+                        less: '#' + res.data.color.less,
+                        low: '#' + res.data.color.low,
+                        normal: '#' + res.data.color.normal,
+                        high: '#' + res.data.color.high,
+                        max: '#' + res.data.color.max,
+                        background: '#' + res.data.color.background
+                    }
                 });
                 setData({
                     name: res.data.name,
                     rarityType: res.data.rarity.name,
                     introduction: res.data.introduction,
                     price: res.data.price,
-                    color: res.data.color
+                    color: {
+                        less: '#' + res.data.color.less,
+                        low: '#' + res.data.color.low,
+                        normal: '#' + res.data.color.normal,
+                        high: '#' + res.data.color.high,
+                        max: '#' + res.data.color.max,
+                        background: '#' + res.data.color.background
+                    }
                 });
             })
             .catch(() => {
@@ -550,7 +564,7 @@ const ColorLabel = styled.label`
 
     padding: 20px;
 
-    background: #${(props) => props.color};
+    background: ${(props) => props.color};
     border-radius: 10px;
 
     display: flex;
