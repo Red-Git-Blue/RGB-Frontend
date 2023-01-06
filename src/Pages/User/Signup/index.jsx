@@ -49,6 +49,8 @@ const SignUpView = () => {
                 .catch(() => {
                     toast.error("제대로 입력했는지 확인하세요");
                 })
+            clearInterval(AxiosTime.current);
+            AxiosTime.current = null;
         }, 500);
     };
 
